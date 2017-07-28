@@ -3,101 +3,93 @@
 #
 
 
-class Template(object):
+import json
+from thirdparty.troposphere import AWSObject as PackerObject, encode_to_dict
+
+
+class Builder(PackerObject):
     props = {
-        'AWSTemplateFormatVersion': (basestring, False),
-        'Transform': (basestring, False),
-        'Description': (basestring, False),
-        'Parameters': (dict, False),
-        'Mappings': (dict, False),
-        'Resources': (dict, False),
-        'Outputs': (dict, False),
+        'type2': (basestring, True),
     }
 
-    def __init__(self, Description=None, Metadata=None):  # noqa: N803
-        self.description = Description
-        self.metadata = {} if Metadata is None else Metadata
-        self.conditions = {}
-        self.mappings = {}
-        self.outputs = {}
-        self.parameters = {}
-        self.resources = {}
-        self.version = None
-        self.transform = None
+
+
+class PostProcessor(PackerObject):
+    props = {}
+
+
+class Provisioner(PackerObject):
+    props = {}
+
+
+class Variables(PackerObject):
+    props = {}
+
+
+class Template(object):
+    """
+    Packer Template Structure
+    https://www.packer.io/docs/templates/index.html
+    """
+
+    props = {
+        'description': (basestring, False),
+        'min_packer_version': (basestring, False),
+        'variables': (list, False),
+        'builders': (list, True),
+        'provisioners': (list, False),
+        'post-processors': (list, False),
+    }
+
+    def __init__(self, description=None, min_packer_version=None):
+        self.description = description
+        self.min_packer_version = min_packer_version
+        self.variables = list()
+        self.builders = list()
+        self.provisioners = list()
+        self.post_processors = list()
 
     def add_description(self, description):
         self.description = description
 
-    def add_metadata(self, metadata):
-        self.metadata = metadata
-
-    def add_condition(self, name, condition):
-        self.conditions[name] = condition
+    def add_min_packer_version(self, min_packer_version):
+        self.min_packer_version = min_packer_version
 
     def handle_duplicate_key(self, key):
         raise ValueError('duplicate key "%s" detected' % key)
 
-    def _update(self, d, values):
+    def _update(self, l, values):
         if isinstance(values, list):
-            for v in values:
-                if v.title in d:
-                    self.handle_duplicate_key(v.title)
-                d[v.title] = v
+            l.extend(values)
         else:
-            if values.title in d:
-                self.handle_duplicate_key(values.title)
-            d[values.title] = values
+            l.append(values)
         return values
 
-    def add_output(self, output):
-        if len(self.outputs) >= MAX_OUTPUTS:
-            raise ValueError('Maximum outputs %d reached' % MAX_OUTPUTS)
-        return self._update(self.outputs, output)
+    def add_variable(self, variable):
+        return self._update(self.variables, variable)
 
-    def add_mapping(self, name, mapping):
-        if len(self.mappings) >= MAX_MAPPINGS:
-            raise ValueError('Maximum mappings %d reached' % MAX_MAPPINGS)
-        self.mappings[name] = mapping
+    def add_builder(self, builder):
+        return self._update(self.builders, builder)
 
-    def add_parameter(self, parameter):
-        if len(self.parameters) >= MAX_PARAMETERS:
-            raise ValueError('Maximum parameters %d reached' % MAX_PARAMETERS)
-        return self._update(self.parameters, parameter)
+    def add_provisioner(self, provisioner):
+        return self._update(self.provisioners, provisioner)
 
-    def add_resource(self, resource):
-        if len(self.resources) >= MAX_RESOURCES:
-            raise ValueError('Maximum number of resources %d reached'
-                             % MAX_RESOURCES)
-        return self._update(self.resources, resource)
-
-    def add_version(self, version=None):
-        if version:
-            self.version = version
-        else:
-            self.version = "2010-09-09"
-
-    def add_transform(self, transform):
-        self.transform = transform
+    def add_post_processor(self, post_processor):
+        return self._update(self.post_processors, post_processor)
 
     def to_dict(self):
         t = {}
         if self.description:
-            t['Description'] = self.description
-        if self.metadata:
-            t['Metadata'] = self.metadata
-        if self.conditions:
-            t['Conditions'] = self.conditions
-        if self.mappings:
-            t['Mappings'] = self.mappings
-        if self.outputs:
-            t['Outputs'] = self.outputs
-        if self.parameters:
-            t['Parameters'] = self.parameters
-        if self.version:
-            t['AWSTemplateFormatVersion'] = self.version
-        if self.transform:
-            t['Transform'] = self.transform
-        t['Resources'] = self.resources
+            t['description'] = self.description
+        if self.min_packer_version:
+            t['min_packer_version'] = self.min_packer_version
+        if self.variables:
+            t['variables'] = self.variables
+        if self.provisioners:
+            t['provisioners'] = self.provisioners
+        if self.post_processors:
+            t['post-processors'] = self.post_processors
+        t['builders'] = self.builders
 
         return encode_to_dict(t)
 
@@ -105,5 +97,3 @@ class Template(object):
         return json.dumps(self.to_dict(), indent=indent,
                           sort_keys=sort_keys, separators=separators)
 
-    def to_yaml(self):
-        return cfn_flip.to_yaml(self.to_json())
