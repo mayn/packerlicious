@@ -4,14 +4,12 @@
 # See LICENSE file for full license.
 
 
-import cfn_flip
 import collections
 import json
 import re
 import sys
 import types
 
-from . import validators
 
 __version__ = "1.9.4"
 
@@ -51,7 +49,7 @@ def is_aws_object_subclass(cls):
 def encode_to_dict(obj):
     if hasattr(obj, 'to_dict'):
         # Calling encode_to_dict to ensure object is
-        # nomalized to a base dictionary all the way down.
+        # normalized to a base dictionary all the way down.
         return encode_to_dict(obj.to_dict())
     elif isinstance(obj, (list, tuple)):
         new_lst = []
@@ -167,6 +165,7 @@ class BaseAWSObject(object):
                 try:
                     value = expected_type(value)
                 except Exception:
+                    # TODO fix this, title is none. ie. output = None.method function vaidator
                     sys.stderr.write(
                         "%s: %s.%s function validator '%s' threw "
                         "exception:\n" % (self.__class__,
@@ -295,7 +294,7 @@ class BaseAWSObject(object):
 
 
 class AWSObject(BaseAWSObject):
-    dictname = 'Properties'
+    # dictname = 'Properties'
 
     def ref(self):
         return Ref(self)
@@ -355,14 +354,6 @@ def validate_pausetime(pausetime):
     if not pausetime.startswith('PT'):
         raise ValueError('PauseTime should look like PT#H#M#S')
     return pausetime
-
-
-class UpdatePolicy(BaseAWSObject):
-    def __init__(self, title, **kwargs):
-        raise DeprecationWarning(
-            "This UpdatePolicy class is deprecated, please switch to using "
-            "the more general UpdatePolicy in troposphere.policies.\n"
-        )
 
 
 class AWSHelperFn(object):
@@ -613,9 +604,6 @@ class Template(object):
         return json.dumps(self.to_dict(), indent=indent,
                           sort_keys=sort_keys, separators=separators)
 
-    def to_yaml(self):
-        return cfn_flip.to_yaml(self.to_json())
-
 
 class Export(AWSHelperFn):
     def __init__(self, name):
@@ -641,10 +629,10 @@ class Parameter(AWSDeclaration):
         'NoEcho': (bool, False),
         'AllowedValues': (list, False),
         'AllowedPattern': (basestring, False),
-        'MaxLength': (validators.positive_integer, False),
-        'MinLength': (validators.positive_integer, False),
-        'MaxValue': (validators.integer, False),
-        'MinValue': (validators.integer, False),
+        # 'MaxLength': (validators.positive_integer, False),
+        # 'MinLength': (validators.positive_integer, False),
+        # 'MaxValue': (validators.integer, False),
+        # 'MinValue': (validators.integer, False),
         'Description': (basestring, False),
         'ConstraintDescription': (basestring, False),
     }
