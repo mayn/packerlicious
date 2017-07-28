@@ -2,8 +2,6 @@
 # All rights reserved.
 #
 # See LICENSE file for full license.
-
-import json
 from re import compile
 
 
@@ -73,11 +71,11 @@ def defer(x):
 
 
 def network_port(x):
-    from . import AWSHelperFn
+    # from . import AWSHelperFn
 
     # Network ports can be Ref items
-    if isinstance(x, AWSHelperFn):
-        return x
+    # if isinstance(x, AWSHelperFn):
+    #     return x
 
     i = integer(x)
     if int(i) < -1 or int(i) > 65535:
@@ -183,13 +181,19 @@ def iam_group_name(group_name):
     return group_name
 
 
-def mutually_exclusive(class_name, properties, conditionals):
+def count(properties, conditionals):
     found_list = []
     for c in conditionals:
         if c in properties:
             found_list.append(c)
     seen = set(found_list)
     specified_count = len(seen)
+
+    return specified_count
+
+
+def mutually_exclusive(class_name, properties, conditionals):
+    specified_count = count(properties, conditionals)
     if specified_count > 1:
         raise ValueError(('%s: only one of the following'
                           ' can be specified: %s') % (
@@ -204,19 +208,3 @@ def exactly_one(class_name, properties, conditionals):
                           ' must be specified: %s') % (
                           class_name, ', '.join(conditionals)))
     return specified_count
-
-
-def json_checker(name, prop):
-    from . import AWSHelperFn
-
-    if isinstance(prop, basestring):
-        # Verify it is a valid json string
-        json.loads(prop)
-        return prop
-    elif isinstance(prop, dict):
-        # Convert the dict to a basestring
-        return json.dumps(prop)
-    elif isinstance(prop, AWSHelperFn):
-        return prop
-    else:
-        raise ValueError("%s must be a str or dict" % name)
