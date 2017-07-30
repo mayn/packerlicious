@@ -17,7 +17,7 @@ About
 
 packerlicious -
 
-Project is unstable until we reach v1.0.0. Please bear with us as we port code
+Project is currently unstable and functionality may change rapidly. Please bear with us as we port functionality.
 
 
 
