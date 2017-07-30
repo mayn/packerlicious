@@ -1,5 +1,6 @@
 import pytest
-import packerlicious.builder.file as builder
+
+import packerlicious.builder as builder
 
 
 class TestFileBuilder(object):
