@@ -1,6 +1,7 @@
-from . import PackerBuilder
-from ..validator import mutually_exclusive
 import warnings
+
+from ..validator import mutually_exclusive
+from . import PackerBuilder
 
 
 class File(PackerBuilder):

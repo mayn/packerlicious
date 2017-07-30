@@ -1,9 +1,8 @@
 # Copyright (c) 2012-2017, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
-
-
 import json
+
 from thirdparty.troposphere import AWSObject as PackerObject, encode_to_dict
 
 
