@@ -1,7 +1,6 @@
 # Copyright (c) 2012-2013, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
-# See LICENSE file for full license.
 from re import compile
 
 
@@ -71,11 +70,11 @@ def defer(x):
 
 
 def network_port(x):
-    # from . import AWSHelperFn
+    from thirdparty.troposphere import AWSHelperFn
 
     # Network ports can be Ref items
-    # if isinstance(x, AWSHelperFn):
-    #     return x
+    if isinstance(x, AWSHelperFn):
+        return x
 
     i = integer(x)
     if int(i) < -1 or int(i) > 65535:
