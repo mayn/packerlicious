@@ -7,7 +7,7 @@ class PackerProvisioner(BasePackerObject):
         super(PackerProvisioner, self).__init__(title, **kwargs)
 
 
-def direction(x):
+def valid_file_direction(x):
     if x not in [File.Upload, File.Download]:
         raise ValueError(x)
     return x
@@ -23,7 +23,7 @@ class File(PackerProvisioner):
     props = {
         'source': (basestring, True),
         'destination': (basestring, True),
-        'direction': (direction, True),
+        'direction': (valid_file_direction, True),
     }
 
     # File Provisioner constants
