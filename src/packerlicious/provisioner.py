@@ -1,11 +1,14 @@
-from . import PackerProvisioner
-# File Provisioner constants
-Upload = "upload"
-Download = "download"
+from . import BasePackerObject
+
+
+class PackerProvisioner(BasePackerObject):
+
+    def __init__(self, title=None, **kwargs):
+        super(PackerProvisioner, self).__init__(title, **kwargs)
 
 
 def direction(x):
-    if x not in [Upload, Download]:
+    if x not in [File.Upload, File.Download]:
         raise ValueError(x)
     return x
 
@@ -22,3 +25,7 @@ class File(PackerProvisioner):
         'destination': (basestring, True),
         'direction': (direction, True),
     }
+
+    # File Provisioner constants
+    Upload = "upload"
+    Download = "download"

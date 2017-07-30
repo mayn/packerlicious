@@ -1,5 +1,6 @@
 import pytest
-import packerlicious.provisioner.file as provisioner
+
+import packerlicious.provisioner as provisioner
 
 
 class TestFileProvisioner(object):
@@ -12,8 +13,8 @@ class TestFileProvisioner(object):
         assert 'required' in str(excinfo.value)
 
     @pytest.mark.parametrize("input_direction", [
-        provisioner.Download,
-        provisioner.Upload,
+        provisioner.File.Download,
+        provisioner.File.Upload,
 
     ])
     def test_direction_valid(self, input_direction):
