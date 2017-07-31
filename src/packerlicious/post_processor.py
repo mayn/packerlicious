@@ -78,3 +78,16 @@ class GoogleComputeExport(PackerPostProcessor):
         'paths': ([basestring], True),
         'keep_input_artifact': (validator.boolean, False),
     }
+
+
+class Manifest(PackerPostProcessor):
+    """
+    Manifest Post-Processor
+    https://www.packer.io/docs/post-processors/manifest.html
+    """
+    resource_type = "manifest"
+
+    props = {
+        'output': (basestring, False),
+        'strip_path': (validator.boolean, False),
+    }
