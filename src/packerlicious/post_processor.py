@@ -1,4 +1,4 @@
-from . import BasePackerObject
+from . import BasePackerObject, TemplateVar
 import validator
 
 
@@ -6,6 +6,40 @@ class PackerPostProcessor(BasePackerObject):
 
     def __init__(self, title=None, **kwargs):
         super(PackerPostProcessor, self).__init__(title, **kwargs)
+
+
+class Checksum(PackerPostProcessor):
+    """
+    Checksum Post-Processor
+    https://www.packer.io/docs/post-processors/checksum.html
+    """
+    resource_type = "checksum"
+
+    # Checksum Post Processor constants
+    MD5 = "md5"
+    SHA1 = "sha1"
+    SHA224 = "sha224"
+    SHA256 = "sha256"
+    SHA384 = "sha384"
+    SHA512 = "sha512"
+
+    # Checksum Template Variables
+    BuildName = TemplateVar("BuildName")
+    BuilderType = TemplateVar("BuilderType")
+    ChecksumType = TemplateVar("ChecksumType")
+
+    props = {
+        'checksum_types': ([basestring], False),
+        'output': (basestring, False),
+    }
+
+    def validate(self):
+        valid_checksum_types = [Checksum.MD5, Checksum.SHA1, Checksum.SHA224,
+                                Checksum.SHA256, Checksum.SHA384, Checksum.SHA512]
+        checksum_types = self.properties.get('checksum_types', [])
+        if len([x for x in checksum_types if x not in valid_checksum_types]) > 0:
+            raise ValueError('%s: only one of the following can be specified: %s' % (
+                                 self.__class__.__name__, ', '.join(valid_checksum_types)))
 
 
 class DockerImport(PackerPostProcessor):

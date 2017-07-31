@@ -9,6 +9,7 @@ class PackerVariable(AWSHelperFn):
         self.data = self.getdata(data)
 
 
+# TODO finish variable implementation
 class TemplateVar(PackerVariable):
     """
     Template Variables
