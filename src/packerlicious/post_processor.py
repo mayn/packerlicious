@@ -39,3 +39,15 @@ class DockerPush(PackerPostProcessor):
         'login_password': (basestring, False),
         'login_server': (basestring, False),
     }
+
+
+class DockerSave(PackerPostProcessor):
+    """
+    Docker Save Processor
+    https://www.packer.io/docs/post-processors/docker-save.html
+    """
+    resource_type = "docker-save"
+
+    props = {
+        'path': (basestring, True),
+    }
