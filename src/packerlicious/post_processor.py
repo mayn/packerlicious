@@ -51,3 +51,17 @@ class DockerSave(PackerPostProcessor):
     props = {
         'path': (basestring, True),
     }
+
+
+class DockerTag(PackerPostProcessor):
+    """
+    Docker Tag Processor
+    https://www.packer.io/docs/post-processors/docker-tag.html
+    """
+    resource_type = "docker-tag"
+
+    props = {
+        'repository': (basestring, True),
+        'tag': (basestring, False),
+        'force': (basestring, False),
+    }

@@ -21,10 +21,20 @@ class TestDockerPushPostProcessor(object):
         b.to_dict()
 
 
-class TestDockerImportPostProcessor(object):
+class TestDockerSavePostProcessor(object):
 
     def test_required_fields_missing(self):
         b = post_processor.DockerSave()
+
+        with pytest.raises(ValueError) as excinfo:
+            b.to_dict()
+        assert 'required' in str(excinfo.value)
+
+
+class TestDockerTagPostProcessor(object):
+
+    def test_required_fields_missing(self):
+        b = post_processor.DockerTag()
 
         with pytest.raises(ValueError) as excinfo:
             b.to_dict()
