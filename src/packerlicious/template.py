@@ -6,25 +6,6 @@ import json
 from thirdparty.troposphere import AWSObject as PackerObject, encode_to_dict
 
 
-class Builder(PackerObject):
-    props = {
-        'type2': (basestring, True),
-    }
-
-
-
-class PostProcessor(PackerObject):
-    props = {}
-
-
-class Provisioner(PackerObject):
-    props = {}
-
-
-class Variables(PackerObject):
-    props = {}
-
-
 class Template(object):
     """
     Packer Template Structure
