@@ -1,4 +1,5 @@
 from thirdparty.troposphere import AWSHelperFn
+from thirdparty.troposphere import AWSProperty as PackerProperty
 from thirdparty.troposphere import BaseAWSObject as BasePackerObject
 
 from template import Template

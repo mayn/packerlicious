@@ -1,4 +1,4 @@
-from . import BasePackerObject, EnvVar, TemplateVar
+from . import BasePackerObject, EnvVar, PackerProperty, TemplateVar
 import validator
 
 
@@ -158,3 +158,46 @@ class ShellLocal(PackerPostProcessor):
             'scripts',
         ]
         validator.exactly_one(self.__class__.__name__, self.properties, conds)
+
+
+class VagrantProviderOverride(PackerProperty):
+    props = {
+        'compression_level': (validator.integer_range(0, 9), False),
+        'include': ([basestring], False),
+        'keep_input_artifact': (validator.boolean, False),
+        'output': (basestring, False),
+        'vagrantfile_template': (basestring, False),
+    }
+
+
+class VagrantOverrides(PackerProperty):
+    props = {
+        'aws': (VagrantProviderOverride, False),
+        'digitalocean': (VagrantProviderOverride, False),
+        'virtualbox': (VagrantProviderOverride, False),
+        'vmware': (VagrantProviderOverride, False),
+        'parallels': (VagrantProviderOverride, False),
+    }
+
+
+class Vagrant(PackerPostProcessor):
+    """
+    Vagrant Post-Processor
+    https://www.packer.io/docs/post-processors/vagrant.html
+    """
+    resource_type = "vagrant"
+
+    # Shell Local Template Variables
+    ArtifactId = TemplateVar("ArtifactId")
+    BuildName = TemplateVar("BuildName")
+    Provider = TemplateVar("Provider")
+
+    props = {
+        'compression_level': (validator.integer_range(0, 9), False),
+        'include': ([basestring], False),
+        'keep_input_artifact': (validator.boolean, False),
+        'output': (basestring, False),
+        'vagrantfile_template': (basestring, False),
+        'override': (VagrantOverrides, False),
+    }
+
