@@ -1,4 +1,4 @@
-from . import BasePackerObject, TemplateVar
+from . import BasePackerObject, EnvVar, TemplateVar
 import validator
 
 
@@ -125,3 +125,36 @@ class Manifest(PackerPostProcessor):
         'output': (basestring, False),
         'strip_path': (validator.boolean, False),
     }
+
+
+class ShellLocal(PackerPostProcessor):
+    """
+    Shell Local Post-Processor
+    https://www.packer.io/docs/post-processors/shell-local.html
+    """
+    resource_type = "shell-local"
+
+    # Shell Local Template Variables
+    Vars = TemplateVar("Vars")
+    Script = TemplateVar("Script")
+
+    # Shell Local Environment Variables
+    PackerBuildName = EnvVar("PACKER_BUILD_NAME")
+    PackerBuildType = EnvVar("PACKER_BUILD_TYPE")
+
+    props = {
+        'inline': ([basestring], False),
+        'script': (basestring, False),
+        'scripts': ([basestring], False),
+        'environment_vars': ([basestring], False),
+        'execute_command': (basestring, False),
+        'inline_shebang': (basestring, False),
+    }
+
+    def validate(self):
+        conds = [
+            'inline',
+            'script',
+            'scripts',
+        ]
+        validator.exactly_one(self.__class__.__name__, self.properties, conds)
