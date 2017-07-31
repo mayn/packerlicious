@@ -10,7 +10,7 @@ class PackerPostProcessor(BasePackerObject):
 
 class DockerImport(PackerPostProcessor):
     """
-    Docker Import Processor
+    Docker Import Post-Processor
     https://www.packer.io/docs/post-processors/docker-import.html
     """
     resource_type = "docker-import"
@@ -23,7 +23,7 @@ class DockerImport(PackerPostProcessor):
 
 class DockerPush(PackerPostProcessor):
     """
-    Docker Push Processor
+    Docker Push Post-Processor
     https://www.packer.io/docs/post-processors/docker-push.html
     """
     resource_type = "docker-push"
@@ -43,7 +43,7 @@ class DockerPush(PackerPostProcessor):
 
 class DockerSave(PackerPostProcessor):
     """
-    Docker Save Processor
+    Docker Save Post-Processor
     https://www.packer.io/docs/post-processors/docker-save.html
     """
     resource_type = "docker-save"
@@ -55,7 +55,7 @@ class DockerSave(PackerPostProcessor):
 
 class DockerTag(PackerPostProcessor):
     """
-    Docker Tag Processor
+    Docker Tag Post-Processor
     https://www.packer.io/docs/post-processors/docker-tag.html
     """
     resource_type = "docker-tag"
@@ -64,4 +64,17 @@ class DockerTag(PackerPostProcessor):
         'repository': (basestring, True),
         'tag': (basestring, False),
         'force': (basestring, False),
+    }
+
+
+class GoogleComputeExport(PackerPostProcessor):
+    """
+    Google Compute Image Exporter Post-Processor
+    https://www.packer.io/docs/post-processors/googlecompute-export.html
+    """
+    resource_type = "googlecompute-export"
+
+    props = {
+        'paths': ([basestring], True),
+        'keep_input_artifact': (validator.boolean, False),
     }
