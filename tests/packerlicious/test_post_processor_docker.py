@@ -11,3 +11,11 @@ class TestDockerImportPostProcessor(object):
         with pytest.raises(ValueError) as excinfo:
             b.to_dict()
         assert 'required' in str(excinfo.value)
+
+
+class TestDockerPushPostProcessor(object):
+
+    def test_no_required_fields(self):
+        b = post_processor.DockerPush()
+
+        b.to_dict()
