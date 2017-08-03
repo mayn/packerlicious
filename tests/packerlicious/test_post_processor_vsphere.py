@@ -3,18 +3,10 @@ import pytest
 import packerlicious.post_processor as post_processor
 
 
-class TestVagrantPostProcessor(object):
-
-    def test_no_required_fields(self):
-        b = post_processor.Vagrant()
-
-        b.to_dict()
-
-
-class TestVagrantCloudPostProcessor(object):
+class TestVSphereProcessor(object):
 
     def test_required_fields_missing(self):
-        b = post_processor.VagrantCloud()
+        b = post_processor.VSphere()
 
         with pytest.raises(ValueError) as excinfo:
             b.to_dict()

@@ -201,3 +201,52 @@ class Vagrant(PackerPostProcessor):
         'override': (VagrantOverrides, False),
     }
 
+
+class VagrantCloud(PackerPostProcessor):
+    """
+    Vagrant Post-Processor
+    https://www.packer.io/docs/post-processors/vagrant-cloud.html
+
+    # TODO add support for doubly-nested array.
+    see https://www.packer.io/docs/post-processors/vagrant-cloud.html#use-with-vagrant-post-processor
+    # TODO semantic versioning validator for version attr
+    """
+
+    resource_type = "vagrant-cloud"
+
+    props = {
+        'access_token': (basestring, True),
+        'box_tag': (basestring, True),
+        'version': (basestring, True),
+        'no_release': (basestring, False),
+        'vagrant_cloud_url': (basestring, False),
+        'version_description': (basestring, False),
+        'box_download_url': (basestring, False),
+    }
+
+
+class VSphere(PackerPostProcessor):
+    """
+    vSphere Post-Processor
+    https://www.packer.io/docs/post-processors/vsphere.html
+    """
+
+    resource_type = "vsphere"
+
+    props = {
+        'cluster': (basestring, True),
+        'datacenter': (basestring, True),
+        'host': (basestring, True),
+        'password': (basestring, True),
+        'username': (basestring, True),
+        'vm_name': (basestring, True),
+        'datastore': (basestring, False),
+        'disk_mode': (basestring, False),
+        'insecure': (validator.boolean, False),
+        'resource_pool': (basestring, False),
+        'vm_folder': (basestring, False),
+        'vm_network': (basestring, False),
+        'overwrite': (validator.boolean, False),
+        'options': ([basestring], False),
+    }
+

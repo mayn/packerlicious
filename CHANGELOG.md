@@ -13,4 +13,6 @@
 * post_processor/Manifest: add support for packer's manifest post-processor
 * post_processor/ShellLocal: add support for packer's shell local post-processor
 * post_processor/Vagrant: add support for packer's vagrant post-processor
+* post_processor/VagrantCloud: add support for packer's vagrant cloud post-processor
+* post_processor/VSphere: add support for packer's vsphere post-processor
 * provisioner/file: add support for packer's file provisioner

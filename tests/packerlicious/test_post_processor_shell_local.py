@@ -5,7 +5,7 @@ import packerlicious.post_processor as post_processor
 
 class TestShellLocalPostProcessor(object):
 
-    def test_no_required_fields(self):
+    def test_required_fields(self):
         b = post_processor.ShellLocal()
 
         with pytest.raises(ValueError) as excinfo:
