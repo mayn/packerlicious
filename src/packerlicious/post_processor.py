@@ -7,11 +7,44 @@ class PackerPostProcessorChain(BasePackerObject):
     for example
     """
 
-
 class PackerPostProcessor(BasePackerObject):
 
     def __init__(self, title=None, **kwargs):
         super(PackerPostProcessor, self).__init__(title, **kwargs)
+
+
+def valid_amazon_import_license(x):
+    if x not in [AmazonImport.LicenseAWS, AmazonImport.LicenseBYOL]:
+        raise ValueError(x)
+    return x
+
+
+class AmazonImport(PackerPostProcessor):
+    """
+    Amazon Import Post-Processor
+    https://www.packer.io/docs/post-processors/amazon-import.html
+    """
+    resource_type = "amazon-import"
+
+    # TODO implement enum
+    LicenseAWS = "AWS"
+    LicenseBYOL = "BYOL"
+
+    props = {
+        'access_key': (basestring, True),
+        'region': (basestring, True),
+        's3_bucket_name': (basestring, True),
+        'secret_key': (basestring, True),
+        'ami_description': (basestring, False),
+        'ami_groups': ([basestring], False),
+        'ami_name': (basestring, False),
+        'ami_users': ([basestring], False),
+        'license_type': (valid_amazon_import_license, False),
+        'mfa_code': (basestring, False),
+        'skip_clean': (validator.boolean, False),
+        'tags': (dict, False),
+        'token': (basestring, False),
+    }
 
 
 class Artifice(PackerPostProcessor):
