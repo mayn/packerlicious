@@ -13,6 +13,32 @@ class PackerPostProcessor(BasePackerObject):
         super(PackerPostProcessor, self).__init__(title, **kwargs)
 
 
+class AlicloudImport(PackerPostProcessor):
+    """
+    Alicloud Import Post-Processor
+    https://www.packer.io/docs/post-processors/alicloud-import.html
+    TODO add image_name, image_description, image_system_size format validation.
+    """
+    resource_type = "alicloud-import"
+
+    props = {
+        'access_key': (basestring, True),
+        'secret_key': (basestring, True),
+        'region': (basestring, True),
+        'image_name': (basestring, True),
+        'oss_bucket_name': (basestring, True),
+        'image_os_type': ([basestring], True),
+        'image_platform': (basestring, True),
+        'image_architecture': ([basestring], True),
+        'format': (basestring, True),
+        'oss_key_name': (basestring, False),
+        'skip_clean': (validator.boolean, False),
+        'image_description': (basestring, False),
+        'image_force_delete': (validator.boolean, False),
+        'image_system_size': (basestring, False),
+    }
+
+
 def valid_amazon_import_license(x):
     if x not in [AmazonImport.LicenseAWS, AmazonImport.LicenseBYOL]:
         raise ValueError(x)

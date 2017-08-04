@@ -4,6 +4,7 @@
 ### FEATURES:
 * builder/docker: add support for packer's docker builder
 * builder/file: add support for packer's file builder
+* post_processor/Alicloud import: add support for packer's Alicloud import post-processor
 * post_processor/AmazonImport: add support for packer's amazon import post-processor
 * post_processor/Artifice: add support for packer's artifice post-processor
 * post_processor/Atlas: add support for packer's atlas post-processor
