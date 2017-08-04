@@ -20,6 +20,9 @@
 * post_processor/Vagrant: add support for packer's vagrant post-processor
 * post_processor/VagrantCloud: add support for packer's vagrant cloud post-processor
 * post_processor/VSphere: add support for packer's vsphere post-processor
+* provisioner/Ansible: add support for packer's ansible provisioner
+* provisioner/AnsibleLocal: add support for packer's ansible local provisioner
 * provisioner/File: add support for packer's file provisioner
+* provisioner/SaltMasterless: add support for packer's salt masterless provisioner
 * provisioner/Shell: add support for packer's shell provisioner
 * provisioner/ShellLocal: add support for packer's shell local provisioner
