@@ -8,6 +8,25 @@ class PackerPostProcessor(BasePackerObject):
         super(PackerPostProcessor, self).__init__(title, **kwargs)
 
 
+class Compress(PackerPostProcessor):
+    """
+    Compress Post-Processor
+    https://www.packer.io/docs/post-processors/compress.html
+    """
+    resource_type = "compress"
+
+    # Checksum Template Variables
+    BuildName = TemplateVar("BuildName")
+    BuilderType = TemplateVar("BuilderType")
+
+    props = {
+        'output': (basestring, False),
+        'format': (basestring, False),
+        'compression_level': (validator.integer_range(-1, 9), False),
+        'keep_input_artifact': (validator.boolean, False),
+    }
+
+
 class Checksum(PackerPostProcessor):
     """
     Checksum Post-Processor
