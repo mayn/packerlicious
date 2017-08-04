@@ -1,11 +1,29 @@
 from . import BasePackerObject, EnvVar, PackerProperty, TemplateVar
 import validator
 
+class PackerPostProcessorChain(BasePackerObject):
+    """
+    TODO define what a chain is, see https://www.packer.io/docs/post-processors/artifice.html#configuration
+    for example
+    """
+
 
 class PackerPostProcessor(BasePackerObject):
 
     def __init__(self, title=None, **kwargs):
         super(PackerPostProcessor, self).__init__(title, **kwargs)
+
+
+class Artifice(PackerPostProcessor):
+    """
+    Artifice Post-Processor
+    https://www.packer.io/docs/post-processors/artifice.html
+    """
+    resource_type = "artifice"
+
+    props = {
+        'files': ([basestring], True),
+    }
 
 
 class Atlas(PackerPostProcessor):
