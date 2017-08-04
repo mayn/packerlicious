@@ -8,22 +8,23 @@ class PackerPostProcessor(BasePackerObject):
         super(PackerPostProcessor, self).__init__(title, **kwargs)
 
 
-class Compress(PackerPostProcessor):
+class Atlas(PackerPostProcessor):
     """
-    Compress Post-Processor
-    https://www.packer.io/docs/post-processors/compress.html
+    Atlas Post-Processor
+    https://www.packer.io/docs/post-processors/atlas.html
     """
-    resource_type = "compress"
+    resource_type = "atlas"
 
-    # Checksum Template Variables
-    BuildName = TemplateVar("BuildName")
-    BuilderType = TemplateVar("BuilderType")
+    # Checksum Environment Variables
+    AtlasCaFile = EnvVar("ATLAS_CAFILE")
+    AtlasCaPath = EnvVar("ATLAS_CAPATH")
 
     props = {
-        'output': (basestring, False),
-        'format': (basestring, False),
-        'compression_level': (validator.integer_range(-1, 9), False),
-        'keep_input_artifact': (validator.boolean, False),
+        'artifact': (basestring, True),
+        'artifact_type': (basestring, True),
+        'token': (basestring, False),
+        'atlas_url': (basestring, False),
+        'metadata': (dict, False),
     }
 
 
@@ -59,6 +60,25 @@ class Checksum(PackerPostProcessor):
         if len([x for x in checksum_types if x not in valid_checksum_types]) > 0:
             raise ValueError('%s: only one of the following can be specified: %s' % (
                                  self.__class__.__name__, ', '.join(valid_checksum_types)))
+
+
+class Compress(PackerPostProcessor):
+    """
+    Compress Post-Processor
+    https://www.packer.io/docs/post-processors/compress.html
+    """
+    resource_type = "compress"
+
+    # Checksum Template Variables
+    BuildName = TemplateVar("BuildName")
+    BuilderType = TemplateVar("BuilderType")
+
+    props = {
+        'output': (basestring, False),
+        'format': (basestring, False),
+        'compression_level': (validator.integer_range(-1, 9), False),
+        'keep_input_artifact': (validator.boolean, False),
+    }
 
 
 class DockerImport(PackerPostProcessor):
