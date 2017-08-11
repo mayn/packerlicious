@@ -2,6 +2,7 @@
 ## (UNRELEASED)
 
 ### FEATURES:
+* builder/AmazonEbs: add support for packer's amazon ebs builder
 * builder/docker: add support for packer's docker builder
 * builder/file: add support for packer's file builder
 * post_processor/Alicloud import: add support for packer's Alicloud import post-processor
