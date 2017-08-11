@@ -15,7 +15,7 @@ class Template(object):
     props = {
         'description': (basestring, False),
         'min_packer_version': (basestring, False),
-        'variables': (list, False),
+        'variables': (dict, False),
         'builders': (list, True),
         'provisioners': (list, False),
         'post-processors': (list, False),
@@ -24,7 +24,7 @@ class Template(object):
     def __init__(self, description=None, min_packer_version=None):
         self.description = description
         self.min_packer_version = min_packer_version
-        self.variables = list()
+        self.variables = dict()
         self.builders = list()
         self.provisioners = list()
         self.post_processors = list()
@@ -38,11 +38,22 @@ class Template(object):
     def handle_duplicate_key(self, key):
         raise ValueError('duplicate key "%s" detected' % key)
 
-    def _update(self, l, values):
-        if isinstance(values, list):
-            l.extend(values)
-        else:
-            l.append(values)
+    def _update(self, c, values):
+        if isinstance(c, list):
+            if isinstance(values, list):
+                c.extend(values)
+            else:
+                c.append(values)
+        elif isinstance(c, dict):
+            if isinstance(values, list):
+                for v in values:
+                    if v.title in c:
+                        self.handle_duplicate_key(v.title)
+                    c[v.title] = v
+            else:
+                if values.title in c:
+                    self.handle_duplicate_key(values.title)
+                c[values.title] = values
         return values
 
     def add_variable(self, variable):
@@ -63,17 +74,18 @@ class Template(object):
             t['description'] = self.description
         if self.min_packer_version:
             t['min_packer_version'] = self.min_packer_version
-        if self.variables:
-            t['variables'] = self.variables
+        if self.builders:
+            t['builders'] = self.builders
         if self.provisioners:
             t['provisioners'] = self.provisioners
         if self.post_processors:
             t['post-processors'] = self.post_processors
-        t['builders'] = self.builders
+        if self.variables:
+            t['variables'] = self.variables
 
         return encode_to_dict(t)
 
-    def to_json(self, indent=4, sort_keys=True, separators=(',', ': ')):
+    def to_json(self, indent=2, sort_keys=True, separators=(',', ': ')):
         return json.dumps(self.to_dict(), indent=indent,
                           sort_keys=sort_keys, separators=separators)
 

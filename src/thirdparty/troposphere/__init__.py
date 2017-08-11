@@ -57,7 +57,7 @@ def encode_to_dict(obj):
             new_lst.append(encode_to_dict(o))
         return new_lst
     elif isinstance(obj, dict):
-        props = {}
+        props = collections.OrderedDict()
         for name, prop in obj.items():
             props[name] = encode_to_dict(prop)
 
@@ -96,7 +96,7 @@ class BaseAWSObject(object):
             self.validate_title()
 
         # Create the list of properties set on this object by the user
-        self.properties = {}
+        self.properties = collections.OrderedDict()
         dictname = getattr(self, 'dictname', None)
         if dictname:
             self.resource = {
@@ -105,7 +105,7 @@ class BaseAWSObject(object):
         else:
             self.resource = self.properties
         if hasattr(self, 'resource_type') and self.resource_type is not None:
-            self.resource['Type'] = self.resource_type
+            self.resource['type'] = self.resource_type
         self.__initialized = True
 
         # Check for properties defined in the class
@@ -165,7 +165,7 @@ class BaseAWSObject(object):
                 try:
                     value = expected_type(value)
                 except Exception:
-                    # TODO fix this, title is none. ie. output = None.method function vaidator
+                    # TODO fix this, title is none. ie. output = None.method function validator
                     sys.stderr.write(
                         "%s: %s.%s function validator '%s' threw "
                         "exception:\n" % (self.__class__,
