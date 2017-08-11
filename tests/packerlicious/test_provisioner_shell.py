@@ -10,7 +10,7 @@ class TestShellProvisioner(object):
 
         with pytest.raises(ValueError) as excinfo:
             b.to_dict()
-        assert 'required' in str(excinfo.value)
+        assert 'must be specified' in str(excinfo.value)
 
 
 class TestShellLocalProvisioner(object):

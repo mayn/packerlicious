@@ -137,9 +137,9 @@ class Shell(PackerProvisioner):
     PackerHttpAddr = EnvVar("PACKER_HTTP_ADDR")
 
     props = {
-        'inline': ([basestring], True),
-        'script': (basestring, True),
-        'scripts': ([basestring], True),
+        'inline': ([basestring], False),
+        'script': (basestring, False),
+        'scripts': ([basestring], False),
         'binary': (validator.boolean, False),
         'environment_vars': ([basestring], False),
         'execute_command': (basestring, False),
@@ -156,7 +156,7 @@ class Shell(PackerProvisioner):
         conds = [
             'inline',
             'script',
-            'scripts',
+            'scripts'
         ]
         validator.exactly_one(self.__class__.__name__, self.properties, conds)
 
