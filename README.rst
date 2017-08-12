@@ -79,6 +79,43 @@ Below is the packerlicious equivalent of `packer's example template`_
     }
 
 
+Currently supported Packer resources
+======================================
+
+Builders:
+
+- amazon-ebs
+- docker
+- file
+
+Post Processors:
+
+- alicloud-import
+- amazon-import
+- artifice
+- atlas
+- checksum
+- compress
+- docker-import
+- docker-push
+- docker-save
+- docker-tag
+- googlecompute-export
+- manifest
+- shell-local
+- vagrant
+- vagrant-cloud
+- vsphere
+
+Provisioners:
+
+- ansible-local
+- ansible
+- file
+- salt-masterless
+- shell
+- shell-local
+
 
 Licensing
 =========

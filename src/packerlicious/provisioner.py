@@ -115,7 +115,7 @@ class SaltMasterless(PackerProvisioner):
             ]
 
         if 'minion_config' in self.properties and validator.count(self.properties, conds) > 0:
-            # TODO should this just bee an error?
+            # TODO should this just be an error?
             warnings.warn("'minion_config' is present, 'remote_pillar_roots' and 'remote_state_tree' will be ignored.")
 
 
