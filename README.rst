@@ -1,0 +1,131 @@
+==============
+packerlicious
+==============
+.. image:: https://img.shields.io/pypi/v/packerlicious.svg
+    :target: https://img.shields.io/pypi/pyversions/packerlicious.svg
+
+.. image:: https://travis-ci.org/mayn/packerlicious.svg?branch=master
+    :target: https://travis-ci.org/mayn/packerlicious
+
+.. image:: https://coveralls.io/repos/github/mayn/packerlicious/badge.svg?branch=master
+    :target: https://coveralls.io/github/mayn/packerlicious
+
+
+
+About
+=====
+
+packerlicious - python library to create `packer`_ templates
+
+Project follows `semantic versioning`_ , v0.x.x API should be considered unstable, API will change frequently, please plan accordingly.
+
+
+Installation
+============
+packerlicious can be installed via pip:
+
+.. code:: sh
+
+    $ pip install packerlicious
+
+
+Examples
+========
+
+Below is the packerlicious equivalent of `packer's example template`_
+
+.. code:: python
+
+    >>> from packerlicious import builder, provisioner, Template
+    >>> template = Template()
+    >>> template.add_builder(
+    ...     builder.AmazonEbs(
+    ...         access_key="...",
+    ...         secret_key="...",
+    ...         region = "us-east-1",
+    ...         source_ami="ami-fce3c696",
+    ...         instance_type="t2.micro",
+    ...         ssh_username="ubuntu",
+    ...         ami_name="packer {{timestamp}}"
+    ...     )
+    ... )
+    <packerlicious.builder.AmazonEbs object at 0x104e87ad0>
+    >>> template.add_provisioner(
+    ...     provisioner.Shell(
+    ...         script="setup_things.sh"
+    ...     )
+    ... )
+    <packerlicious.provisioner.Shell object at 0x1048c08d0>
+    >>> print(template.to_json())
+    {
+      "builders": [
+        {
+          "access_key": "...",
+          "ami_name": "packer {{timestamp}}",
+          "instance_type": "t2.micro",
+          "region": "us-east-1",
+          "secret_key": "...",
+          "source_ami": "ami-fce3c696",
+          "ssh_username": "ubuntu",
+          "type": "amazon-ebs"
+        }
+      ],
+      "provisioners": [
+        {
+          "script": "setup_things.sh",
+          "type": "shell"
+        }
+      ]
+    }
+
+
+Currently supported Packer resources
+======================================
+
+Builders:
+
+- amazon-ebs
+- docker
+- file
+
+Post Processors:
+
+- alicloud-import
+- amazon-import
+- artifice
+- atlas
+- checksum
+- compress
+- docker-import
+- docker-push
+- docker-save
+- docker-tag
+- googlecompute-export
+- manifest
+- shell-local
+- vagrant
+- vagrant-cloud
+- vsphere
+
+Provisioners:
+
+- ansible-local
+- ansible
+- file
+- salt-masterless
+- shell
+- shell-local
+
+
+Licensing
+=========
+
+packerlicious is licensed under the `Apache license 2.0`_.
+See `LICENSE`_ for the full license text.
+
+
+.. _`packer`: https://www.packer.io/
+.. _`LICENSE`: https://github.com/mayn/packerlicious/blob/master/LICENSE
+.. _`Apache license 2.0`: https://opensource.org/licenses/Apache-2.0
+.. _`semantic versioning`: http://semver.org/
+.. _`packer's example template`: https://www.packer.io/docs/templates/index.html#example-template

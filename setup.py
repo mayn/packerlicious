@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 setup(
     name='packerlicious',
-    version='0.1.0dev',
+    version='0.2.0',
     author='Matthew Aynalem',
     author_email='maynalem@gmail.com',
     packages=find_packages('src'),
@@ -11,7 +11,7 @@ setup(
     url='https://github.com/mayn/packerlicious',
     license='Apache License 2.0',
     description='',
-    long_description=open('README.md').read(),
     install_requires=[
+        "future",
     ],
 )
