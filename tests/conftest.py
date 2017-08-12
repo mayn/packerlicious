@@ -44,9 +44,10 @@ class LoadTestsCase(pytest.Function):
     elif result.errors:
       test_method, trace = result.errors[0]
       pytest.fail(trace, False)
-    elif result.skipped:
-      test_method, reason = result.skipped[0]
-      pytest.skip(reason)
+    # elif result.skipped:
+    #   test_method, reason = result.skipped[0]
+    #   pytest.skip(reason)
+    # TODO py26 compatibility
 
 
 def pytest_pycollect_makeitem(collector, name, obj):

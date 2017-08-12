@@ -3,8 +3,10 @@
 #
 # See LICENSE file for full license.
 
+from future import standard_library
+standard_library.install_aliases()
 
-import collections
+from collections import OrderedDict
 import json
 import re
 import sys
@@ -57,7 +59,7 @@ def encode_to_dict(obj):
             new_lst.append(encode_to_dict(o))
         return new_lst
     elif isinstance(obj, dict):
-        props = collections.OrderedDict()
+        props = OrderedDict()
         for name, prop in obj.items():
             props[name] = encode_to_dict(prop)
 
@@ -96,7 +98,7 @@ class BaseAWSObject(object):
             self.validate_title()
 
         # Create the list of properties set on this object by the user
-        self.properties = collections.OrderedDict()
+        self.properties = OrderedDict()
         dictname = getattr(self, 'dictname', None)
         if dictname:
             self.resource = {
