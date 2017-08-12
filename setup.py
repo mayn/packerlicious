@@ -3,7 +3,7 @@ from setuptools import find_packages
 
 setup(
     name='packerlicious',
-    version='0.1.0dev',
+    version='0.2.0',
     author='Matthew Aynalem',
     author_email='maynalem@gmail.com',
     packages=find_packages('src'),

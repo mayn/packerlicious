@@ -1,6 +1,8 @@
 
 ## (UNRELEASED)
 
+## 0.2.0 (August 11, 2017)
+
 ### FEATURES:
 * builder/AmazonEbs: add support for packer's amazon ebs builder
 * builder/docker: add support for packer's docker builder
