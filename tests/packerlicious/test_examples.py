@@ -31,7 +31,7 @@ class TestExamples(unittest.TestCase):
             sys.stdout = stdout
 
             with open(self.filename) as f:
-                code = compile(f.read(), self.filename, u"exec")
+                code = compile(f.read(), self.filename, "exec")
                 exec(code, {'__name__': '__main__'})
         finally:
             sys.stdout = saved
