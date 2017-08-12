@@ -1,17 +1,14 @@
 # Copyright (c) 2012-2013, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
+from __future__ import unicode_literals
 
 import os
 import re
 import sys
 import unittest
-import  pytest
-
-try:
-    import StringIO as io
-except ImportError:
-    import io
+import pytest
+from io import StringIO
 
 try:
     u = unicode
@@ -29,12 +26,12 @@ class TestExamples(unittest.TestCase):
 
     def test_example(self):
         saved = sys.stdout
-        stdout = io.StringIO()
+        stdout = StringIO()
         try:
             sys.stdout = stdout
 
             with open(self.filename) as f:
-                code = compile(f.read(), self.filename, 'exec')
+                code = compile(f.read(), self.filename, u"exec")
                 exec(code, {'__name__': '__main__'})
         finally:
             sys.stdout = saved
