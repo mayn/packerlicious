@@ -15,9 +15,12 @@ packerlicious
 About
 =====
 
-packerlicious - python library to create `packer`_ templates
+packerlicious - a python library to create `packer`_ templates.
 
 Project follows `semantic versioning`_ , v0.x.x API should be considered unstable, API will change frequently, please plan accordingly.
+
+
+This project leverages the logic engine of `troposphere`_.
 
 
 Installation
@@ -125,6 +128,7 @@ See `LICENSE`_ for the full license text.
 
 
 .. _`packer`: https://www.packer.io/
+.. _`troposphere`: https://github.com/cloudtools/troposphere
 .. _`LICENSE`: https://github.com/mayn/packerlicious/blob/master/LICENSE
 .. _`Apache license 2.0`: https://opensource.org/licenses/Apache-2.0
 .. _`semantic versioning`: http://semver.org/
