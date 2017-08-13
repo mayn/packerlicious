@@ -74,12 +74,6 @@ class Ansible(PackerProvisioner):
     }
 
 
-def valid_file_direction(x):
-    if x not in [File.Upload, File.Download]:
-        raise ValueError(x)
-    return x
-
-
 class File(PackerProvisioner):
     """
     File Provisioner
@@ -87,15 +81,16 @@ class File(PackerProvisioner):
     """
     resource_type = "file"
 
-    props = {
-        'source': (basestring, True),
-        'destination': (basestring, True),
-        'direction': (valid_file_direction, True),
-    }
-
     # File Provisioner constants
     Upload = "upload"
     Download = "download"
+
+    props = {
+        'source': (basestring, True),
+        'destination': (basestring, True),
+        'direction': (validator.string_list_item([Upload, Download]), True),
+    }
+
 
 
 class SaltMasterless(PackerProvisioner):

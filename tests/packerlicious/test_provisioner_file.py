@@ -34,5 +34,5 @@ class TestFileProvisioner(object):
                 direction="upload2",
             )
 
-        assert 'upload2' in str(excinfo.value)
+        assert 'String must be one of following: upload, download' == str(excinfo.value)
 
