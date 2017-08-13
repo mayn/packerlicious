@@ -1,12 +1,15 @@
 language: python
+cache:
+  directories:
+    - .tox
 python:
   - 2.6
   - 2.7
-  - 3.3
-  - 3.4
-  - 3.5
-  - 3.6
-  - pypy
+#  - 3.3
+#  - 3.4
+#  - 3.5
+#  - 3.6
+#  - pypy
 before_install:
   - pip install --upgrade pip setuptools wheel
 install:
@@ -14,4 +17,4 @@ install:
 script:
   - tox
 after_success:
-  - coveralls
+  - if [ "$TRAVIS_PYTHON_VERSION" == "2.7" ]; then coveralls; fi
