@@ -1,6 +1,19 @@
 
 ## (UNRELEASED)
 
+
+
+## 0.2.1 (August 12, 2017)
+
+### BUG FIXES:
+* fix failing builds. Switch travis-ci to use tox, disable python3 builds for now
+
+### OTHER:
+* update descriptions in setup.py
+* add copyright header to py files
+
+
+
 ## 0.2.0 (August 11, 2017)
 
 ### FEATURES:
