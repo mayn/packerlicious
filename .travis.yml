@@ -10,11 +10,8 @@ python:
 before_install:
   - pip install --upgrade pip setuptools wheel
 install:
-  - pip install -r requirements.txt
-  - pip install -r requirements-test.txt
-  - pip install coveralls
-  - python setup.py develop
+  - pip install -r requirements-travis.txt
 script:
-  - coverage run -m py.test
+  - tox
 after_success:
   - coveralls
