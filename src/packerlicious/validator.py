@@ -36,13 +36,6 @@ def integer(x):
         return x
 
 
-def positive_integer(x):
-    p = integer(x)
-    if int(p) < 0:
-        raise ValueError("%r is not a positive integer" % x)
-    return x
-
-
 def integer_range(minimum_val, maximum_val):
     def integer_range_checker(x):
         i = int(x)
@@ -52,36 +45,6 @@ def integer_range(minimum_val, maximum_val):
         return x
 
     return integer_range_checker
-
-
-def integer_list_item(allowed_values):
-    def integer_list_item_checker(x):
-        i = positive_integer(x)
-        if i in allowed_values:
-            return x
-        raise ValueError('Integer must be one of following: %s' %
-                         ', '.join(str(j) for j in allowed_values))
-
-    return integer_list_item_checker
-
-
-def floatingpoint(x):
-    try:
-        float(x)
-    except (ValueError, TypeError):
-        raise ValueError("%r is not a valid float" % x)
-    else:
-        return x
-
-
-def ignore(x):
-    """Method to indicate bypassing property validation"""
-    return x
-
-
-def defer(x):
-    """Method to indicate defering property validation"""
-    return x
 
 
 def network_port(x):
@@ -222,3 +185,14 @@ def exactly_one(class_name, properties, conditionals):
                           ' must be specified: %s') % (
                           class_name, ', '.join(conditionals)))
     return specified_count
+
+
+def string_list_item(allowed_values):
+    def string_list_item_checker(x):
+        s = str(x)
+        if s in allowed_values:
+            return s
+        raise ValueError('String must be one of following: %s' %
+                         ', '.join(str(j) for j in allowed_values))
+
+    return string_list_item_checker

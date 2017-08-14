@@ -15,19 +15,6 @@ import types
 
 __version__ = "1.9.4"
 
-# constants for DeletionPolicy
-Delete = 'Delete'
-Retain = 'Retain'
-Snapshot = 'Snapshot'
-
-# Pseudo Parameters
-AWS_ACCOUNT_ID = 'AWS::AccountId'
-AWS_NOTIFICATION_ARNS = 'AWS::NotificationARNs'
-AWS_NO_VALUE = 'AWS::NoValue'
-AWS_REGION = 'AWS::Region'
-AWS_STACK_ID = 'AWS::StackId'
-AWS_STACK_NAME = 'AWS::StackName'
-
 # Template Limits
 MAX_MAPPINGS = 100
 MAX_OUTPUTS = 60
@@ -68,18 +55,6 @@ def encode_to_dict(obj):
     # this format. Specifically awacs.
     elif hasattr(obj, 'JSONrepr'):
         return encode_to_dict(obj.JSONrepr())
-    return obj
-
-
-def depends_on_helper(obj):
-    """ Handles using .title if the given object is a troposphere resource.
-
-    If the given object is a troposphere resource, use the `.title` attribute
-    of that resource. If it's a string, just use the string. This should allow
-    more pythonic use of DependsOn.
-    """
-    if isinstance(obj, AWSObject):
-        return obj.title
     return obj
 
 
@@ -143,10 +118,7 @@ class BaseAWSObject(object):
                 or '_BaseAWSObject__initialized' not in self.__dict__:
             return dict.__setattr__(self, name, value)
         elif name in self.attributes:
-            if name == "DependsOn":
-                self.resource[name] = depends_on_helper(value)
-            else:
-                self.resource[name] = value
+            self.resource[name] = value
             return None
         elif name in self.propnames:
             # Check the type of the object and compare against what we were
@@ -352,12 +324,6 @@ def validate_delimiter(delimiter):
         )
 
 
-def validate_pausetime(pausetime):
-    if not pausetime.startswith('PT'):
-        raise ValueError('PauseTime should look like PT#H#M#S')
-    return pausetime
-
-
 class AWSHelperFn(object):
     def getdata(self, data):
         if isinstance(data, BaseAWSObject):
@@ -378,248 +344,9 @@ class GenericHelperFn(AWSHelperFn):
         return encode_to_dict(self.data)
 
 
-class Base64(AWSHelperFn):
-    def __init__(self, data):
-        self.data = {'Fn::Base64': data}
-
-
-class FindInMap(AWSHelperFn):
-    def __init__(self, mapname, key, value):
-        self.data = {'Fn::FindInMap': [self.getdata(mapname), key, value]}
-
-
-class GetAtt(AWSHelperFn):
-    def __init__(self, logicalName, attrName):  # noqa: N803
-        self.data = {'Fn::GetAtt': [self.getdata(logicalName), attrName]}
-
-
-class GetAZs(AWSHelperFn):
-    def __init__(self, region=""):
-        self.data = {'Fn::GetAZs': region}
-
-
-class If(AWSHelperFn):
-    def __init__(self, cond, true, false):
-        self.data = {'Fn::If': [self.getdata(cond), true, false]}
-
-
-class Equals(AWSHelperFn):
-    def __init__(self, value_one, value_two):
-        self.data = {'Fn::Equals': [value_one, value_two]}
-
-
-class And(AWSHelperFn):
-    def __init__(self, cond_one, cond_two, *conds):
-        self.data = {'Fn::And': [cond_one, cond_two] + list(conds)}
-
-
-class Or(AWSHelperFn):
-    def __init__(self, cond_one, cond_two, *conds):
-        self.data = {'Fn::Or': [cond_one, cond_two] + list(conds)}
-
-
-class Not(AWSHelperFn):
-    def __init__(self, cond):
-        self.data = {'Fn::Not': [self.getdata(cond)]}
-
-
-class Join(AWSHelperFn):
-    def __init__(self, delimiter, values):
-        validate_delimiter(delimiter)
-        self.data = {'Fn::Join': [delimiter, values]}
-
-
-class Split(AWSHelperFn):
-    def __init__(self, delimiter, values):
-        validate_delimiter(delimiter)
-        self.data = {'Fn::Split': [delimiter, values]}
-
-
-class Sub(AWSHelperFn):
-    def __init__(self, input_str, **values):
-        self.data = {'Fn::Sub': [input_str, values] if values else input_str}
-
-
-class Name(AWSHelperFn):
-    def __init__(self, data):
-        self.data = self.getdata(data)
-
-
-class Select(AWSHelperFn):
-    def __init__(self, indx, objects):
-        self.data = {'Fn::Select': [indx, objects]}
-
-
 class Ref(AWSHelperFn):
     def __init__(self, data):
         self.data = {'Ref': self.getdata(data)}
-
-
-# Pseudo Parameter Ref's
-AccountId = Ref(AWS_ACCOUNT_ID)
-NotificationARNs = Ref(AWS_NOTIFICATION_ARNS)
-NoValue = Ref(AWS_NO_VALUE)
-Region = Ref(AWS_REGION)
-StackId = Ref(AWS_STACK_ID)
-StackName = Ref(AWS_STACK_NAME)
-
-
-class Condition(AWSHelperFn):
-    def __init__(self, data):
-        self.data = {'Condition': self.getdata(data)}
-
-
-class ImportValue(AWSHelperFn):
-    def __init__(self, data):
-        self.data = {'Fn::ImportValue': data}
-
-
-class Tags(AWSHelperFn):
-    def __init__(self, *args, **kwargs):
-        if not args:
-            # Assume kwargs variant
-            tag_dict = kwargs
-        else:
-            if len(args) != 1:
-                raise(TypeError, "Multiple non-kwargs passed to Tags")
-
-            # Validate single argument passed in is a dict
-            if not isinstance(args[0], dict):
-                raise(TypeError, "Tags needs to be either kwargs or dict")
-            tag_dict = args[0]
-
-        self.tags = []
-        for k, v in sorted(tag_dict.iteritems()):
-            self.tags.append({
-                'Key': k,
-                'Value': v,
-            })
-
-    # allow concatenation of the Tags object via '+' operator
-    def __add__(self, newtags):
-        newtags.tags = self.tags + newtags.tags
-        return newtags
-
-    def to_dict(self):
-        return [encode_to_dict(tag) for tag in self.tags]
-
-
-class Template(object):
-    props = {
-        'AWSTemplateFormatVersion': (basestring, False),
-        'Transform': (basestring, False),
-        'Description': (basestring, False),
-        'Parameters': (dict, False),
-        'Mappings': (dict, False),
-        'Resources': (dict, False),
-        'Outputs': (dict, False),
-    }
-
-    def __init__(self, Description=None, Metadata=None):  # noqa: N803
-        self.description = Description
-        self.metadata = {} if Metadata is None else Metadata
-        self.conditions = {}
-        self.mappings = {}
-        self.outputs = {}
-        self.parameters = {}
-        self.resources = {}
-        self.version = None
-        self.transform = None
-
-    def add_description(self, description):
-        self.description = description
-
-    def add_metadata(self, metadata):
-        self.metadata = metadata
-
-    def add_condition(self, name, condition):
-        self.conditions[name] = condition
-
-    def handle_duplicate_key(self, key):
-        raise ValueError('duplicate key "%s" detected' % key)
-
-    def _update(self, d, values):
-        if isinstance(values, list):
-            for v in values:
-                if v.title in d:
-                    self.handle_duplicate_key(v.title)
-                d[v.title] = v
-        else:
-            if values.title in d:
-                self.handle_duplicate_key(values.title)
-            d[values.title] = values
-        return values
-
-    def add_output(self, output):
-        if len(self.outputs) >= MAX_OUTPUTS:
-            raise ValueError('Maximum outputs %d reached' % MAX_OUTPUTS)
-        return self._update(self.outputs, output)
-
-    def add_mapping(self, name, mapping):
-        if len(self.mappings) >= MAX_MAPPINGS:
-            raise ValueError('Maximum mappings %d reached' % MAX_MAPPINGS)
-        self.mappings[name] = mapping
-
-    def add_parameter(self, parameter):
-        if len(self.parameters) >= MAX_PARAMETERS:
-            raise ValueError('Maximum parameters %d reached' % MAX_PARAMETERS)
-        return self._update(self.parameters, parameter)
-
-    def add_resource(self, resource):
-        if len(self.resources) >= MAX_RESOURCES:
-            raise ValueError('Maximum number of resources %d reached'
-                             % MAX_RESOURCES)
-        return self._update(self.resources, resource)
-
-    def add_version(self, version=None):
-        if version:
-            self.version = version
-        else:
-            self.version = "2010-09-09"
-
-    def add_transform(self, transform):
-        self.transform = transform
-
-    def to_dict(self):
-        t = {}
-        if self.description:
-            t['Description'] = self.description
-        if self.metadata:
-            t['Metadata'] = self.metadata
-        if self.conditions:
-            t['Conditions'] = self.conditions
-        if self.mappings:
-            t['Mappings'] = self.mappings
-        if self.outputs:
-            t['Outputs'] = self.outputs
-        if self.parameters:
-            t['Parameters'] = self.parameters
-        if self.version:
-            t['AWSTemplateFormatVersion'] = self.version
-        if self.transform:
-            t['Transform'] = self.transform
-        t['Resources'] = self.resources
-
-        return encode_to_dict(t)
-
-    def to_json(self, indent=4, sort_keys=True, separators=(',', ': ')):
-        return json.dumps(self.to_dict(), indent=indent,
-                          sort_keys=sort_keys, separators=separators)
-
-
-class Export(AWSHelperFn):
-    def __init__(self, name):
-        self.data = {
-            'Name': name,
-        }
-
-
-class Output(AWSDeclaration):
-    props = {
-        'Description': (basestring, False),
-        'Export': (Export, False),
-        'Value': (basestring, True),
-    }
 
 
 class Parameter(AWSDeclaration):

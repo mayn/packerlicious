@@ -54,12 +54,6 @@ class AlicloudImport(PackerPostProcessor):
     }
 
 
-def valid_amazon_import_license(x):
-    if x not in [AmazonImport.LicenseAWS, AmazonImport.LicenseBYOL]:
-        raise ValueError(x)
-    return x
-
-
 class AmazonImport(PackerPostProcessor):
     """
     Amazon Import Post-Processor
@@ -80,7 +74,7 @@ class AmazonImport(PackerPostProcessor):
         'ami_groups': ([basestring], False),
         'ami_name': (basestring, False),
         'ami_users': ([basestring], False),
-        'license_type': (valid_amazon_import_license, False),
+        'license_type': (validator.string_list_item([LicenseAWS, LicenseBYOL]), False),
         'mfa_code': (basestring, False),
         'skip_clean': (validator.boolean, False),
         'tags': (dict, False),

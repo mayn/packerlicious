@@ -21,12 +21,13 @@ from template import Template
 
 __version__ = "0.2.1"
 
+
 class Ref(AWSHelperFn):
     def __init__(self, data):
         if isinstance(data, EnvVar):
-            self.data = "{{env `%s`}}" % data
+            self.data = "{{env `%s`}}" % data.data
         elif isinstance(data, TemplateVar):
-            self.data = "`{{.%s}}`" % data
+            self.data = "{{.%s}}" % data.data
         elif isinstance(data, UserVar):
             self.data = "{{user `%s`}}" % data.title
         else:
@@ -43,12 +44,12 @@ class PackerVariable(AWSHelperFn):
     Ref = ref
 
 
-# TODO finish variable implementation
 class TemplateVar(PackerVariable):
     """
     Template Variables
     https://www.packer.io/docs/templates/engine.html#template-variables
     """
+
     def __init__(self, data):
         self.data = self.getdata(data)
 
@@ -58,20 +59,17 @@ class UserVar(PackerVariable):
     User Variables
     https://www.packer.io/docs/templates/user-variables.html
     """
-    variable_type = "user"
 
     def __init__(self, name, default_value=""):
         self.title = name
         self.data = self.getdata(default_value)
 
 
-class EnvVar(UserVar):
+class EnvVar(PackerVariable):
     """
     Environment Variables
     https://www.packer.io/docs/templates/user-variables.html#environment-variables
     """
-
-    variable_type = "env"
 
     def __init__(self, data):
         self.data = self.getdata(data)

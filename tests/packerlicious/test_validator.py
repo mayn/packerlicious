@@ -6,7 +6,7 @@ import pytest
 
 from thirdparty.troposphere import Parameter, Ref
 from packerlicious.validator import boolean, integer, integer_range
-from packerlicious.validator import positive_integer, network_port
+from packerlicious.validator import network_port
 from packerlicious.validator import tg_healthcheck_port
 from packerlicious.validator import s3_bucket_name, encoding, status
 from packerlicious.validator import iam_path, iam_names, iam_role_name
@@ -39,13 +39,6 @@ class TestValidator(unittest.TestCase):
             integer(object)
         with pytest.raises(ValueError):
             integer(None)
-
-    def test_positive_integer(self):
-        for x in [0, 1, 65535]:
-            positive_integer(x)
-        for x in [-1, -10]:
-            with pytest.raises(ValueError):
-                positive_integer(x)
 
     def test_integer_range(self):
         between_ten_and_twenty = integer_range(10, 20)
