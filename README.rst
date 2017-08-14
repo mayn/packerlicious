@@ -2,7 +2,7 @@
 packerlicious
 ==============
 .. image:: https://img.shields.io/pypi/v/packerlicious.svg
-    :target: https://img.shields.io/pypi/pyversions/packerlicious.svg
+    :target: https://pypi.python.org/pypi/packerlicious
 
 .. image:: https://travis-ci.org/mayn/packerlicious.svg?branch=master
     :target: https://travis-ci.org/mayn/packerlicious
