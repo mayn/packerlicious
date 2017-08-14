@@ -1,6 +1,6 @@
 import pytest
 
-from packerlicious import Ref,EnvVar, TemplateVar, UserVar
+from packerlicious import Ref, EnvVar, TemplateVar, UserVar
 
 
 class TestPackerVariables(object):
