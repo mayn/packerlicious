@@ -36,13 +36,6 @@ def integer(x):
         return x
 
 
-def positive_integer(x):
-    p = integer(x)
-    if int(p) < 0:
-        raise ValueError("%r is not a positive integer" % x)
-    return x
-
-
 def integer_range(minimum_val, maximum_val):
     def integer_range_checker(x):
         i = int(x)
@@ -52,17 +45,6 @@ def integer_range(minimum_val, maximum_val):
         return x
 
     return integer_range_checker
-
-
-def integer_list_item(allowed_values):
-    def integer_list_item_checker(x):
-        i = positive_integer(x)
-        if i in allowed_values:
-            return x
-        raise ValueError('Integer must be one of following: %s' %
-                         ', '.join(str(j) for j in allowed_values))
-
-    return integer_list_item_checker
 
 
 def network_port(x):
