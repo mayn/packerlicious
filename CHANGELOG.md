@@ -2,6 +2,15 @@
 ## (UNRELEASED)
 
 
+## 0.2.2 (August 13, 2017)
+
+### BUG FIXES:
+* fix variable reference logic
+
+### OTHER:
+* update test coverage
+
+
 
 ## 0.2.1 (August 12, 2017)
 
