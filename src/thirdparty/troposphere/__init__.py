@@ -58,18 +58,6 @@ def encode_to_dict(obj):
     return obj
 
 
-def depends_on_helper(obj):
-    """ Handles using .title if the given object is a troposphere resource.
-
-    If the given object is a troposphere resource, use the `.title` attribute
-    of that resource. If it's a string, just use the string. This should allow
-    more pythonic use of DependsOn.
-    """
-    if isinstance(obj, AWSObject):
-        return obj.title
-    return obj
-
-
 class BaseAWSObject(object):
     def __init__(self, title, template=None, **kwargs):
         self.title = title
@@ -130,10 +118,7 @@ class BaseAWSObject(object):
                 or '_BaseAWSObject__initialized' not in self.__dict__:
             return dict.__setattr__(self, name, value)
         elif name in self.attributes:
-            if name == "DependsOn":
-                self.resource[name] = depends_on_helper(value)
-            else:
-                self.resource[name] = value
+            self.resource[name] = value
             return None
         elif name in self.propnames:
             # Check the type of the object and compare against what we were
