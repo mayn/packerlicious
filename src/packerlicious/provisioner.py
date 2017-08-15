@@ -92,7 +92,6 @@ class File(PackerProvisioner):
     }
 
 
-
 class SaltMasterless(PackerProvisioner):
     """
     Salt Masterless Provisioner
@@ -127,7 +126,6 @@ class SaltMasterless(PackerProvisioner):
         if 'minion_config' in self.properties and validator.count(self.properties, conds) > 0:
             # TODO should this just be an error?
             warnings.warn("'minion_config' is present, 'remote_pillar_roots' and 'remote_state_tree' will be ignored.")
-
 
 
 class Shell(PackerProvisioner):
@@ -184,4 +182,49 @@ class ShellLocal(PackerProvisioner):
     props = {
         'command': (basestring, True),
         'execute_command': ([basestring], False),
+    }
+
+
+class WindowsShell(PackerProvisioner):
+    """
+    Windows Shell Provisioner
+    https://www.packer.io/docs/provisioners/windows-shell.html
+    """
+    resource_type = "windows-local"
+
+    # Windows Shell Template Variables
+    Vars = TemplateVar("Vars")
+    Path = TemplateVar("Path")
+
+    props = {
+        'inline': ([basestring], False),
+        'script': (basestring, False),
+        'scripts': ([basestring], False),
+        'binary': (validator.boolean, False),
+        'environment_vars': ([basestring], False),
+        'execute_command': (basestring, False),
+        'remote_path': (basestring, False),
+        'start_retry_timeout': (basestring, False),
+    }
+
+    def validate(self):
+        conds = [
+            'inline',
+            'script',
+            'scripts'
+        ]
+        validator.exactly_one(self.__class__.__name__, self.properties, conds)
+
+
+class WindowsRestart(PackerProvisioner):
+    """
+    Windows Restart Provisioner
+    https://www.packer.io/docs/provisioners/windows-restart.html
+    """
+    resource_type = "windows-restart"
+
+    props = {
+        'restart_command': (basestring, False),
+        'restart_check_command': (basestring, False),
+        'restart_timeout': (basestring, False),
     }

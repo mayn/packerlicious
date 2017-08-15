@@ -118,6 +118,8 @@ Provisioners:
 - salt-masterless
 - shell
 - shell-local
+- windows-shell
+- windows-restart
 
 
 Licensing
