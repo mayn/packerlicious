@@ -16,11 +16,13 @@ limitations under the License.
 from . import BasePackerObject, EnvVar, PackerProperty, TemplateVar
 import validator
 
+
 class PackerPostProcessorChain(BasePackerObject):
     """
     TODO define what a chain is, see https://www.packer.io/docs/post-processors/artifice.html#configuration
     for example
     """
+
 
 class PackerPostProcessor(BasePackerObject):
 

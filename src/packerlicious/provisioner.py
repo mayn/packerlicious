@@ -16,9 +16,7 @@ limitations under the License.
 import validator
 import warnings
 
-from thirdparty.troposphere import AWSProperty as PackerProperty
-
-from . import BasePackerObject, EnvVar, TemplateVar
+from . import BasePackerObject, PackerProperty, EnvVar, TemplateVar
 
 
 class PackerProvisioner(BasePackerObject):
