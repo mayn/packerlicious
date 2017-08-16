@@ -2,6 +2,8 @@
 ## (UNRELEASED)
 
 ### FEATURES:
+* provisioner/PuppetMasterless: add support for packer's puppet masterless provisioner
+* provisioner/PuppetServer: add support for packer's puppet server provisioner
 * provisioner/WindowsShell: add support for packer's windows shell provisioner
 * provisioner/WindowsRestart: add support for packer's windows restart provisioner
 

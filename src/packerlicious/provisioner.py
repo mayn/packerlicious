@@ -92,6 +92,51 @@ class File(PackerProvisioner):
     }
 
 
+class PuppetMasterless(PackerProvisioner):
+    """
+    Puppet Masterless
+    https://www.packer.io/docs/provisioners/puppet-server.html
+    """
+    resource_type = "puppet-masterless"
+
+    props = {
+        'manifest_file': (basestring, True),
+        'extra_arguments': ([basestring], False),
+        'execute_command': (basestring, False),
+        'facter': (dict(), False),
+        'hiera_config_path': (basestring, False),
+        'ignore_exit_codes': (validator.boolean, False),
+        'manifest_dir': (basestring, False),
+        'module_paths': ([basestring], False),
+        'prevent_sudo': (validator.boolean, False),
+        'puppet_bin_dir': (basestring, False),
+        'staging_directory': (basestring, False),
+        'working_directory': (basestring, False),
+    }
+
+
+class PuppetServer(PackerProvisioner):
+    """
+    Puppet Server
+    https://www.packer.io/docs/provisioners/puppet-server.html
+    """
+    resource_type = "puppet-server"
+
+    props = {
+        'client_cert_path': (basestring, False),
+        'client_private_key_path': (basestring, False),
+        'execute_command': (basestring, False),
+        'facter': (dict(), False),
+        'ignore_exit_codes': (validator.boolean, False),
+        'options': (basestring, False),
+        'prevent_sudo': (validator.boolean, False),
+        'puppet_node': (basestring, False),
+        'puppet_server': (basestring, False),
+        'staging_dir': (basestring, False),
+    }
+
+
+
 class SaltMasterless(PackerProvisioner):
     """
     Salt Masterless Provisioner
