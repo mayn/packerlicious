@@ -96,7 +96,7 @@ class TestPackerTemplate(object):
         assert to_json == json.dumps(json.loads(expected_json), sort_keys=True, indent=2,
                                      separators=(',', ': '))
 
-    def test_duplicate_entries(self):
+    def test_variable_duplicate_entries(self):
         t = Template()
         vars = [
             UserVar("my_var"),
@@ -110,4 +110,24 @@ class TestPackerTemplate(object):
             t.add_variable(UserVar("my_var"))
         assert 'duplicate key "my_var" detected' == str(excinfo.value)
 
+    def test_variable_no_duplicate_entries(self):
+        expected_json = """
+                {
+                  "variables": {
+                     "my_var1": "a value",
+                     "my_var2": ""
+                  }
+                }
+                """
+
+        t = Template()
+        vars = [
+            UserVar("my_var1", "a value"),
+            UserVar("my_var2"),
+        ]
+        t.add_variable(vars)
+
+        to_json = t.to_json()
+        assert to_json == json.dumps(json.loads(expected_json), sort_keys=True, indent=2,
+                                     separators=(',', ': '))
 
