@@ -74,6 +74,40 @@ class Ansible(PackerProvisioner):
     }
 
 
+class ChefClient(PackerProvisioner):
+    """
+    Chef Client Provisioner
+    https://www.packer.io/docs/provisioners/chef-client.html
+    """
+    resource_type = "chef-client"
+
+    # guest_os_type options
+    UNIX = "unix"
+    WINDOWS = "windows"
+
+    props = {
+        'chef_environment': (basestring, False),
+        'config_template': (basestring, False),
+        'encrypted_data_bag_secret_path': (basestring, False),
+        'execute_command': (basestring, False),
+        'guest_os_type': (validator.string_list_item([UNIX, WINDOWS]), False),
+        'install_command': (basestring, False),
+        'json': (basestring, False),
+        'knife_command': (basestring, False),
+        'node_name': (basestring, False),
+        'prevent_sudo': (validator.boolean, False),
+        'run_list': ([basestring], False),
+        'server_url': (basestring, False),
+        'skip_clean_client': (validator.boolean, False),
+        'skip_clean_node': (validator.boolean, False),
+        'skip_install': (validator.boolean, False),
+        'staging_directory': (basestring, False),
+        'client_key': (basestring, False),
+        'validation_client_name': (basestring, False),
+        'validation_key_path': (basestring, False),
+    }
+
+
 class ChefSolo(PackerProvisioner):
     """
     Chef Solo Provisioner
