@@ -1,6 +1,10 @@
 
 ## (UNRELEASED)
 
+
+
+## 0.3.0 (August 16, 2017)
+
 ### FEATURES:
 * provisioner/ChefClient: add support for packer's chef client provisioner
 * provisioner/ChefSolo: add support for packer's chef solo provisioner
@@ -10,6 +14,8 @@
 * provisioner/PuppetServer: add support for packer's puppet server provisioner
 * provisioner/WindowsShell: add support for packer's windows shell provisioner
 * provisioner/WindowsRestart: add support for packer's windows restart provisioner
+
+
 
 ## 0.2.2 (August 13, 2017)
 

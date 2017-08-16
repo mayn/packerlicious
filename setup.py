@@ -18,7 +18,7 @@ from setuptools import find_packages
 
 setup(
     name='packerlicious',
-    version='0.2.2',
+    version='0.3.0',
     author='Matthew Aynalem',
     author_email='maynalem@gmail.com',
     packages=find_packages('src'),
