@@ -114,6 +114,7 @@ Provisioners:
 
 - ansible-local
 - ansible
+- chef-solo
 - converge
 - file
 - powershell

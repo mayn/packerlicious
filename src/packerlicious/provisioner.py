@@ -74,6 +74,38 @@ class Ansible(PackerProvisioner):
     }
 
 
+class ChefSolo(PackerProvisioner):
+    """
+    Chef Solo Provisioner
+    https://www.packer.io/docs/provisioners/chef-solo.html
+    """
+    resource_type = "chef-solo"
+
+    # guest_os_type options
+    UNIX = "unix"
+    WINDOWS = "windows"
+
+    props = {
+        'chef_environment': (basestring, False),
+        'config_template': (basestring, False),
+        'cookbook_paths': (basestring, False),
+        'data_bags_path': (basestring, False),
+        'encrypted_data_bag_secret_path': (basestring, False),
+        'environments_path': (basestring, False),
+        'execute_command': (basestring, False),
+        'guest_os_type': (validator.string_list_item([UNIX, WINDOWS]), False),
+        'install_command': (basestring, False),
+        'json': (basestring, False),
+        'prevent_sudo': (validator.boolean, False),
+        'remote_cookbook_paths': ([basestring], False),
+        'roles_path': (basestring, False),
+        'run_list': ([basestring], False),
+        'skip_install': (validator.boolean, False),
+        'staging_directory': (basestring, False),
+        'version': (basestring, False),
+    }
+
+
 class ModuleDirectory(PackerProperty):
     """
     https://www.packer.io/docs/provisioners/converge.html#module-directories

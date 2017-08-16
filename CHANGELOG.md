@@ -2,6 +2,7 @@
 ## (UNRELEASED)
 
 ### FEATURES:
+* provisioner/ChefSolo: add support for packer's chef solo provisioner
 * provisioner/Converge: add support for packer's converge provisioner
 * provisioner/PowerShell: add support for packer's powershell provisioner
 * provisioner/PuppetMasterless: add support for packer's puppet masterless provisioner
