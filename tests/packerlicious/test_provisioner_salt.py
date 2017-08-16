@@ -23,3 +23,11 @@ class TestSaltMasterlessProvisioner(object):
             b.to_dict()
         assert len(record) == 1
         assert "'minion_config' is present, 'remote_pillar_roots' and 'remote_state_tree' will be ignored." == str(record[0].message)
+
+    def test_no_warning_minion_config(self):
+        b = provisioner.SaltMasterless(
+            local_state_tree="/dummy/path",
+            minion_config="/minion/config/path"
+        )
+
+        b.to_dict()
