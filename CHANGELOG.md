@@ -2,6 +2,7 @@
 ## (UNRELEASED)
 
 ### FEATURES:
+* provisioner/PowerShell: add support for packer's powershell provisioner
 * provisioner/PuppetMasterless: add support for packer's puppet masterless provisioner
 * provisioner/PuppetServer: add support for packer's puppet server provisioner
 * provisioner/WindowsShell: add support for packer's windows shell provisioner

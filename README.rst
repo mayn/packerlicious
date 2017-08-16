@@ -115,6 +115,7 @@ Provisioners:
 - ansible-local
 - ansible
 - file
+- powershell
 - puppet-masterless
 - puppet-server
 - salt-masterless
