@@ -16,6 +16,8 @@ limitations under the License.
 import validator
 import warnings
 
+from thirdparty.troposphere import AWSProperty as PackerProperty
+
 from . import BasePackerObject, EnvVar, TemplateVar
 
 
@@ -71,6 +73,45 @@ class Ansible(PackerProvisioner):
         'ssh_host_key_file': (basestring, False),
         'ssh_authorized_key_file': (basestring, False),
         'user': (basestring, False),
+    }
+
+
+class ModuleDirectory(PackerProperty):
+    """
+    https://www.packer.io/docs/provisioners/converge.html#module-directories
+    """
+    props = {
+        'source': (basestring, True),
+        'destination': (basestring, True),
+        'exclude': ([basestring], False),
+    }
+
+
+class Converge(PackerProvisioner):
+    """
+    Converge Provisioner
+    https://www.packer.io/docs/provisioners/converge.html
+    """
+    resource_type = "converge"
+
+    # Converge Template Variables
+    WorkingDirectory = TemplateVar("WorkingDirectory")
+    Sudo = TemplateVar("Sudo")
+    ParamsJSON = TemplateVar("ParamsJSON")
+    Module = TemplateVar("Module")
+    Version = TemplateVar("Version")
+
+    props = {
+        'module': (basestring, True),
+        'bootstrap': (validator.boolean, False),
+        'bootstrap_command': (basestring, False),
+        'execute_command': (basestring, False),
+        'module_dirs': ([ModuleDirectory], False),
+        'params': (dict, False),
+        'prevent_bootstrap_sudo': (validator.boolean, False),
+        'prevent_sudo': (validator.boolean, False),
+        'version': (basestring, False),
+        'working_directory': (basestring, False),
     }
 
 
@@ -143,7 +184,7 @@ class PuppetMasterless(PackerProvisioner):
         'manifest_file': (basestring, True),
         'extra_arguments': ([basestring], False),
         'execute_command': (basestring, False),
-        'facter': (dict(), False),
+        'facter': (dict, False),
         'hiera_config_path': (basestring, False),
         'ignore_exit_codes': (validator.boolean, False),
         'manifest_dir': (basestring, False),
@@ -166,7 +207,7 @@ class PuppetServer(PackerProvisioner):
         'client_cert_path': (basestring, False),
         'client_private_key_path': (basestring, False),
         'execute_command': (basestring, False),
-        'facter': (dict(), False),
+        'facter': (dict, False),
         'ignore_exit_codes': (validator.boolean, False),
         'options': (basestring, False),
         'prevent_sudo': (validator.boolean, False),

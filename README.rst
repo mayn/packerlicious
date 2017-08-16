@@ -114,6 +114,7 @@ Provisioners:
 
 - ansible-local
 - ansible
+- converge
 - file
 - powershell
 - puppet-masterless
