@@ -18,7 +18,7 @@ limitations under the License.
 """
 import json
 
-from thirdparty.troposphere import AWSObject as PackerObject, encode_to_dict
+from thirdparty.troposphere import encode_to_dict
 
 
 class Template(object):

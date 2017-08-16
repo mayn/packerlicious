@@ -114,10 +114,18 @@ Provisioners:
 
 - ansible-local
 - ansible
+- chef-client
+- chef-solo
+- converge
 - file
+- powershell
+- puppet-masterless
+- puppet-server
 - salt-masterless
 - shell
 - shell-local
+- windows-shell
+- windows-restart
 
 
 Licensing
