@@ -90,6 +90,7 @@ Builders:
 - amazon-ebs
 - docker
 - file
+- triton
 - virtualbox-iso
 - virtualbox-ovf
 - vmware-iso

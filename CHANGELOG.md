@@ -3,6 +3,7 @@
 
 
 ### FEATURES:
+* builder/Triton: add support for packer's triton builder
 * builder/VirtualboxIso: add support for packer's virtualbox iso builder
 * builder/VirtualboxOvf: add support for packer's virtualbox ovf builder
 * builder/VMwareIso: add support for packer's vmware iso builder

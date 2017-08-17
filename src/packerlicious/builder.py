@@ -237,6 +237,35 @@ class File(PackerBuilder):
             warnings.warn("Both source and content not specified, artifact will be empty.")
 
 
+class Triton(PackerBuilder):
+    """
+    Triton Builder
+    https://www.packer.io/docs/builders/triton.html
+    """
+    resource_type = "triton"
+
+    props = {
+        'triton_account': (basestring, True),
+        'triton_key_id': (basestring, True),
+        'source_machine_image': (basestring, True),
+        'source_machine_package': (basestring, True),
+        'image_name': (basestring, True),
+        'image_version': (basestring, True),
+        'triton_url': (basestring, False),
+        'triton_key_material': (basestring, False),
+        'source_machine_firewall_enabled': (validator.boolean, False),
+        'source_machine_metadata': (dict, False),
+        'source_machine_name': (basestring, False),
+        'source_machine_networks': ([basestring], False),
+        'source_machine_tags': (dict, False),
+        'image_acls': ([basestring], False),
+        'image_description': (basestring, False),
+        'image_eula_url': (basestring, False),
+        'image_homepage': (basestring, False),
+        'image_tags': (dict, False),
+    }
+
+
 class VirtualboxIso(PackerBuilder):
     """
     VirtualBox ISO Builder
