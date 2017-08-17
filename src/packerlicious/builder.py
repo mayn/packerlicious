@@ -237,6 +237,29 @@ class File(PackerBuilder):
             warnings.warn("Both source and content not specified, artifact will be empty.")
 
 
+class ProfitBricks(PackerBuilder):
+    """
+    ProfitBricks Builder
+    https://www.packer.io/docs/builders/profitbricks.html
+    """
+    resource_type = "profitbricks"
+
+    props = {
+        'image': (basestring, True),
+        'password': (basestring, True),
+        'username': (basestring, True),
+        'cores': (int, False),
+        'disk_size': (basestring, False),
+        'disk_type': (basestring, False),
+        'location': (basestring, False),
+        'ram': (int, False),
+        'retries': (basestring, False),
+        'snapshot_name': (basestring, False),
+        'snapshot_password': (basestring, False),
+        'url': (basestring, False),
+    }
+
+
 class Qemu(PackerBuilder):
     """
     QEMU Builder
