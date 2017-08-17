@@ -237,6 +237,60 @@ class File(PackerBuilder):
             warnings.warn("Both source and content not specified, artifact will be empty.")
 
 
+class Qemu(PackerBuilder):
+    """
+    QEMU Builder
+    https://www.packer.io/docs/builders/qemu.html
+    TODO net_device
+    """
+    resource_type = "qemu"
+
+    # QEMU Checksum TYPES
+    NONE = "none"
+    MD5 = "md5"
+    SHA1 = "sha1"
+    SHA256 = "sha256"
+    SHA512 = "sha512"
+
+    props = {
+        'iso_checksum': (basestring, False),
+        'iso_checksum_type': (validator.string_list_item([NONE, MD5, SHA1, SHA256, SHA512]), True),
+        'iso_checksum_url': (basestring, False),
+        'iso_url': (basestring, True),
+        'accelerator': (basestring, False),
+        'boot_command': ([basestring], False),
+        'boot_wait': (basestring, False),
+        'disk_cache': (basestring, False),
+        'disk_compression': (validator.boolean, False),
+        'disk_discard': (basestring, False),
+        'disk_image': (validator.boolean, False),
+        'disk_interface': (basestring, False),
+        'disk_size': (int, False),
+        'floppy_files': ([basestring], False),
+        'floppy_dirs': ([basestring], False),
+        'format': (validator.string_list_item(["qcow2", "raw"]), False),
+        'headless': (validator.boolean, False),
+        'http_directory': (basestring, False),
+        'http_port_min': (int, False),
+        'http_port_max': (int, False),
+        'iso_skip_cache': (validator.boolean, False),
+        'iso_target_extension': (basestring, False),
+        'iso_urls': ([basestring], False),
+        'machine_type': (basestring, False),
+        'net_device': (basestring, False),
+        'output_directory': (basestring, False),
+        'qemu_binary': (basestring, False),
+        'qemuargs': ([[basestring]], False),
+    }
+
+    def validate(self):
+        conds = [
+            'iso_checksum',
+            'iso_checksum_url',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+
 class Triton(PackerBuilder):
     """
     Triton Builder
@@ -273,7 +327,7 @@ class VirtualboxIso(PackerBuilder):
     """
     resource_type = "virtualbox-iso"
 
-    # VirtualBox OVF checksum types
+    # VirtualBox ISO checksum types
     NONE = "none"
     MD5 = "md5"
     SHA1 = "sha1"

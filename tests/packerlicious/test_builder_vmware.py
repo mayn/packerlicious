@@ -12,7 +12,7 @@ class TestVMwareIsoBuilder(object):
             b.to_dict()
         assert 'required' in str(excinfo.value)
 
-    def test_is_checksum_mutually_exclusive(self):
+    def test_iso_checksum_mutually_exclusive(self):
         b = builder.VMwareIso(
             iso_url="/url/to/iso",
             iso_checksum_type=builder.VirtualboxIso.MD5,

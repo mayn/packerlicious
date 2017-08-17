@@ -3,6 +3,7 @@
 
 
 ### FEATURES:
+* builder/Qemu: add support for packer's qemu builder
 * builder/Triton: add support for packer's triton builder
 * builder/VirtualboxIso: add support for packer's virtualbox iso builder
 * builder/VirtualboxOvf: add support for packer's virtualbox ovf builder
