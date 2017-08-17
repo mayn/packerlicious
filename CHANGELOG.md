@@ -2,6 +2,12 @@
 ## (UNRELEASED)
 
 
+### FEATURES:
+* builder/VMwareIso: add support for packer's vmware iso builder
+* builder/VMwareVmx: add support for packer's vmware vmx builder
+
+
+
 
 ## 0.3.0 (August 16, 2017)
 

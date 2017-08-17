@@ -235,3 +235,104 @@ class File(PackerBuilder):
         specified_count = validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
         if specified_count == 0:
             warnings.warn("Both source and content not specified, artifact will be empty.")
+
+
+class VMwareIso(PackerBuilder):
+    """
+    VMware ISO Builder
+    https://www.packer.io/docs/builders/vmware-iso.html
+    """
+    resource_type = "vmware-iso"
+
+    # VMWARE ISO checksum types
+    NONE = "none"
+    MD5 = "md5"
+    SHA1 = "sha1"
+    SHA256 = "sha256"
+    SHA512 = "sha512"
+
+    props = {
+        'iso_checksum': (basestring, True),
+        'iso_checksum_type': (validator.string_list_item([NONE, MD5, SHA1, SHA256, SHA512]), True),
+        'iso_checksum_url': (basestring, True),
+        'iso_url': (basestring, True),
+        'boot_command': ([basestring], False),
+        'boot_wait': (basestring, False),
+        'disk_additional_size': ([int], False),
+        'disk_size': (int, False),
+        'disk_type_id': (basestring, False),
+        'floppy_files': ([basestring], False),
+        'floppy_dirs': ([basestring], False),
+        'fusion_app_path': (basestring, False),
+        'guest_os_type': (basestring, False),
+        'headless': (validator.boolean, False),
+        'http_directory': (basestring, False),
+        'http_port_min': (int, False),
+        'http_port_max': (int, False),
+        'iso_target_extension': (basestring, False),
+        'iso_target_path': (basestring, False),
+        'iso_urls': ([basestring], False),
+        'output_directory': (basestring, False),
+        'remote_cache_datastore': (basestring, False),
+        'remote_cache_directory': (basestring, False),
+        'remote_datastore': (basestring, False),
+        'remote_host': (basestring, False),
+        'remote_password': (basestring, False),
+        'remote_private_key_file': (basestring, False),
+        'remote_type': (basestring, False),
+        'remote_username': (basestring, False),
+        'shutdown_command': (basestring, False),
+        'shutdown_timeout': (basestring, False),
+        'skip_compaction': (validator.boolean, False),
+        'skip_export': (validator.boolean, False),
+        'keep_registered': (validator.boolean, False),
+        'ovftool_options': ([basestring], False),
+        'tools_upload_flavor': (basestring, False),
+        'tools_upload_path': (basestring, False),
+        'version': (basestring, False),
+        'vm_name': (basestring, False),
+        'vmdk_name': (basestring, False),
+        'vmx_data': (dict, False),
+        'vmx_data_post': (dict, False),
+        'vmx_remove_ethernet_interfaces': (validator.boolean, False),
+        'vmx_template_path': (basestring, False),
+        'vnc_bind_address': (basestring, False),
+        'vnc_disable_password': (validator.boolean, False),
+        'vnc_port_min': (int, False),
+        'vnc_port_max': (int, False),
+    }
+
+
+class VMwareVmx(PackerBuilder):
+    """
+    VMware VMX Builder
+    https://www.packer.io/docs/builders/vmware-vmx.html
+    """
+    resource_type = "vmware-vmx"
+
+    props = {
+        'source_path': (basestring, True),
+        'boot_command': ([basestring], False),
+        'boot_wait': (basestring, False),
+        'floppy_files': ([basestring], False),
+        'floppy_dirs': ([basestring], False),
+        'fusion_app_path': (basestring, False),
+        'headless': (validator.boolean, False),
+        'http_directory': (basestring, False),
+        'http_port_min': (int, False),
+        'http_port_max': (int, False),
+        'output_directory': (basestring, False),
+        'shutdown_command': (basestring, False),
+        'shutdown_timeout': (basestring, False),
+        'skip_compaction': (validator.boolean, False),
+        'tools_upload_flavor': (basestring, False),
+        'tools_upload_path': (basestring, False),
+        'vm_name': (basestring, False),
+        'vmx_data': (dict, False),
+        'vmx_data_post': (dict, False),
+        'vmx_remove_ethernet_interfaces': (validator.boolean, False),
+        'vnc_bind_address': (basestring, False),
+        'vnc_disable_password': (validator.boolean, False),
+        'vnc_port_min': (int, False),
+        'vnc_port_max': (int, False),
+    }

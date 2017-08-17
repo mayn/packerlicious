@@ -90,6 +90,8 @@ Builders:
 - amazon-ebs
 - docker
 - file
+- vmware-iso
+- vmware-vmx
 
 Post Processors:
 
