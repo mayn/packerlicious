@@ -90,6 +90,8 @@ Builders:
 - amazon-ebs
 - docker
 - file
+- virtualbox-iso
+- virtualbox-ovf
 - vmware-iso
 - vmware-vmx
 

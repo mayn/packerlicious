@@ -237,6 +237,133 @@ class File(PackerBuilder):
             warnings.warn("Both source and content not specified, artifact will be empty.")
 
 
+class VirtualboxIso(PackerBuilder):
+    """
+    VirtualBox ISO Builder
+    https://www.packer.io/docs/builders/virtualbox-iso.html
+    """
+    resource_type = "virtualbox-iso"
+
+    # VirtualBox OVF checksum types
+    NONE = "none"
+    MD5 = "md5"
+    SHA1 = "sha1"
+    SHA256 = "sha256"
+    SHA512 = "sha512"
+    OVF = "ovf"
+    OVA = "ova"
+
+    props = {
+        'iso_checksum': (basestring, False),
+        'iso_checksum_type': (validator.string_list_item([NONE, MD5, SHA1, SHA256, SHA512]), True),
+        'iso_checksum_url': (basestring, False),
+        'iso_url': (basestring, True),
+        'boot_command': ([basestring], False),
+        'boot_wait': (basestring, False),
+        'disk_size': (int, False),
+        'export_opts': ([basestring], False),
+        'floppy_files': ([basestring], False),
+        'floppy_dirs': ([basestring], False),
+        'format': (validator.string_list_item([OVF, OVA]), False),
+        'guest_additions_mode': (validator.string_list_item(["upload", "attach", "disable"]), False),
+        'guest_additions_path': (basestring, False),
+        'guest_additions_sha256': (basestring, False),
+        'guest_additions_url': (basestring, False),
+        'guest_additions_url': (basestring, False),
+        'guest_os_type': (basestring, False),
+        'hard_drive_interface': (basestring, False),
+        'sata_port_count': (int, False),
+        'hard_drive_nonrotational': (validator.boolean, False),
+        'hard_drive_discard': (validator.boolean, False),
+        'headless': (validator.boolean, False),
+        'http_directory': (basestring, False),
+        'http_port_min': (int, False),
+        'http_port_max': (int, False),
+        'iso_interface': (basestring, False),
+        'iso_target_extension': (basestring, False),
+        'iso_target_path': (basestring, False),
+        'iso_urls': ([basestring], False),
+        'keep_registered': (validator.boolean, False),
+        'output_directory': (basestring, False),
+        'post_shutdown_delay': (basestring, False),
+        'shutdown_command': (basestring, False),
+        'shutdown_timeout': (basestring, False),
+        'skip_export': (validator.boolean, False),
+        'ssh_host_port_min': (int, False),
+        'ssh_host_port_max': (int, False),
+        'ssh_skip_nat_mapping': (validator.boolean, False),
+        'vboxmanage': ([[basestring]], False),
+        'vboxmanage_post': ([[basestring]], False),
+        'virtualbox_version_file': (basestring, False),
+        'vm_name': (basestring, False),
+        'vrdp_bind_address': (basestring, False),
+        'vrdp_port_min': (int, False),
+        'vrdp_port_max': (int, False),
+    }
+
+    def validate(self):
+        conds = [
+            'iso_checksum',
+            'iso_checksum_url',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+
+class VirtualboxOvf(PackerBuilder):
+    """
+    VirtualBox OVF Builder
+    https://www.packer.io/docs/builders/virtualbox-ovf.html
+    """
+    resource_type = "virtualbox-ovf"
+
+    # VirtualBox OVF checksum types
+    NONE = "none"
+    MD5 = "md5"
+    SHA1 = "sha1"
+    SHA256 = "sha256"
+    SHA512 = "sha512"
+    OVF = "ovf"
+    OVA = "ova"
+
+    props = {
+        'source_path': (basestring, True),
+        'boot_command': ([basestring], False),
+        'boot_wait': (basestring, False),
+        'checksum': (basestring, False),
+        'checksum_type': (validator.string_list_item([NONE, MD5, SHA1, SHA256, SHA512]), False),
+        'export_opts': ([basestring], False),
+        'floppy_files': ([basestring], False),
+        'floppy_dirs': ([basestring], False),
+        'format': (validator.string_list_item([OVF, OVA]), False),
+        'guest_additions_mode': (validator.string_list_item(["upload", "attach", "disable"]), False),
+        'guest_additions_path': (basestring, False),
+        'guest_additions_sha256': (basestring, False),
+        'guest_additions_url': (basestring, False),
+        'headless': (validator.boolean, False),
+        'http_directory': (basestring, False),
+        'http_port_min': (int, False),
+        'http_port_max': (int, False),
+        'import_flags': ([basestring], False),
+        'import_opts': (basestring, False),
+        'output_directory': (basestring, False),
+        'post_shutdown_delay': (basestring, False),
+        'shutdown_command': (basestring, False),
+        'shutdown_timeout': (basestring, False),
+        'skip_export': (validator.boolean, False),
+        'ssh_host_port_min': (int, False),
+        'ssh_host_port_max': (int, False),
+        'ssh_skip_nat_mapping': (validator.boolean, False),
+        'target_path': (basestring, False),
+        'vboxmanage': ([[basestring]], False),
+        'vboxmanage_post': ([[basestring]], False),
+        'virtualbox_version_file': (basestring, False),
+        'vm_name': (basestring, False),
+        'vrdp_bind_address': (basestring, False),
+        'vrdp_port_min': (int, False),
+        'vrdp_port_max': (int, False),
+    }
+
+
 class VMwareIso(PackerBuilder):
     """
     VMware ISO Builder
@@ -252,9 +379,9 @@ class VMwareIso(PackerBuilder):
     SHA512 = "sha512"
 
     props = {
-        'iso_checksum': (basestring, True),
+        'iso_checksum': (basestring, False),
         'iso_checksum_type': (validator.string_list_item([NONE, MD5, SHA1, SHA256, SHA512]), True),
-        'iso_checksum_url': (basestring, True),
+        'iso_checksum_url': (basestring, False),
         'iso_url': (basestring, True),
         'boot_command': ([basestring], False),
         'boot_wait': (basestring, False),
@@ -301,6 +428,13 @@ class VMwareIso(PackerBuilder):
         'vnc_port_min': (int, False),
         'vnc_port_max': (int, False),
     }
+
+    def validate(self):
+        conds = [
+            'iso_checksum',
+            'iso_checksum_url',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
 
 
 class VMwareVmx(PackerBuilder):
