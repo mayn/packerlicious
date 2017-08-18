@@ -2,6 +2,17 @@
 ## (UNRELEASED)
 
 
+### FEATURES:
+* builder/ProfitBricks: add support for packer's ProfitBricks builder
+* builder/Qemu: add support for packer's qemu builder
+* builder/Triton: add support for packer's triton builder
+* builder/VirtualboxIso: add support for packer's virtualbox iso builder
+* builder/VirtualboxOvf: add support for packer's virtualbox ovf builder
+* builder/VMwareIso: add support for packer's vmware iso builder
+* builder/VMwareVmx: add support for packer's vmware vmx builder
+
+
+
 
 ## 0.3.0 (August 16, 2017)
 

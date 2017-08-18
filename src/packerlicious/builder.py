@@ -235,3 +235,344 @@ class File(PackerBuilder):
         specified_count = validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
         if specified_count == 0:
             warnings.warn("Both source and content not specified, artifact will be empty.")
+
+
+class ProfitBricks(PackerBuilder):
+    """
+    ProfitBricks Builder
+    https://www.packer.io/docs/builders/profitbricks.html
+    """
+    resource_type = "profitbricks"
+
+    props = {
+        'image': (basestring, True),
+        'password': (basestring, True),
+        'username': (basestring, True),
+        'cores': (int, False),
+        'disk_size': (basestring, False),
+        'disk_type': (basestring, False),
+        'location': (basestring, False),
+        'ram': (int, False),
+        'retries': (basestring, False),
+        'snapshot_name': (basestring, False),
+        'snapshot_password': (basestring, False),
+        'url': (basestring, False),
+    }
+
+
+class Qemu(PackerBuilder):
+    """
+    QEMU Builder
+    https://www.packer.io/docs/builders/qemu.html
+    TODO net_device
+    """
+    resource_type = "qemu"
+
+    # QEMU Checksum TYPES
+    NONE = "none"
+    MD5 = "md5"
+    SHA1 = "sha1"
+    SHA256 = "sha256"
+    SHA512 = "sha512"
+
+    props = {
+        'iso_checksum': (basestring, False),
+        'iso_checksum_type': (validator.string_list_item([NONE, MD5, SHA1, SHA256, SHA512]), True),
+        'iso_checksum_url': (basestring, False),
+        'iso_url': (basestring, True),
+        'accelerator': (basestring, False),
+        'boot_command': ([basestring], False),
+        'boot_wait': (basestring, False),
+        'disk_cache': (basestring, False),
+        'disk_compression': (validator.boolean, False),
+        'disk_discard': (basestring, False),
+        'disk_image': (validator.boolean, False),
+        'disk_interface': (basestring, False),
+        'disk_size': (int, False),
+        'floppy_files': ([basestring], False),
+        'floppy_dirs': ([basestring], False),
+        'format': (validator.string_list_item(["qcow2", "raw"]), False),
+        'headless': (validator.boolean, False),
+        'http_directory': (basestring, False),
+        'http_port_min': (int, False),
+        'http_port_max': (int, False),
+        'iso_skip_cache': (validator.boolean, False),
+        'iso_target_extension': (basestring, False),
+        'iso_urls': ([basestring], False),
+        'machine_type': (basestring, False),
+        'net_device': (basestring, False),
+        'output_directory': (basestring, False),
+        'qemu_binary': (basestring, False),
+        'qemuargs': ([[basestring]], False),
+    }
+
+    def validate(self):
+        conds = [
+            'iso_checksum',
+            'iso_checksum_url',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+
+class Triton(PackerBuilder):
+    """
+    Triton Builder
+    https://www.packer.io/docs/builders/triton.html
+    """
+    resource_type = "triton"
+
+    props = {
+        'triton_account': (basestring, True),
+        'triton_key_id': (basestring, True),
+        'source_machine_image': (basestring, True),
+        'source_machine_package': (basestring, True),
+        'image_name': (basestring, True),
+        'image_version': (basestring, True),
+        'triton_url': (basestring, False),
+        'triton_key_material': (basestring, False),
+        'source_machine_firewall_enabled': (validator.boolean, False),
+        'source_machine_metadata': (dict, False),
+        'source_machine_name': (basestring, False),
+        'source_machine_networks': ([basestring], False),
+        'source_machine_tags': (dict, False),
+        'image_acls': ([basestring], False),
+        'image_description': (basestring, False),
+        'image_eula_url': (basestring, False),
+        'image_homepage': (basestring, False),
+        'image_tags': (dict, False),
+    }
+
+
+class VirtualboxIso(PackerBuilder):
+    """
+    VirtualBox ISO Builder
+    https://www.packer.io/docs/builders/virtualbox-iso.html
+    """
+    resource_type = "virtualbox-iso"
+
+    # VirtualBox ISO checksum types
+    NONE = "none"
+    MD5 = "md5"
+    SHA1 = "sha1"
+    SHA256 = "sha256"
+    SHA512 = "sha512"
+    OVF = "ovf"
+    OVA = "ova"
+
+    props = {
+        'iso_checksum': (basestring, False),
+        'iso_checksum_type': (validator.string_list_item([NONE, MD5, SHA1, SHA256, SHA512]), True),
+        'iso_checksum_url': (basestring, False),
+        'iso_url': (basestring, True),
+        'boot_command': ([basestring], False),
+        'boot_wait': (basestring, False),
+        'disk_size': (int, False),
+        'export_opts': ([basestring], False),
+        'floppy_files': ([basestring], False),
+        'floppy_dirs': ([basestring], False),
+        'format': (validator.string_list_item([OVF, OVA]), False),
+        'guest_additions_mode': (validator.string_list_item(["upload", "attach", "disable"]), False),
+        'guest_additions_path': (basestring, False),
+        'guest_additions_sha256': (basestring, False),
+        'guest_additions_url': (basestring, False),
+        'guest_additions_url': (basestring, False),
+        'guest_os_type': (basestring, False),
+        'hard_drive_interface': (basestring, False),
+        'sata_port_count': (int, False),
+        'hard_drive_nonrotational': (validator.boolean, False),
+        'hard_drive_discard': (validator.boolean, False),
+        'headless': (validator.boolean, False),
+        'http_directory': (basestring, False),
+        'http_port_min': (int, False),
+        'http_port_max': (int, False),
+        'iso_interface': (basestring, False),
+        'iso_target_extension': (basestring, False),
+        'iso_target_path': (basestring, False),
+        'iso_urls': ([basestring], False),
+        'keep_registered': (validator.boolean, False),
+        'output_directory': (basestring, False),
+        'post_shutdown_delay': (basestring, False),
+        'shutdown_command': (basestring, False),
+        'shutdown_timeout': (basestring, False),
+        'skip_export': (validator.boolean, False),
+        'ssh_host_port_min': (int, False),
+        'ssh_host_port_max': (int, False),
+        'ssh_skip_nat_mapping': (validator.boolean, False),
+        'vboxmanage': ([[basestring]], False),
+        'vboxmanage_post': ([[basestring]], False),
+        'virtualbox_version_file': (basestring, False),
+        'vm_name': (basestring, False),
+        'vrdp_bind_address': (basestring, False),
+        'vrdp_port_min': (int, False),
+        'vrdp_port_max': (int, False),
+    }
+
+    def validate(self):
+        conds = [
+            'iso_checksum',
+            'iso_checksum_url',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+
+class VirtualboxOvf(PackerBuilder):
+    """
+    VirtualBox OVF Builder
+    https://www.packer.io/docs/builders/virtualbox-ovf.html
+    """
+    resource_type = "virtualbox-ovf"
+
+    # VirtualBox OVF checksum types
+    NONE = "none"
+    MD5 = "md5"
+    SHA1 = "sha1"
+    SHA256 = "sha256"
+    SHA512 = "sha512"
+    OVF = "ovf"
+    OVA = "ova"
+
+    props = {
+        'source_path': (basestring, True),
+        'boot_command': ([basestring], False),
+        'boot_wait': (basestring, False),
+        'checksum': (basestring, False),
+        'checksum_type': (validator.string_list_item([NONE, MD5, SHA1, SHA256, SHA512]), False),
+        'export_opts': ([basestring], False),
+        'floppy_files': ([basestring], False),
+        'floppy_dirs': ([basestring], False),
+        'format': (validator.string_list_item([OVF, OVA]), False),
+        'guest_additions_mode': (validator.string_list_item(["upload", "attach", "disable"]), False),
+        'guest_additions_path': (basestring, False),
+        'guest_additions_sha256': (basestring, False),
+        'guest_additions_url': (basestring, False),
+        'headless': (validator.boolean, False),
+        'http_directory': (basestring, False),
+        'http_port_min': (int, False),
+        'http_port_max': (int, False),
+        'import_flags': ([basestring], False),
+        'import_opts': (basestring, False),
+        'output_directory': (basestring, False),
+        'post_shutdown_delay': (basestring, False),
+        'shutdown_command': (basestring, False),
+        'shutdown_timeout': (basestring, False),
+        'skip_export': (validator.boolean, False),
+        'ssh_host_port_min': (int, False),
+        'ssh_host_port_max': (int, False),
+        'ssh_skip_nat_mapping': (validator.boolean, False),
+        'target_path': (basestring, False),
+        'vboxmanage': ([[basestring]], False),
+        'vboxmanage_post': ([[basestring]], False),
+        'virtualbox_version_file': (basestring, False),
+        'vm_name': (basestring, False),
+        'vrdp_bind_address': (basestring, False),
+        'vrdp_port_min': (int, False),
+        'vrdp_port_max': (int, False),
+    }
+
+
+class VMwareIso(PackerBuilder):
+    """
+    VMware ISO Builder
+    https://www.packer.io/docs/builders/vmware-iso.html
+    """
+    resource_type = "vmware-iso"
+
+    # VMWARE ISO checksum types
+    NONE = "none"
+    MD5 = "md5"
+    SHA1 = "sha1"
+    SHA256 = "sha256"
+    SHA512 = "sha512"
+
+    props = {
+        'iso_checksum': (basestring, False),
+        'iso_checksum_type': (validator.string_list_item([NONE, MD5, SHA1, SHA256, SHA512]), True),
+        'iso_checksum_url': (basestring, False),
+        'iso_url': (basestring, True),
+        'boot_command': ([basestring], False),
+        'boot_wait': (basestring, False),
+        'disk_additional_size': ([int], False),
+        'disk_size': (int, False),
+        'disk_type_id': (basestring, False),
+        'floppy_files': ([basestring], False),
+        'floppy_dirs': ([basestring], False),
+        'fusion_app_path': (basestring, False),
+        'guest_os_type': (basestring, False),
+        'headless': (validator.boolean, False),
+        'http_directory': (basestring, False),
+        'http_port_min': (int, False),
+        'http_port_max': (int, False),
+        'iso_target_extension': (basestring, False),
+        'iso_target_path': (basestring, False),
+        'iso_urls': ([basestring], False),
+        'output_directory': (basestring, False),
+        'remote_cache_datastore': (basestring, False),
+        'remote_cache_directory': (basestring, False),
+        'remote_datastore': (basestring, False),
+        'remote_host': (basestring, False),
+        'remote_password': (basestring, False),
+        'remote_private_key_file': (basestring, False),
+        'remote_type': (basestring, False),
+        'remote_username': (basestring, False),
+        'shutdown_command': (basestring, False),
+        'shutdown_timeout': (basestring, False),
+        'skip_compaction': (validator.boolean, False),
+        'skip_export': (validator.boolean, False),
+        'keep_registered': (validator.boolean, False),
+        'ovftool_options': ([basestring], False),
+        'tools_upload_flavor': (basestring, False),
+        'tools_upload_path': (basestring, False),
+        'version': (basestring, False),
+        'vm_name': (basestring, False),
+        'vmdk_name': (basestring, False),
+        'vmx_data': (dict, False),
+        'vmx_data_post': (dict, False),
+        'vmx_remove_ethernet_interfaces': (validator.boolean, False),
+        'vmx_template_path': (basestring, False),
+        'vnc_bind_address': (basestring, False),
+        'vnc_disable_password': (validator.boolean, False),
+        'vnc_port_min': (int, False),
+        'vnc_port_max': (int, False),
+    }
+
+    def validate(self):
+        conds = [
+            'iso_checksum',
+            'iso_checksum_url',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+
+class VMwareVmx(PackerBuilder):
+    """
+    VMware VMX Builder
+    https://www.packer.io/docs/builders/vmware-vmx.html
+    """
+    resource_type = "vmware-vmx"
+
+    props = {
+        'source_path': (basestring, True),
+        'boot_command': ([basestring], False),
+        'boot_wait': (basestring, False),
+        'floppy_files': ([basestring], False),
+        'floppy_dirs': ([basestring], False),
+        'fusion_app_path': (basestring, False),
+        'headless': (validator.boolean, False),
+        'http_directory': (basestring, False),
+        'http_port_min': (int, False),
+        'http_port_max': (int, False),
+        'output_directory': (basestring, False),
+        'shutdown_command': (basestring, False),
+        'shutdown_timeout': (basestring, False),
+        'skip_compaction': (validator.boolean, False),
+        'tools_upload_flavor': (basestring, False),
+        'tools_upload_path': (basestring, False),
+        'vm_name': (basestring, False),
+        'vmx_data': (dict, False),
+        'vmx_data_post': (dict, False),
+        'vmx_remove_ethernet_interfaces': (validator.boolean, False),
+        'vnc_bind_address': (basestring, False),
+        'vnc_disable_password': (validator.boolean, False),
+        'vnc_port_min': (int, False),
+        'vnc_port_max': (int, False),
+    }
