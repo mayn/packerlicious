@@ -84,6 +84,112 @@ class AmazonSourceAmiFilter(PackerProperty):
     }
 
 
+class BlockDeviceMapping(PackerProperty):
+    """
+    https://www.packer.io/docs/builders/amazon-instance.html#ami_block_device_mappings
+    """
+    props = {
+        'delete_on_termination': (validator.boolean, False),
+        'device_name': (basestring, False),
+        'encrypted': (validator.boolean, False),
+        'iops': (int, False),
+        'no_device': (validator.boolean, False),
+        'snapshot_id': (basestring, False),
+        'virtual_name': (basestring, False),
+        'volume_size': (int, False),
+        'volume_type': (basestring, False),
+
+    }
+
+
+class AmazonInstance(PackerBuilder):
+    """
+    Amazon Instance Store Builder
+    https://www.packer.io/docs/builders/amazon-instance.html
+    """
+    resource_type = "amazon-instance"
+
+    """
+    AWS Instance Template Variables
+    https://www.packer.io/docs/builders/amazon-ebs.html#ami_description
+    TODO impl launch_block_device_mappings, ami_block_device_mappings types
+        impl validation ami_virtualization_type region_kms_key_ids run_volume_tags shutdown_behavior
+            spot_price_auto_product ssh_keypair_name
+    """
+    SourceAMI = TemplateVar("SourceAMI")
+    BuildRegion = TemplateVar("BuildRegion")
+
+    props = {
+        'access_key': (basestring, True),
+        'account_id': (basestring, True),
+        'ami_name': (basestring, True),
+        'instance_type': (basestring, True),
+        'region': (basestring, True),
+        's3_bucket': (basestring, True),
+        'secret_key': (basestring, True),
+        'source_ami': (basestring, False),
+        'source_ami_filter': (AmazonSourceAmiFilter, False),
+        'x509_cert_path': (basestring, True),
+        'x509_key_path': (basestring, True),
+        'ami_block_device_mappings': ([BlockDeviceMapping], False),
+        'ami_description': (basestring, False),
+        'ami_groups': ([basestring], False),
+        'ami_product_codes': (basestring, False),
+        'ami_regions': ([basestring], False),
+        'ami_users': ([basestring], False),
+        'ami_virtualization_type': (basestring, False),
+        'associate_public_ip_address': (validator.boolean, False),
+        'availability_zone': (basestring, False),
+        'bundle_destination': (basestring, False),
+        'bundle_prefix': (basestring, False),
+        'bundle_upload_command': (basestring, False),
+        'bundle_vol_command': (basestring, False),
+        'custom_endpoint_ec2': (basestring, False),
+        'ebs_optimized': (validator.boolean, False),
+        'enhanced_networking': (validator.boolean, False),
+        'force_deregister': (validator.boolean, False),
+        'force_delete_snapshot': (validator.boolean, False),
+        'iam_instance_profile': (basestring, False),
+        'launch_block_device_mappings': ([BlockDeviceMapping], False),
+        'mfa_code': (basestring, False),
+        'profile': (basestring, False),
+        'region_kms_key_ids': (dict, False),
+        'run_tags': (dict, False),
+        'security_group_id': (basestring, False),
+        'security_group_ids': ([basestring], False),
+        'skip_region_validation': (validator.boolean, False),
+        'snapshot_groups': ([basestring], False),
+        'snapshot_users': ([basestring], False),
+        'snapshot_tags': ([basestring], False),
+        'spot_price': (basestring, False),
+        'spot_price_auto_product': (basestring, False),
+        'ssh_keypair_name': (basestring, False),
+        'ssh_agent_auth': (validator.boolean, False),
+        'ssh_private_ip': (validator.boolean, False),
+        'subnet_id': (basestring, False),
+        'tags': (dict, False),
+        'temporary_key_pair_name': (basestring, False),
+        'user_data': (basestring, False),
+        'user_data_file': (basestring, False),
+        'vpc_id': (basestring, False),
+        'x509_upload_path': (basestring, False),
+        'windows_password_timeout': (basestring, False),
+    }
+
+    def validate(self):
+        conds = [
+            'source_ami',
+            'source_ami_filter',
+        ]
+        validator.exactly_one(self.__class__.__name__, self.properties, conds)
+
+        conds = [
+            'security_group_id',
+            'security_group_ids',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+
 class AmazonEbs(PackerBuilder):
     """
     Amazon EBS Builder
@@ -94,8 +200,7 @@ class AmazonEbs(PackerBuilder):
     """
     AWS EBS Template Variables
     https://www.packer.io/docs/builders/amazon-ebs.html#ami_description
-    TODO impl launch_block_device_mappings, ami_block_device_mappings types
-        impl validation ami_virtualization_type region_kms_key_ids run_volume_tags shutdown_behavior
+    TODO impl validation ami_virtualization_type region_kms_key_ids run_volume_tags shutdown_behavior
             spot_price_auto_product ssh_keypair_name
     """
     SourceAMI = TemplateVar("SourceAMI")
@@ -109,7 +214,7 @@ class AmazonEbs(PackerBuilder):
         'secret_key': (basestring, True),
         'source_ami': (basestring, False),
         'source_ami_filter': (AmazonSourceAmiFilter, False),
-        'ami_block_device_mappings': (basestring, False),
+        'ami_block_device_mappings': ([BlockDeviceMapping], False),
         'ami_description': (basestring, False),
         'ami_groups': ([basestring], False),
         'ami_product_codes': (basestring, False),
@@ -127,7 +232,7 @@ class AmazonEbs(PackerBuilder):
         'encrypt_boot': (validator.boolean, False),
         'kms_key_id': (basestring, False),
         'iam_instance_profile': (basestring, False),
-        'launch_block_device_mappings': (basestring, False),
+        'launch_block_device_mappings': ([BlockDeviceMapping], False),
         'mfa_code': (basestring, False),
         'profile': (basestring, False),
         'region_kms_key_ids': (dict, False),
@@ -137,8 +242,9 @@ class AmazonEbs(PackerBuilder):
         'security_group_ids': ([basestring], False),
         'shutdown_behavior': ([basestring], False),
         'skip_region_validation': (validator.boolean, False),
-        'snapshot_groups': (basestring, False),
-        'snapshot_users': (dict, False),
+        'snapshot_groups': ([basestring], False),
+        'snapshot_users': ([basestring], False),
+        'snapshot_tags': ([basestring], False),
         'spot_price': (basestring, False),
         'spot_price_auto_product': (basestring, False),
         'ssh_keypair_name': (basestring, False),

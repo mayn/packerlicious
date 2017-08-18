@@ -87,6 +87,7 @@ Currently supported Packer resources
 
 Builders:
 
+- amazon-instance
 - amazon-ebs
 - docker
 - file
