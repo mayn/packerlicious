@@ -73,6 +73,54 @@ class PackerBuilder(PackerCommunicator):
         super(PackerBuilder, self).__init__(title, **kwargs)
 
 
+class Alicloud(PackerBuilder):
+    """
+    Alicloud Image Builder
+    https://www.packer.io/docs/builders/alicloud-ecs.html
+    """
+    resource_type = "alicloud-ecs"
+
+    props = {
+        'access_key': (basestring, True),
+        'instance_type': (basestring, True),
+        'image_name': (basestring, True),
+        'region': (basestring, True),
+        'secret_key': (basestring, True),
+        'source_image': (basestring, True),
+        'skip_region_validation': (validator.boolean, False),
+        'image_description': (basestring, False),
+        'image_version': (basestring, False),
+        'image_share_account': ([basestring], False),
+        'image_copy_regions': ([basestring], False),
+        'image_copy_names': ([basestring], False),
+        'image_force_delete': (validator.boolean, False),
+        'image_force_delete_snapshots': (validator.boolean, False),
+        'disk_name': (basestring, False),
+        'disk_category': (basestring, False),
+        'disk_size': (int, False),
+        'disk_snapshot_id': (basestring, False),
+        'disk_description': (basestring, False),
+        'disk_delete_with_instance': (basestring, False),
+        'disk_device': (basestring, False),
+        'zone_id': (basestring, False),
+        'io_optimized': (basestring, False),
+        'force_stop_instance': (validator.boolean, False),
+        'security_group_id': (basestring, False),
+        'security_group_name': (basestring, False),
+        'user_data': (basestring, False),
+        'user_data_file': (basestring, False),
+        'vpc_id': (basestring, False),
+        'vpc_name': (basestring, False),
+        'vpc_cidr_block': (basestring, False),
+        'vswitch_id': (basestring, False),
+        'instance_name': (basestring, False),
+        'internet_charge_type': (basestring, False),
+        'internet_max_bandwidth_out': (basestring, False),
+        'temporary_key_pair_name': (basestring, False),
+    }
+
+
+
 class AmazonSourceAmiFilter(PackerProperty):
     """
     https://www.packer.io/docs/builders/amazon-ebs.html#source_ami_filter

@@ -3,6 +3,7 @@
 
 
 ### FEATURES:
+* builder/Alicloud: add support for packer's alicloud ecs builder
 * builder/AmazonInstance: add support for packer's amazon instance builder
 * builder/Azure: add support for packer's azure builder
 * builder/CloudStack: add support for packer's cloudstack builder

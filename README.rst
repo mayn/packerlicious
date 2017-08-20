@@ -87,6 +87,7 @@ Currently supported Packer resources
 
 Builders:
 
+- alicloud-ecs
 - amazon-ebs
 - amazon-instance
 - azure-arm
