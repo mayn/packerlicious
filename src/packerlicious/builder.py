@@ -462,6 +462,16 @@ class File(PackerBuilder):
             warnings.warn("Both source and content not specified, artifact will be empty.")
 
 
+class Null(PackerBuilder):
+    """
+    Null Builder
+    https://www.packer.io/docs/builders/null.html
+    """
+    resource_type = "null"
+
+    props = {}
+
+
 class ProfitBricks(PackerBuilder):
     """
     ProfitBricks Builder

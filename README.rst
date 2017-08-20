@@ -94,6 +94,7 @@ Builders:
 - digitalocean
 - docker
 - file
+- null
 - profitbricks
 - qemu
 - triton
