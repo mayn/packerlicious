@@ -316,7 +316,7 @@ class Azure(PackerBuilder):
     }
 
 
-class Cloudstack(PackerBuilder):
+class CloudStack(PackerBuilder):
     """
     CloudStack Builder
     https://www.packer.io/docs/builders/cloudstack.html
@@ -367,6 +367,30 @@ class Cloudstack(PackerBuilder):
             'source_template',
         ]
         validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+
+class DigitalOcean(PackerBuilder):
+    """
+    Digital Ocean Builder
+    https://www.packer.io/docs/builders/digitalocean.html
+    """
+    resource_type = "digitalocean"
+
+    props = {
+        'api_token': (basestring, True),
+        'image': (basestring, True),
+        'region': (basestring, True),
+        'size': (basestring, True),
+        'api_url': (basestring, False),
+        'droplet_name': (basestring, False),
+        'private_networking': (validator.boolean, False),
+        'monitoring': (validator.boolean, False),
+        'snapshot_name': (basestring, False),
+        'snapshot_regions': ([basestring], False),
+        'state_timeout': (basestring, False),
+        'user_data': (basestring, False),
+        'user_data_file': (basestring, False),
+    }
 
 
 class Docker(PackerBuilder):

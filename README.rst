@@ -91,6 +91,7 @@ Builders:
 - amazon-instance
 - azure-arm
 - cloudstack
+- digitalocean
 - docker
 - file
 - profitbricks

@@ -5,7 +5,8 @@
 ### FEATURES:
 * builder/AmazonInstance: add support for packer's amazon instance builder
 * builder/Azure: add support for packer's azure builder
-* builder/Cloudstack: add support for packer's cloudstack builder
+* builder/CloudStack: add support for packer's cloudstack builder
+* builder/DigitalOcean: add support for packer's digitalocean builder
 * builder/ProfitBricks: add support for packer's ProfitBricks builder
 * builder/Qemu: add support for packer's qemu builder
 * builder/Triton: add support for packer's triton builder
