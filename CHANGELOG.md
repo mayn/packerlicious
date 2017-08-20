@@ -2,6 +2,9 @@
 ## (UNRELEASED)
 
 
+
+## 0.4.0 (Augutst 20, 2017)
+
 ### FEATURES:
 * builder/Alicloud: add support for packer's alicloud ecs builder
 * builder/AmazonInstance: add support for packer's amazon instance builder
@@ -20,7 +23,6 @@
 * builder/VirtualboxOvf: add support for packer's virtualbox ovf builder
 * builder/VMwareIso: add support for packer's vmware iso builder
 * builder/VMwareVmx: add support for packer's vmware vmx builder
-
 
 
 

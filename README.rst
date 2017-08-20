@@ -152,9 +152,14 @@ packerlicious is licensed under the `Apache license 2.0`_.
 See `LICENSE`_ for the full license text.
 
 
+packerlicious contains source code from `troposphere`_ which is licensed under the `BSD 2-Clause license`_
+
+
+
 .. _`packer`: https://www.packer.io/
 .. _`troposphere`: https://github.com/cloudtools/troposphere
 .. _`LICENSE`: https://github.com/mayn/packerlicious/blob/master/LICENSE
 .. _`Apache license 2.0`: https://opensource.org/licenses/Apache-2.0
+.. _`BSD 2-Clause license`: http://opensource.org/licenses/BSD-2-Clause
 .. _`semantic versioning`: http://semver.org/
 .. _`packer's example template`: https://www.packer.io/docs/templates/index.html#example-template

@@ -19,7 +19,7 @@ from thirdparty.troposphere import BaseAWSObject as BasePackerObject
 
 from template import Template
 
-__version__ = "0.3.0"
+__version__ = "0.4.0"
 
 
 class Ref(AWSHelperFn):
