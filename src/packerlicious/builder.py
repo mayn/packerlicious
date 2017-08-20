@@ -511,6 +511,24 @@ class Null(PackerBuilder):
     props = {}
 
 
+class OneAndOne(PackerBuilder):
+    """
+    OneAndOne Builder
+    https://www.packer.io/docs/builders/oneandone.html
+    """
+    resource_type = "oneandone"
+
+    props = {
+        'source_image_name': (basestring, True),
+        'token': (basestring, True),
+        'data_center_name': (basestring, False),
+        'disk_size': (basestring, False),
+        'image_name': (basestring, False),
+        'retries': (int, False),
+        'url': (basestring, False),
+    }
+
+
 class OpenStack(PackerBuilder):
     """
     OpenStack Builder
