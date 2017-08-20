@@ -9,6 +9,7 @@
 * builder/DigitalOcean: add support for packer's digitalocean builder
 * builder/GoogleCompute: add support for packer's googlecompute builder
 * builder/Null: add support for packer's null builder
+* builder/OpenStack: add support for packer's openstack builder
 * builder/ProfitBricks: add support for packer's ProfitBricks builder
 * builder/Qemu: add support for packer's qemu builder
 * builder/Triton: add support for packer's triton builder

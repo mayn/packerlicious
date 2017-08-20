@@ -96,6 +96,7 @@ Builders:
 - file
 - googlecompute
 - null
+- openstack
 - profitbricks
 - qemu
 - triton

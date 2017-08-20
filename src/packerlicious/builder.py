@@ -511,6 +511,63 @@ class Null(PackerBuilder):
     props = {}
 
 
+class OpenStack(PackerBuilder):
+    """
+    OpenStack Builder
+    https://www.packer.io/docs/builders/openstack.html
+    """
+    resource_type = "openstack"
+
+    props = {
+        'flavor': (basestring, True),
+        'image_name': (basestring, True),
+        'identity_endpoint': (basestring, False),
+        'source_image': (basestring, False),
+        'source_image_name': (basestring, False),
+        'username': (basestring, False),
+        'user_id': (basestring, False),
+        'password': (basestring, False),
+        'availability_zone': (basestring, False),
+        'cacert': (basestring, False),
+        'config_drive': (validator.boolean, False),
+        'cert': (basestring, False),
+        'domain_name': (basestring, False),
+        'domain_id': (basestring, False),
+        'endpoint_type': (basestring, False),
+        'floating_ip': (basestring, False),
+        'floating_ip_pool': (basestring, False),
+        'image_members': ([basestring], False),
+        'image_visibility': (basestring, False),
+        'insecure': (validator.boolean, False),
+        'key': (basestring, False),
+        'metadata': (dict, False),
+        'instance_metadata': (dict, False),
+        'networks': ([basestring], False),
+        'rackconnect_wait': (validator.boolean, False),
+        'region': (basestring, False),
+        'reuse_ips': (validator.boolean, False),
+        'security_groups': ([basestring], False),
+        'ssh_interface': (basestring, False),
+        'ssh_ip_version': (basestring, False),
+        'ssh_keypair_name': (basestring, False),
+        'ssh_agent_auth': (validator.boolean, False),
+        'temporary_key_pair_name': (basestring, False),
+        'tenant_id': (basestring, False),
+        'tenant_name': (basestring, False),
+        'use_floating_ip': (validator.boolean, False),
+        'user_data': (basestring, False),
+        'user_data_file': (basestring, False),
+
+    }
+
+    def validate(self):
+        conds = [
+            'source_image',
+            'source_image_name',
+        ]
+        validator.exactly_one(self.__class__.__name__, self.properties, conds)
+
+
 class ProfitBricks(PackerBuilder):
     """
     ProfitBricks Builder
