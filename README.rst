@@ -87,9 +87,19 @@ Currently supported Packer resources
 
 Builders:
 
+- alicloud-ecs
 - amazon-ebs
+- amazon-instance
+- azure-arm
+- cloudstack
+- digitalocean
 - docker
 - file
+- googlecompute
+- hyperv-iso
+- null
+- oneandone
+- openstack
 - profitbricks
 - qemu
 - triton

@@ -3,6 +3,16 @@
 
 
 ### FEATURES:
+* builder/Alicloud: add support for packer's alicloud ecs builder
+* builder/AmazonInstance: add support for packer's amazon instance builder
+* builder/Azure: add support for packer's azure builder
+* builder/CloudStack: add support for packer's cloudstack builder
+* builder/DigitalOcean: add support for packer's digital ocean builder
+* builder/GoogleCompute: add support for packer's google compute builder
+* builder/HyperV: add support for packer's hyperv iso builder
+* builder/Null: add support for packer's null builder
+* builder/OneAndOne: add support for packer's oneandone builder
+* builder/OpenStack: add support for packer's openstack builder
 * builder/ProfitBricks: add support for packer's ProfitBricks builder
 * builder/Qemu: add support for packer's qemu builder
 * builder/Triton: add support for packer's triton builder
