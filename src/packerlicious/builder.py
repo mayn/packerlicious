@@ -462,6 +462,45 @@ class File(PackerBuilder):
             warnings.warn("Both source and content not specified, artifact will be empty.")
 
 
+class GoogleCompute(PackerBuilder):
+    """
+    Google Compute Builder
+    https://www.packer.io/docs/builders/googlecompute.html
+    """
+    resource_type = "googlecompute"
+
+    props = {
+        'project_id': (basestring, True),
+        'source_image': (basestring, True),
+        'source_image_family': (basestring, True),
+        'zone': (basestring, True),
+        'account_file': (basestring, False),
+        'address': (basestring, False),
+        'disk_name': (basestring, False),
+        'disk_size': (int, False),
+        'disk_type': (basestring, False),
+        'image_description': (basestring, False),
+        'image_family': (basestring, False),
+        'image_name': (basestring, False),
+        'instance_name': (basestring, False),
+        'machine_type': (basestring, False),
+        'metadata': (dict, False),
+        'network': (basestring, False),
+        'network_project_id': (basestring, False),
+        'omit_external_ip': (validator.boolean, False),
+        'on_host_maintenance': (basestring, False),
+        'preemptible': (validator.boolean, False),
+        'region': (basestring, False),
+        'scopes': ([basestring], False),
+        'source_image_project_id': (basestring, False),
+        'startup_script_file': (basestring, False),
+        'state_timeout': (basestring, False),
+        'subnetwork': (basestring, False),
+        'tags': ([basestring], False),
+        'use_internal_ip': (validator.boolean, False),
+    }
+
+
 class Null(PackerBuilder):
     """
     Null Builder

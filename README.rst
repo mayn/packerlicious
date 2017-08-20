@@ -94,6 +94,7 @@ Builders:
 - digitalocean
 - docker
 - file
+- googlecompute
 - null
 - profitbricks
 - qemu
