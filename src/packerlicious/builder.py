@@ -316,6 +316,59 @@ class Azure(PackerBuilder):
     }
 
 
+class Cloudstack(PackerBuilder):
+    """
+    CloudStack Builder
+    https://www.packer.io/docs/builders/cloudstack.html
+    """
+    resource_type = "cloudstack"
+
+    props = {
+        'api_url': (basestring, True),
+        'api_key': (basestring, True),
+        'network': (basestring, True),
+        'secret_key': (basestring, True),
+        'service_offering': (basestring, True),
+        'source_iso': (basestring, False),
+        'source_template': (basestring, False),
+        'template_os': (basestring, True),
+        'zone': (basestring, True),
+        'async_timeout': (int, False),
+        'cidr_list': ([basestring], False),
+        'disk_offering': (basestring, False),
+        'disk_size': (int, False),
+        'expunge': (validator.boolean, False),
+        'http_directory': (basestring, False),
+        'http_get_only': (validator.boolean, False),
+        'http_port_min': (int, False),
+        'http_port_max': (int, False),
+        'hypervisor': (basestring, False),
+        'keypair': (basestring, False),
+        'instance_name': (basestring, False),
+        'project': (basestring, False),
+        'public_ip_address': (basestring, False),
+        'ssh_agent_auth': (validator.boolean, False),
+        'ssl_no_verify': (validator.boolean, False),
+        'template_display_text': (basestring, False),
+        'template_featured': (validator.boolean, False),
+        'template_name': (basestring, False),
+        'template_public': (validator.boolean, False),
+        'template_password_enabled': (validator.boolean, False),
+        'template_requires_hvm': (validator.boolean, False),
+        'template_scalable': (validator.boolean, False),
+        'user_data': (basestring, False),
+        'user_data_file': (basestring, False),
+        'use_local_ip_address': (validator.boolean, False),
+    }
+
+    def validate(self):
+        conds = [
+            'source_iso',
+            'source_template',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+
 class Docker(PackerBuilder):
     """
     Docker Builder

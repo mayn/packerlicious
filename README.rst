@@ -90,6 +90,7 @@ Builders:
 - amazon-ebs
 - amazon-instance
 - azure-arm
+- cloudstack
 - docker
 - file
 - profitbricks
