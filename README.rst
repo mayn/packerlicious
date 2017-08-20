@@ -87,8 +87,9 @@ Currently supported Packer resources
 
 Builders:
 
-- amazon-instance
 - amazon-ebs
+- amazon-instance
+- azure-arm
 - docker
 - file
 - profitbricks
