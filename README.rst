@@ -95,6 +95,7 @@ Builders:
 - docker
 - file
 - googlecompute
+- hyperv-iso
 - null
 - oneandone
 - openstack

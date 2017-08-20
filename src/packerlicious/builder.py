@@ -501,6 +501,51 @@ class GoogleCompute(PackerBuilder):
     }
 
 
+class HyperV(PackerBuilder):
+    """
+    Hyper-V Builder
+    https://www.packer.io/docs/builders/hyperv-iso.html
+    """
+    resource_type = "hyperv-iso"
+
+    props = {
+        'iso_checksum': (basestring, True),
+        'iso_checksum_type': (basestring, True),
+        'iso_url': (basestring, True),
+        'boot_command': ([basestring], False),
+        'boot_wait': (basestring, False),
+        'cpu': (int, False),
+        'disk_size': (int, False),
+        'enable_dynamic_memory': (validator.boolean, False),
+        'enable_mac_spoofing': (validator.boolean, False),
+        'enable_secure_boot': (validator.boolean, False),
+        'enable_virtualization_extensions': (validator.boolean, False),
+        'floppy_files': ([basestring], False),
+        'floppy_dirs': ([basestring], False),
+        'generation': (int, False),
+        'guest_additions_mode': (basestring, False),
+        'guest_additions_path': (basestring, False),
+        'http_directory': (basestring, False),
+        'http_directory': (basestring, False),
+        'http_port_min': (int, False),
+        'http_port_max': (int, False),
+        'iso_urls': ([basestring], False),
+        'iso_target_extension': (basestring, False),
+        'iso_target_path': (basestring, False),
+        'output_directory': (basestring, False),
+        'ram_size': (int, False),
+        'secondary_iso_images': ([basestring], False),
+        'shutdown_command': (basestring, False),
+        'shutdown_timeout': (basestring, False),
+        'skip_compaction': (validator.boolean, False),
+        'switch_name': (basestring, False),
+        'switch_vlan_id': (basestring, False),
+        'vlan_id': (basestring, False),
+        'vm_name': (basestring, False),
+        'temp_path': (basestring, False),
+    }
+
+
 class Null(PackerBuilder):
     """
     Null Builder
