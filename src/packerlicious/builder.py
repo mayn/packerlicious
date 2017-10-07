@@ -234,6 +234,208 @@ class AmazonEbs(PackerBuilder):
         validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
 
 
+class AmazonChroot(PackerBuilder):
+    """
+    Amazon Chroot Builder
+    https://www.packer.io/docs/builders/amazon-chroot.html
+    """
+    resource_type = "amazon-chroot"
+
+    SourceAMI = TemplateVar("SourceAMI")
+    BuildRegion = TemplateVar("BuildRegion")
+
+    props = {
+        'access_key': (basestring, True),
+        'ami_name': (basestring, True),
+        'secret_key': (basestring, True),
+        'source_ami': (basestring, False),
+        'ami_description': (basestring, False),
+        'ami_groups': ([basestring], False),
+        'ami_product_codes': ([basestring], False),
+        'ami_regions': ([basestring], False),
+        'ami_users': ([basestring], False),
+        'ami_virtualization_type': (basestring, False),
+        'chroot_mounts': ([[basestring]], False),
+        'command_wrapper': (basestring, False),
+        'copy_files': ([basestring], False),
+        'custom_endpoint_ec2': (basestring, False),
+        'device_path': (basestring, False),
+        'ena_support': (validator.boolean, False),
+        'force_deregister': (validator.boolean, False),
+        'force_delete_snapshot': (validator.boolean, False),
+        'encrypt_boot': (validator.boolean, False),
+        'kms_key_id': (basestring, False),
+        'from_scratch': (validator.boolean, False),
+        'ami_block_device_mappings': ([BlockDeviceMapping], False),
+        'region_kms_key_ids': (dict, False),
+        'root_device_name': (basestring, False),
+        'mfa_code': (basestring, False),
+        'mount_path': (basestring, False),
+        'mount_partition': (int, False),
+        'mount_options': ([basestring], False),
+        'pre_mount_commands': ([basestring], False),
+        'profile': (basestring, False),
+        'post_mount_commands': ([basestring], False),
+        'root_volume_size': (int, False),
+        'skip_region_validation': (validator.boolean, False),
+        'snapshot_tags': ([basestring], False),
+        'snapshot_groups': ([basestring], False),
+        'snapshot_users': ([basestring], False),
+        'source_ami_filter': (AmazonSourceAmiFilter, False),
+        'sriov_support': (validator.boolean, False),
+        'tags': (dict, False),
+    }
+
+    def validate(self):
+        conds = [
+            'source_ami',
+            'source_ami_filter',
+        ]
+        validator.exactly_one(self.__class__.__name__, self.properties, conds)
+
+
+class AmazonEbsSurrogate(PackerBuilder):
+    """
+    Amazon EBS Builder
+    https://www.packer.io/docs/builders/amazon-ebssurrogate.html
+    """
+    resource_type = "amazon-ebssurrogate"
+
+    SourceAMI = TemplateVar("SourceAMI")
+    BuildRegion = TemplateVar("BuildRegion")
+
+    props = {
+        'access_key': (basestring, True),
+        'instance_type': (basestring, True),
+        'region': (basestring, True),
+        'secret_key': (basestring, True),
+        'ami_root_device': ([BlockDeviceMapping], True),
+        'source_device_name': (basestring, True),
+        'source_ami': (basestring, False),
+        'ami_block_device_mappings': ([BlockDeviceMapping], False),
+        'ami_description': (basestring, False),
+        'ami_groups': ([basestring], False),
+        'ami_product_codes': ([basestring], False),
+        'ami_regions': ([basestring], False),
+        'ami_users': ([basestring], False),
+        'ami_virtualization_type': (basestring, False),
+        'associate_public_ip_address': (validator.boolean, False),
+        'availability_zone': (basestring, False),
+        'custom_endpoint_ec2': (basestring, False),
+        'disable_stop_instance': (validator.boolean, False),
+        'ebs_optimized': (validator.boolean, False),
+        'ena_support': (validator.boolean, False),
+        'force_deregister': (validator.boolean, False),
+        'force_delete_snapshot': (validator.boolean, False),
+        'encrypt_boot': (validator.boolean, False),
+        'kms_key_id': (basestring, False),
+        'iam_instance_profile': (basestring, False),
+        'launch_block_device_mappings': ([BlockDeviceMapping], False),
+        'mfa_code': (basestring, False),
+        'profile': (basestring, False),
+        'region_kms_key_ids': (dict, False),
+        'run_tags': (dict, False),
+        'run_volume_tags': (dict, False),
+        'security_group_id': (basestring, False),
+        'security_group_ids': ([basestring], False),
+        'shutdown_behavior': ([basestring], False),
+        'skip_region_validation': (validator.boolean, False),
+        'snapshot_groups': ([basestring], False),
+        'snapshot_users': ([basestring], False),
+        'snapshot_tags': ([basestring], False),
+        'source_ami_filter': (AmazonSourceAmiFilter, False),
+        'spot_price': (basestring, False),
+        'spot_price_auto_product': (basestring, False),
+        'sriov_support': (validator.boolean, False),
+        'ssh_keypair_name': (basestring, False),
+        'ssh_agent_auth': (validator.boolean, False),
+        'ssh_private_ip': (validator.boolean, False),
+        'subnet_id': (basestring, False),
+        'tags': (dict, False),
+        'temporary_key_pair_name': (basestring, False),
+        'token': (basestring, False),
+        'user_data': (basestring, False),
+        'user_data_file': (basestring, False),
+        'vpc_id': (basestring, False),
+        'windows_password_timeout': (basestring, False),
+    }
+
+    def validate(self):
+        conds = [
+            'source_ami',
+            'source_ami_filter',
+        ]
+        validator.exactly_one(self.__class__.__name__, self.properties, conds)
+
+        conds = [
+            'security_group_id',
+            'security_group_ids',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+
+class AmazonEbsVolume(PackerBuilder):
+    """
+    Amazon EBS Builder
+    https://www.packer.io/docs/builders/amazon-ebsvolume.html
+    """
+    resource_type = "amazon-ebsvolume"
+
+    SourceAMI = TemplateVar("SourceAMI")
+    BuildRegion = TemplateVar("BuildRegion")
+
+    props = {
+        'access_key': (basestring, True),
+        'instance_type': (basestring, True),
+        'region': (basestring, True),
+        'secret_key': (basestring, True),
+        'source_ami': (basestring, False),
+        'ebs_volumes': ([BlockDeviceMapping], False),
+        'associate_public_ip_address': (validator.boolean, False),
+        'availability_zone': (basestring, False),
+        'custom_endpoint_ec2': (basestring, False),
+        'ebs_optimized': (validator.boolean, False),
+        'ena_support': (validator.boolean, False),
+        'iam_instance_profile': (basestring, False),
+        'mfa_code': (basestring, False),
+        'profile': (basestring, False),
+        'region_kms_key_ids': (dict, False),
+        'run_tags': (dict, False),
+        'security_group_id': (basestring, False),
+        'security_group_ids': ([basestring], False),
+        'shutdown_behavior': ([basestring], False),
+        'skip_region_validation': (validator.boolean, False),
+        'snapshot_groups': ([basestring], False),
+        'snapshot_users': ([basestring], False),
+        'source_ami_filter': (AmazonSourceAmiFilter, False),
+        'spot_price': (basestring, False),
+        'spot_price_auto_product': (basestring, False),
+        'sriov_support': (validator.boolean, False),
+        'ssh_keypair_name': (basestring, False),
+        'ssh_private_ip': (validator.boolean, False),
+        'subnet_id': (basestring, False),
+        'temporary_key_pair_name': (basestring, False),
+        'token': (basestring, False),
+        'user_data': (basestring, False),
+        'user_data_file': (basestring, False),
+        'vpc_id': (basestring, False),
+        'windows_password_timeout': (basestring, False),
+    }
+
+    def validate(self):
+        conds = [
+            'source_ami',
+            'source_ami_filter',
+        ]
+        validator.exactly_one(self.__class__.__name__, self.properties, conds)
+
+        conds = [
+            'security_group_id',
+            'security_group_ids',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+
 class AmazonInstance(PackerBuilder):
     """
     Amazon Instance Store Builder
