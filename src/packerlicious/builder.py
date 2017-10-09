@@ -796,6 +796,21 @@ class HyperV(PackerBuilder):
     }
 
 
+class LXD(PackerBuilder):
+    """
+    LXD Builder
+    https://www.packer.io/docs/builders/lxd.html
+    """
+    resource_type = "lxd"
+
+    props = {
+        'image': (basestring, True),
+        'name': (basestring, False),
+        'output_image': (basestring, False),
+        'command_wrapper': (basestring, False),
+    }
+
+
 class Null(PackerBuilder):
     """
     Null Builder
