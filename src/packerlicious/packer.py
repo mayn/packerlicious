@@ -9,16 +9,17 @@ class Packer(object):
     Packer Binary Wrapper
     """
 
+    CLEAN_UP = 1
+    ABORT    = 2
+
     packer_path = ""
     template = None
-    _vars = {}
 
-    def __init__(self, template=None, _vars={}, packer_path=""):
+    def __init__(self, template, packer_path=""):
         if len(packer_path) > 0 and packer_path[-1] != '/':
             packer_path += "/"
         self.packer_path = packer_path
         self.template = template
-        self._vars = _vars
         self.check_available()
 
     def check_available(self):
@@ -33,12 +34,16 @@ class Packer(object):
 
     def add_template(self, template):
         self.template = template
-    
-    def add_var(self, var):
-        self._vars.update(var)
-    
-    def add_vars(self, _vars):
-        self._vars = _vars
+
+    def run_command(self, command):
+        template_file, template_filename = tempfile.mkstemp()
+        os.write(template_file, self.template.to_json())
+        os.close(template_file)
+        command += template_filename
+        proc = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE)
+        out = proc.communicate()[0]
+        os.remove(template_filename)
+        return proc.returncode, out
 
     def validate(self, syntax_only=False, _except=None, only=None):
         """
@@ -46,8 +51,6 @@ class Packer(object):
         Returns (Return Code, Output)
         """
         self.check_available()
-        if self.template is None:
-            raise ValueError("No template provided...")
         validate_command = self.packer_path + "packer validate "
         if syntax_only:
             validate_command += "-syntax_only "
@@ -61,13 +64,67 @@ class Packer(object):
             for o in only:
                 validate_command += o + ","
             validate_command += " "
-        for key in self._vars:
-            validate_command += "-var '" + key + "=" + self._vars[key] + "' "
-        template_file, template_filename = tempfile.mkstemp()
-        os.write(template_file, self.template.to_json())
-        os.close(template_file)
-        validate_command += template_filename
-        proc = subprocess.Popen(shlex.split(validate_command), stdout=subprocess.PIPE)
-        out = proc.communicate()[0]
-        os.remove(template_filename)
-        return proc.returncode, out
+        return self.run_command(validate_command)
+
+    def build(self, debug=False, _except=None, only=None, force=False, 
+            machine_readable=False, on_error=CLEAN_UP, parellel=True):
+        """
+        Execute build
+        Returns (Return Code, Output)
+        """
+        self.check_available()
+        build_command = self.packer_path + "packer build "
+        if debug:
+            build_command += "-debug "
+        if _except is not None:
+            build_command += "-except="
+            for e in _except:
+                build_command += e + ","
+            build_command += " "
+        if only is not None:
+            build_command += "-only="
+            for o in only:
+                build_command += o + ","
+            build_command += " "
+        if force:
+            build_command += "-force "
+        if machine_readable:
+            build_command += "-machine_readable "
+        if on_error == Packer.ABORT:
+            build_command += "-on-error=abort "
+        if not parellel:
+            build_command += "-parallel=false "
+        return self.run_command(build_command)
+
+    def inspect(self, machine_readable=False):
+        """
+        Inspect template
+        Returns (Return Code, Output)
+        """
+        self.check_available()
+        inspect_command = self.packer_path + "packer inspect "
+        if machine_readable:
+            inspect_command += "-machine-readable "
+        return self.run_command(inspect_command)
+
+    def push(self, name=None, token=None, sensitive=None):
+        """
+        Push template to build service
+        Returns (Return Code, Output)
+        """
+        self.check_available()
+        push_command = self.packer_path + "packer push "
+        if name is not None:
+            push_command += "-name=\"" + name + "\" "
+        if token is not None:
+            push_command += "-token=\"" + token + "\" "
+        if sensitive is not None:
+            push_command += "-sensitive="
+            for s in sensitive:
+                push_command += s + ","
+            push_command += " "
+        return self.run_command(push_command)
+
+
+        
+
