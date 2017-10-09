@@ -4,6 +4,16 @@ import os
 import tempfile
 from packerlicious.template import Template
 
+class PackerOutput(object):
+    """
+    Output of Packer command
+    """
+    
+    def __init__(self, return_code, output, error):
+        self.return_code = return_code
+        self.output = output
+        self.error = error
+
 class Packer(object):
     """
     Packer Binary Wrapper
@@ -41,9 +51,9 @@ class Packer(object):
         os.close(template_file)
         command += template_filename
         proc = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE)
-        out = proc.communicate()[0]
+        out, err = proc.communicate()
         os.remove(template_filename)
-        return proc.returncode, out
+        return PackerOutput(proc.returncode, out, err)
 
     def validate(self, syntax_only=False, _except=None, only=None):
         """
