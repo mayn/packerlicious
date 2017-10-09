@@ -804,10 +804,10 @@ class LXD(PackerBuilder):
     resource_type = "lxd"
 
     props = {
-        'image': (basestring, True),
-        'name': (basestring, False),
-        'output_image': (basestring, False),
-        'command_wrapper': (basestring, False),
+        'image': (str, True),
+        'name': (str, False),
+        'output_image': (str, False),
+        'command_wrapper': (str, False),
     }
 
 
