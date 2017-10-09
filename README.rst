@@ -100,6 +100,7 @@ Builders:
 - file
 - googlecompute
 - hyperv-iso
+- lxd
 - null
 - oneandone
 - openstack
