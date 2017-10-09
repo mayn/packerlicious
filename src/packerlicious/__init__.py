@@ -17,7 +17,7 @@ from thirdparty.troposphere import AWSHelperFn
 from thirdparty.troposphere import AWSProperty as PackerProperty
 from thirdparty.troposphere import BaseAWSObject as BasePackerObject
 
-from template import Template
+from .template import Template
 
 __version__ = "0.4.0"
 
