@@ -35,16 +35,24 @@ class TestPackerTemplate(object):
               "source": "/source/path",
               "target": "/target/path",
               "type": "file"
+            },
+            {
+              "source": "/source/path",
+              "target": "/target/path",
+              "type": "file"
             }
           ]
         }
         """
 
         t = Template()
-        t.add_builder(builder.File(
+        t.add_builder([builder.File(
             target="/target/path",
             source="/source/path",
-        ))
+        ),builder.File(
+            target="/target/path",
+            source="/source/path",
+        )])
 
         to_json = t.to_json()
         assert to_json == json.dumps(json.loads(expected_json), sort_keys=True, indent=2,
