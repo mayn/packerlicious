@@ -18,6 +18,7 @@ from thirdparty.troposphere import AWSProperty as PackerProperty
 from thirdparty.troposphere import BaseAWSObject as BasePackerObject
 
 from template import Template
+from packer import Packer
 
 __version__ = "0.4.0"
 

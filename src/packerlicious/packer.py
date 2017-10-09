@@ -14,6 +14,11 @@ class PackerOutput(object):
         self.output = output
         self.error = error
 
+    def __str__(self):
+        return "Output: " + str(self.output) + \
+                "\nReturn code: " + str(self.return_code) + \
+                "\nError: " + str(self.error) + "\n"
+
 class Packer(object):
     """
     Packer Binary Wrapper
@@ -46,13 +51,10 @@ class Packer(object):
         self.template = template
 
     def run_command(self, command):
-        template_file, template_filename = tempfile.mkstemp()
-        os.write(template_file, self.template.to_json())
-        os.close(template_file)
-        command += template_filename
-        proc = subprocess.Popen(shlex.split(command), stdout=subprocess.PIPE)
+        command += " - "
+        proc = subprocess.Popen(shlex.split(command), stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+        proc.stdin.write(self.template.to_json())
         out, err = proc.communicate()
-        os.remove(template_filename)
         return PackerOutput(proc.returncode, out, err)
 
     def validate(self, syntax_only=False, _except=None, only=None):
