@@ -88,7 +88,10 @@ Currently supported Packer resources
 Builders:
 
 - alicloud-ecs
+- amazon-chroot
 - amazon-ebs
+- amazon-ebssurrogate
+- amazon-ebsvolume
 - amazon-instance
 - azure-arm
 - cloudstack
