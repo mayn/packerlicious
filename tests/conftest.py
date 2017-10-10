@@ -26,7 +26,7 @@ class LoadTestsSuiteCollector(pytest.Collector):
     return collected
 
   def reportinfo(self):
-    return str(self.suite)
+    return (str(self.suite), )
 
 
 class LoadTestsCase(pytest.Function):
