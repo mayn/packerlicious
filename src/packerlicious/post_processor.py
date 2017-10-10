@@ -13,8 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-from . import BasePackerObject, EnvVar, PackerProperty, TemplateVar
-import validator
+
+from . import BasePackerObject, EnvVar, PackerProperty, TemplateVar, validator
 
 
 class PackerPostProcessorChain(BasePackerObject):
@@ -39,20 +39,20 @@ class AlicloudImport(PackerPostProcessor):
     resource_type = "alicloud-import"
 
     props = {
-        'access_key': (basestring, True),
-        'secret_key': (basestring, True),
-        'region': (basestring, True),
-        'image_name': (basestring, True),
-        'oss_bucket_name': (basestring, True),
-        'image_os_type': ([basestring], True),
-        'image_platform': (basestring, True),
-        'image_architecture': ([basestring], True),
-        'format': (basestring, True),
-        'oss_key_name': (basestring, False),
+        'access_key': (str, True),
+        'secret_key': (str, True),
+        'region': (str, True),
+        'image_name': (str, True),
+        'oss_bucket_name': (str, True),
+        'image_os_type': ([str], True),
+        'image_platform': (str, True),
+        'image_architecture': ([str], True),
+        'format': (str, True),
+        'oss_key_name': (str, False),
         'skip_clean': (validator.boolean, False),
-        'image_description': (basestring, False),
+        'image_description': (str, False),
         'image_force_delete': (validator.boolean, False),
-        'image_system_size': (basestring, False),
+        'image_system_size': (str, False),
     }
 
 
@@ -68,19 +68,19 @@ class AmazonImport(PackerPostProcessor):
     LicenseBYOL = "BYOL"
 
     props = {
-        'access_key': (basestring, True),
-        'region': (basestring, True),
-        's3_bucket_name': (basestring, True),
-        'secret_key': (basestring, True),
-        'ami_description': (basestring, False),
-        'ami_groups': ([basestring], False),
-        'ami_name': (basestring, False),
-        'ami_users': ([basestring], False),
+        'access_key': (str, True),
+        'region': (str, True),
+        's3_bucket_name': (str, True),
+        'secret_key': (str, True),
+        'ami_description': (str, False),
+        'ami_groups': ([str], False),
+        'ami_name': (str, False),
+        'ami_users': ([str], False),
         'license_type': (validator.string_list_item([LicenseAWS, LicenseBYOL]), False),
-        'mfa_code': (basestring, False),
+        'mfa_code': (str, False),
         'skip_clean': (validator.boolean, False),
         'tags': (dict, False),
-        'token': (basestring, False),
+        'token': (str, False),
     }
 
 
@@ -92,7 +92,7 @@ class Artifice(PackerPostProcessor):
     resource_type = "artifice"
 
     props = {
-        'files': ([basestring], True),
+        'files': ([str], True),
     }
 
 
@@ -108,10 +108,10 @@ class Atlas(PackerPostProcessor):
     AtlasCaPath = EnvVar("ATLAS_CAPATH")
 
     props = {
-        'artifact': (basestring, True),
-        'artifact_type': (basestring, True),
-        'token': (basestring, False),
-        'atlas_url': (basestring, False),
+        'artifact': (str, True),
+        'artifact_type': (str, True),
+        'token': (str, False),
+        'atlas_url': (str, False),
         'metadata': (dict, False),
     }
 
@@ -137,8 +137,8 @@ class Checksum(PackerPostProcessor):
     ChecksumType = TemplateVar("ChecksumType")
 
     props = {
-        'checksum_types': ([basestring], False),
-        'output': (basestring, False),
+        'checksum_types': ([str], False),
+        'output': (str, False),
     }
 
     def validate(self):
@@ -162,8 +162,8 @@ class Compress(PackerPostProcessor):
     BuilderType = TemplateVar("BuilderType")
 
     props = {
-        'output': (basestring, False),
-        'format': (basestring, False),
+        'output': (str, False),
+        'format': (str, False),
         'compression_level': (validator.integer_range(-1, 9), False),
         'keep_input_artifact': (validator.boolean, False),
     }
@@ -177,8 +177,8 @@ class DockerImport(PackerPostProcessor):
     resource_type = "docker-import"
 
     props = {
-        'repository': (basestring, True),
-        'tag': (basestring, False),
+        'repository': (str, True),
+        'tag': (str, False),
     }
 
 
@@ -190,15 +190,15 @@ class DockerPush(PackerPostProcessor):
     resource_type = "docker-push"
 
     props = {
-        'aws_access_key': (basestring, False),
-        'aws_secret_key': (basestring, False),
-        'aws_token': (basestring, False),
+        'aws_access_key': (str, False),
+        'aws_secret_key': (str, False),
+        'aws_token': (str, False),
         'ecr_login': (validator.boolean, False),
         'login': (validator.boolean, False),
-        'login_email': (basestring, False),
-        'login_username': (basestring, False),
-        'login_password': (basestring, False),
-        'login_server': (basestring, False),
+        'login_email': (str, False),
+        'login_username': (str, False),
+        'login_password': (str, False),
+        'login_server': (str, False),
     }
 
 
@@ -210,7 +210,7 @@ class DockerSave(PackerPostProcessor):
     resource_type = "docker-save"
 
     props = {
-        'path': (basestring, True),
+        'path': (str, True),
     }
 
 
@@ -222,9 +222,9 @@ class DockerTag(PackerPostProcessor):
     resource_type = "docker-tag"
 
     props = {
-        'repository': (basestring, True),
-        'tag': (basestring, False),
-        'force': (basestring, False),
+        'repository': (str, True),
+        'tag': (str, False),
+        'force': (str, False),
     }
 
 
@@ -236,7 +236,7 @@ class GoogleComputeExport(PackerPostProcessor):
     resource_type = "googlecompute-export"
 
     props = {
-        'paths': ([basestring], True),
+        'paths': ([str], True),
         'keep_input_artifact': (validator.boolean, False),
     }
 
@@ -249,7 +249,7 @@ class Manifest(PackerPostProcessor):
     resource_type = "manifest"
 
     props = {
-        'output': (basestring, False),
+        'output': (str, False),
         'strip_path': (validator.boolean, False),
     }
 
@@ -270,12 +270,12 @@ class ShellLocal(PackerPostProcessor):
     PackerBuildType = EnvVar("PACKER_BUILD_TYPE")
 
     props = {
-        'inline': ([basestring], False),
-        'script': (basestring, False),
-        'scripts': ([basestring], False),
-        'environment_vars': ([basestring], False),
-        'execute_command': (basestring, False),
-        'inline_shebang': (basestring, False),
+        'inline': ([str], False),
+        'script': (str, False),
+        'scripts': ([str], False),
+        'environment_vars': ([str], False),
+        'execute_command': (str, False),
+        'inline_shebang': (str, False),
     }
 
     def validate(self):
@@ -290,10 +290,10 @@ class ShellLocal(PackerPostProcessor):
 class VagrantProviderOverride(PackerProperty):
     props = {
         'compression_level': (validator.integer_range(0, 9), False),
-        'include': ([basestring], False),
+        'include': ([str], False),
         'keep_input_artifact': (validator.boolean, False),
-        'output': (basestring, False),
-        'vagrantfile_template': (basestring, False),
+        'output': (str, False),
+        'vagrantfile_template': (str, False),
     }
 
 
@@ -321,10 +321,10 @@ class Vagrant(PackerPostProcessor):
 
     props = {
         'compression_level': (validator.integer_range(0, 9), False),
-        'include': ([basestring], False),
+        'include': ([str], False),
         'keep_input_artifact': (validator.boolean, False),
-        'output': (basestring, False),
-        'vagrantfile_template': (basestring, False),
+        'output': (str, False),
+        'vagrantfile_template': (str, False),
         'override': (VagrantOverrides, False),
     }
 
@@ -342,13 +342,13 @@ class VagrantCloud(PackerPostProcessor):
     resource_type = "vagrant-cloud"
 
     props = {
-        'access_token': (basestring, True),
-        'box_tag': (basestring, True),
-        'version': (basestring, True),
-        'no_release': (basestring, False),
-        'vagrant_cloud_url': (basestring, False),
-        'version_description': (basestring, False),
-        'box_download_url': (basestring, False),
+        'access_token': (str, True),
+        'box_tag': (str, True),
+        'version': (str, True),
+        'no_release': (str, False),
+        'vagrant_cloud_url': (str, False),
+        'version_description': (str, False),
+        'box_download_url': (str, False),
     }
 
 
@@ -361,19 +361,19 @@ class VSphere(PackerPostProcessor):
     resource_type = "vsphere"
 
     props = {
-        'cluster': (basestring, True),
-        'datacenter': (basestring, True),
-        'host': (basestring, True),
-        'password': (basestring, True),
-        'username': (basestring, True),
-        'vm_name': (basestring, True),
-        'datastore': (basestring, False),
-        'disk_mode': (basestring, False),
+        'cluster': (str, True),
+        'datacenter': (str, True),
+        'host': (str, True),
+        'password': (str, True),
+        'username': (str, True),
+        'vm_name': (str, True),
+        'datastore': (str, False),
+        'disk_mode': (str, False),
         'insecure': (validator.boolean, False),
-        'resource_pool': (basestring, False),
-        'vm_folder': (basestring, False),
-        'vm_network': (basestring, False),
+        'resource_pool': (str, False),
+        'vm_folder': (str, False),
+        'vm_network': (str, False),
         'overwrite': (validator.boolean, False),
-        'options': ([basestring], False),
+        'options': ([str], False),
     }
 

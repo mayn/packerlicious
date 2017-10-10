@@ -13,10 +13,10 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-import validator
 import warnings
 
-from . import BasePackerObject, PackerProperty, EnvVar, TemplateVar
+
+from . import BasePackerObject, PackerProperty, EnvVar, TemplateVar, validator
 
 
 class PackerProvisioner(BasePackerObject):
@@ -34,18 +34,18 @@ class AnsibleLocal(PackerProvisioner):
     resource_type = "ansible-local"
 
     props = {
-        'playbook_file': (basestring, True),
-        'command': (basestring, False),
-        'extra_arguments': ([basestring], False),
-        'inventory_groups': (basestring, False),
-        'inventory_file': (basestring, False),
-        'playbook_dir': (basestring, False),
-        'playbook_paths': ([basestring], False),
-        'galaxy_file': (basestring, False),
-        'group_vars': (basestring, False),
-        'host_vars': (basestring, False),
-        'role_paths': ([basestring], False),
-        'staging_directory': (basestring, False),
+        'playbook_file': (str, True),
+        'command': (str, False),
+        'extra_arguments': ([str], False),
+        'inventory_groups': (str, False),
+        'inventory_file': (str, False),
+        'playbook_dir': (str, False),
+        'playbook_paths': ([str], False),
+        'galaxy_file': (str, False),
+        'group_vars': (str, False),
+        'host_vars': (str, False),
+        'role_paths': ([str], False),
+        'staging_directory': (str, False),
     }
 
 
@@ -57,20 +57,20 @@ class Ansible(PackerProvisioner):
     resource_type = "ansible"
 
     props = {
-        'playbook_file': (basestring, True),
-        'ansible_env_vars': ([basestring], False),
-        'command': (basestring, False),
-        'empty_groups': ([basestring], False),
-        'extra_arguments': ([basestring], False),
-        'groups': ([basestring], False),
-        'host_alias': (basestring, False),
-        'inventory_directory': (basestring, False),
-        'local_port': (basestring, False),
-        'sftp_command': (basestring, False),
+        'playbook_file': (str, True),
+        'ansible_env_vars': ([str], False),
+        'command': (str, False),
+        'empty_groups': ([str], False),
+        'extra_arguments': ([str], False),
+        'groups': ([str], False),
+        'host_alias': (str, False),
+        'inventory_directory': (str, False),
+        'local_port': (str, False),
+        'sftp_command': (str, False),
         'skip_version_check': (validator.boolean, False),
-        'ssh_host_key_file': (basestring, False),
-        'ssh_authorized_key_file': (basestring, False),
-        'user': (basestring, False),
+        'ssh_host_key_file': (str, False),
+        'ssh_authorized_key_file': (str, False),
+        'user': (str, False),
     }
 
 
@@ -86,25 +86,25 @@ class ChefClient(PackerProvisioner):
     WINDOWS = "windows"
 
     props = {
-        'chef_environment': (basestring, False),
-        'config_template': (basestring, False),
-        'encrypted_data_bag_secret_path': (basestring, False),
-        'execute_command': (basestring, False),
+        'chef_environment': (str, False),
+        'config_template': (str, False),
+        'encrypted_data_bag_secret_path': (str, False),
+        'execute_command': (str, False),
         'guest_os_type': (validator.string_list_item([UNIX, WINDOWS]), False),
-        'install_command': (basestring, False),
-        'json': (basestring, False),
-        'knife_command': (basestring, False),
-        'node_name': (basestring, False),
+        'install_command': (str, False),
+        'json': (str, False),
+        'knife_command': (str, False),
+        'node_name': (str, False),
         'prevent_sudo': (validator.boolean, False),
-        'run_list': ([basestring], False),
-        'server_url': (basestring, False),
+        'run_list': ([str], False),
+        'server_url': (str, False),
         'skip_clean_client': (validator.boolean, False),
         'skip_clean_node': (validator.boolean, False),
         'skip_install': (validator.boolean, False),
-        'staging_directory': (basestring, False),
-        'client_key': (basestring, False),
-        'validation_client_name': (basestring, False),
-        'validation_key_path': (basestring, False),
+        'staging_directory': (str, False),
+        'client_key': (str, False),
+        'validation_client_name': (str, False),
+        'validation_key_path': (str, False),
     }
 
 
@@ -120,23 +120,23 @@ class ChefSolo(PackerProvisioner):
     WINDOWS = "windows"
 
     props = {
-        'chef_environment': (basestring, False),
-        'config_template': (basestring, False),
-        'cookbook_paths': (basestring, False),
-        'data_bags_path': (basestring, False),
-        'encrypted_data_bag_secret_path': (basestring, False),
-        'environments_path': (basestring, False),
-        'execute_command': (basestring, False),
+        'chef_environment': (str, False),
+        'config_template': (str, False),
+        'cookbook_paths': (str, False),
+        'data_bags_path': (str, False),
+        'encrypted_data_bag_secret_path': (str, False),
+        'environments_path': (str, False),
+        'execute_command': (str, False),
         'guest_os_type': (validator.string_list_item([UNIX, WINDOWS]), False),
-        'install_command': (basestring, False),
-        'json': (basestring, False),
+        'install_command': (str, False),
+        'json': (str, False),
         'prevent_sudo': (validator.boolean, False),
-        'remote_cookbook_paths': ([basestring], False),
-        'roles_path': (basestring, False),
-        'run_list': ([basestring], False),
+        'remote_cookbook_paths': ([str], False),
+        'roles_path': (str, False),
+        'run_list': ([str], False),
         'skip_install': (validator.boolean, False),
-        'staging_directory': (basestring, False),
-        'version': (basestring, False),
+        'staging_directory': (str, False),
+        'version': (str, False),
     }
 
 
@@ -145,9 +145,9 @@ class ModuleDirectory(PackerProperty):
     https://www.packer.io/docs/provisioners/converge.html#module-directories
     """
     props = {
-        'source': (basestring, True),
-        'destination': (basestring, True),
-        'exclude': ([basestring], False),
+        'source': (str, True),
+        'destination': (str, True),
+        'exclude': ([str], False),
     }
 
 
@@ -166,16 +166,16 @@ class Converge(PackerProvisioner):
     Version = TemplateVar("Version")
 
     props = {
-        'module': (basestring, True),
+        'module': (str, True),
         'bootstrap': (validator.boolean, False),
-        'bootstrap_command': (basestring, False),
-        'execute_command': (basestring, False),
+        'bootstrap_command': (str, False),
+        'execute_command': (str, False),
         'module_dirs': ([ModuleDirectory], False),
         'params': (dict, False),
         'prevent_bootstrap_sudo': (validator.boolean, False),
         'prevent_sudo': (validator.boolean, False),
-        'version': (basestring, False),
-        'working_directory': (basestring, False),
+        'version': (str, False),
+        'working_directory': (str, False),
     }
 
 
@@ -191,8 +191,8 @@ class File(PackerProvisioner):
     Download = "download"
 
     props = {
-        'source': (basestring, True),
-        'destination': (basestring, True),
+        'source': (str, True),
+        'destination': (str, True),
         'direction': (validator.string_list_item([Upload, Download]), True),
     }
 
@@ -214,17 +214,17 @@ class PowerShell(PackerProvisioner):
     PackerHttpAddr = EnvVar("PACKER_HTTP_ADDR")
 
     props = {
-        'inline': ([basestring], False),
-        'script': (basestring, False),
-        'scripts': ([basestring], False),
+        'inline': ([str], False),
+        'script': (str, False),
+        'scripts': ([str], False),
         'binary': (validator.boolean, False),
-        'environment_vars': ([basestring], False),
-        'execute_command': (basestring, False),
-        'elevated_user': (basestring, False),
-        'elevated_password': (basestring, False),
-        'remote_path': (basestring, False),
+        'environment_vars': ([str], False),
+        'execute_command': (str, False),
+        'elevated_user': (str, False),
+        'elevated_password': (str, False),
+        'remote_path': (str, False),
         'skip_clean': (validator.boolean, False),
-        'start_retry_timeout': (basestring, False),
+        'start_retry_timeout': (str, False),
         'valid_exit_codes': ([int], False),
     }
 
@@ -245,18 +245,18 @@ class PuppetMasterless(PackerProvisioner):
     resource_type = "puppet-masterless"
 
     props = {
-        'manifest_file': (basestring, True),
-        'extra_arguments': ([basestring], False),
-        'execute_command': (basestring, False),
+        'manifest_file': (str, True),
+        'extra_arguments': ([str], False),
+        'execute_command': (str, False),
         'facter': (dict, False),
-        'hiera_config_path': (basestring, False),
+        'hiera_config_path': (str, False),
         'ignore_exit_codes': (validator.boolean, False),
-        'manifest_dir': (basestring, False),
-        'module_paths': ([basestring], False),
+        'manifest_dir': (str, False),
+        'module_paths': ([str], False),
         'prevent_sudo': (validator.boolean, False),
-        'puppet_bin_dir': (basestring, False),
-        'staging_directory': (basestring, False),
-        'working_directory': (basestring, False),
+        'puppet_bin_dir': (str, False),
+        'staging_directory': (str, False),
+        'working_directory': (str, False),
     }
 
 
@@ -268,16 +268,16 @@ class PuppetServer(PackerProvisioner):
     resource_type = "puppet-server"
 
     props = {
-        'client_cert_path': (basestring, False),
-        'client_private_key_path': (basestring, False),
-        'execute_command': (basestring, False),
+        'client_cert_path': (str, False),
+        'client_private_key_path': (str, False),
+        'execute_command': (str, False),
         'facter': (dict, False),
         'ignore_exit_codes': (validator.boolean, False),
-        'options': (basestring, False),
+        'options': (str, False),
         'prevent_sudo': (validator.boolean, False),
-        'puppet_node': (basestring, False),
-        'puppet_server': (basestring, False),
-        'staging_dir': (basestring, False),
+        'puppet_node': (str, False),
+        'puppet_server': (str, False),
+        'staging_dir': (str, False),
     }
 
 
@@ -289,21 +289,21 @@ class SaltMasterless(PackerProvisioner):
     resource_type = "salt-masterless"
 
     props = {
-        'local_state_tree': (basestring, True),
-        'bootstrap_args': (basestring, False),
+        'local_state_tree': (str, True),
+        'bootstrap_args': (str, False),
         'disable_sudo': (validator.boolean, False),
-        'remote_pillar_roots': (basestring, False),
-        'remote_state_tree': (basestring, False),
-        'local_pillar_roots': (basestring, False),
-        'custom_state': (basestring, False),
-        'minion_config': (basestring, False),
-        'grains_file': (basestring, False),
+        'remote_pillar_roots': (str, False),
+        'remote_state_tree': (str, False),
+        'local_pillar_roots': (str, False),
+        'custom_state': (str, False),
+        'minion_config': (str, False),
+        'grains_file': (str, False),
         'skip_bootstrap': (validator.boolean, False),
-        'temp_config_dir': (basestring, False),
+        'temp_config_dir': (str, False),
         'no_exit_on_failure': (validator.boolean, False),
-        'log_level': (basestring, False),
-        'salt_call_args': (basestring, False),
-        'salt_bin_dir': (basestring, False),
+        'log_level': (str, False),
+        'salt_call_args': (str, False),
+        'salt_bin_dir': (str, False),
     }
 
     def validate(self):
@@ -334,19 +334,19 @@ class Shell(PackerProvisioner):
     PackerHttpAddr = EnvVar("PACKER_HTTP_ADDR")
 
     props = {
-        'inline': ([basestring], False),
-        'script': (basestring, False),
-        'scripts': ([basestring], False),
+        'inline': ([str], False),
+        'script': (str, False),
+        'scripts': ([str], False),
         'binary': (validator.boolean, False),
-        'environment_vars': ([basestring], False),
-        'execute_command': (basestring, False),
+        'environment_vars': ([str], False),
+        'execute_command': (str, False),
         'expect_disconnect': (validator.boolean, False),
-        'inline_shebang': (basestring, False),
-        'remote_folder': (basestring, False),
-        'remote_file': (basestring, False),
-        'remote_path': (basestring, False),
+        'inline_shebang': (str, False),
+        'remote_folder': (str, False),
+        'remote_file': (str, False),
+        'remote_path': (str, False),
         'skip_clean': (validator.boolean, False),
-        'start_retry_timeout': (basestring, False),
+        'start_retry_timeout': (str, False),
     }
 
     def validate(self):
@@ -369,8 +369,8 @@ class ShellLocal(PackerProvisioner):
     Command = TemplateVar("Command")
 
     props = {
-        'command': (basestring, True),
-        'execute_command': ([basestring], False),
+        'command': (str, True),
+        'execute_command': ([str], False),
     }
 
 
@@ -386,14 +386,14 @@ class WindowsShell(PackerProvisioner):
     Path = TemplateVar("Path")
 
     props = {
-        'inline': ([basestring], False),
-        'script': (basestring, False),
-        'scripts': ([basestring], False),
+        'inline': ([str], False),
+        'script': (str, False),
+        'scripts': ([str], False),
         'binary': (validator.boolean, False),
-        'environment_vars': ([basestring], False),
-        'execute_command': (basestring, False),
-        'remote_path': (basestring, False),
-        'start_retry_timeout': (basestring, False),
+        'environment_vars': ([str], False),
+        'execute_command': (str, False),
+        'remote_path': (str, False),
+        'start_retry_timeout': (str, False),
     }
 
     def validate(self):
@@ -413,7 +413,7 @@ class WindowsRestart(PackerProvisioner):
     resource_type = "windows-restart"
 
     props = {
-        'restart_command': (basestring, False),
-        'restart_check_command': (basestring, False),
-        'restart_timeout': (basestring, False),
+        'restart_command': (str, False),
+        'restart_check_command': (str, False),
+        'restart_timeout': (str, False),
     }

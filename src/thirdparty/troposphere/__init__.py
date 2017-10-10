@@ -3,9 +3,10 @@
 #
 # See LICENSE file for full license.
 
+
 from future import standard_library
 standard_library.install_aliases()
-
+from future.utils import native
 from collections import OrderedDict
 import json
 import re
@@ -47,7 +48,7 @@ def encode_to_dict(obj):
         return new_lst
     elif isinstance(obj, dict):
         props = OrderedDict()
-        for name, prop in obj.items():
+        for name, prop in list(obj.items()):
             props[name] = encode_to_dict(prop)
 
         return props
@@ -63,7 +64,7 @@ class BaseAWSObject(object):
         self.title = title
         self.template = template
         # Cache the keys for validity checks
-        self.propnames = self.props.keys()
+        self.propnames = list(self.props.keys())
         self.attributes = ['DependsOn', 'DeletionPolicy',
                            'Metadata', 'UpdatePolicy',
                            'Condition', 'CreationPolicy']
@@ -86,13 +87,13 @@ class BaseAWSObject(object):
         self.__initialized = True
 
         # Check for properties defined in the class
-        for k, (_, required) in self.props.items():
+        for k, (_, required) in list(self.props.items()):
             v = getattr(type(self), k, None)
             if v is not None and k not in kwargs:
                 self.__setattr__(k, v)
 
         # Now that it is initialized, populate it with the kwargs
-        for k, v in kwargs.items():
+        for k, v in list(kwargs.items()):
             self.__setattr__(k, v)
 
         # Bound it to template if we know it
@@ -114,7 +115,7 @@ class BaseAWSObject(object):
             raise AttributeError(name)
 
     def __setattr__(self, name, value):
-        if name in self.__dict__.keys() \
+        if name in list(self.__dict__.keys()) \
                 or '_BaseAWSObject__initialized' not in self.__dict__:
             return dict.__setattr__(self, name, value)
         elif name in self.attributes:
@@ -206,7 +207,7 @@ class BaseAWSObject(object):
             return encode_to_dict(self.resource)
         elif hasattr(self, 'resource_type'):
             d = {}
-            for k, v in self.resource.items():
+            for k, v in list(self.resource.items()):
                 if k != 'Properties':
                     d[k] = v
             return d
@@ -216,7 +217,7 @@ class BaseAWSObject(object):
     @classmethod
     def _from_dict(cls, title=None, **kwargs):
         props = {}
-        for prop_name, value in kwargs.items():
+        for prop_name, value in list(kwargs.items()):
             try:
                 prop_attrs = cls.props[prop_name]
             except KeyError:
@@ -257,7 +258,7 @@ class BaseAWSObject(object):
         return cls._from_dict(title, **d)
 
     def _validate_props(self):
-        for k, (_, required) in self.props.items():
+        for k, (_, required) in list(self.props.items()):
             if required and k not in self.properties:
                 rtype = getattr(self, 'resource_type', "<unknown type>")
                 title = getattr(self, 'title')
@@ -318,7 +319,7 @@ class AWSAttribute(BaseAWSObject):
 
 
 def validate_delimiter(delimiter):
-    if not isinstance(delimiter, basestring):
+    if not isinstance(delimiter, str):
         raise ValueError(
             "Delimiter must be a String, %s provided" % type(delimiter)
         )
@@ -353,17 +354,17 @@ class Parameter(AWSDeclaration):
     STRING_PROPERTIES = ['AllowedPattern', 'MaxLength', 'MinLength']
     NUMBER_PROPERTIES = ['MaxValue', 'MinValue']
     props = {
-        'Type': (basestring, True),
-        'Default': ((basestring, int, float), False),
+        'Type': (str, True),
+        'Default': ((str, int, float), False),
         'NoEcho': (bool, False),
         'AllowedValues': (list, False),
-        'AllowedPattern': (basestring, False),
+        'AllowedPattern': (str, False),
         # 'MaxLength': (validators.positive_integer, False),
         # 'MinLength': (validators.positive_integer, False),
         # 'MaxValue': (validators.integer, False),
         # 'MinValue': (validators.integer, False),
-        'Description': (basestring, False),
-        'ConstraintDescription': (basestring, False),
+        'Description': (str, False),
+        'ConstraintDescription': (str, False),
     }
 
     def validate_title(self):
@@ -389,25 +390,25 @@ class Parameter(AWSDeclaration):
             # matches (in the case of a String Type) or can be coerced
             # into one of the number formats.
             param_type = self.properties.get('Type')
-            if param_type == 'String' and not isinstance(default, basestring):
+            if param_type == 'String' and not isinstance(default, str):
                 raise ValueError(error_str %
                                  ('String', type(default), default))
             elif param_type == 'Number':
                 allowed = [float, int]
                 # See if the default value can be coerced into one
                 # of the correct types
-                if not any(map(lambda x: check_type(x, default), allowed)):
+                if not any([check_type(x, default) for x in allowed]):
                     raise ValueError(error_str %
                                      (param_type, type(default), default))
             elif param_type == 'List<Number>':
-                if not isinstance(default, basestring):
+                if not isinstance(default, str):
                     raise ValueError(error_str %
                                      (param_type, type(default), default))
                 allowed = [float, int]
                 dlist = default.split(",")
                 for d in dlist:
                     # Verify the split array are all numbers
-                    if not any(map(lambda x: check_type(x, d), allowed)):
+                    if not any([check_type(x, d) for x in allowed]):
                         raise ValueError(error_str %
                                          (param_type, type(d), dlist))
 
