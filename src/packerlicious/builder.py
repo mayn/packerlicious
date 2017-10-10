@@ -810,6 +810,24 @@ class LXD(PackerBuilder):
         'command_wrapper': (str, False),
     }
 
+class LXC(PackerBuilder):
+    """
+    LXC Builder
+    https://www.packer.io/docs/builders/lxc.html
+    """
+    resource_type = "lxc"
+
+    props = {
+        'config_file': (str, True),
+        'template_name': (str, True),
+        'template_environment_vars': ([str], True),
+        'target_runlevel': (int, False),
+        'output_directory': (str, False),
+        'container_name': (str, False),
+        'command_wrapper': (str, False),
+        'init_timeout': (str, False),
+        'template_parameters': ([str], False),
+    }
 
 class Null(PackerBuilder):
     """
