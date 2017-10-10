@@ -7,6 +7,9 @@ packerlicious
 .. image:: https://travis-ci.org/mayn/packerlicious.svg?branch=master
     :target: https://travis-ci.org/mayn/packerlicious
 
+.. image:: https://ci.appveyor.com/api/projects/status/9av1rr1li2ah25gs/branch/master?svg=true
+    :target: https://ci.appveyor.com/project/mayn/packerlicious
+
 .. image:: https://coveralls.io/repos/github/mayn/packerlicious/badge.svg?branch=master
     :target: https://coveralls.io/github/mayn/packerlicious
 
