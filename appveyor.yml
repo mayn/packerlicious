@@ -1,0 +1,14 @@
+environment:
+  matrix:
+    - PYTHON: "C:\\Python26"
+    - PYTHON: "C:\\Python27"
+
+install:
+  - SET "PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
+  - python --version
+  - pip install -r requirements-travis.txt
+
+build: off
+
+test_script:
+  - tox -e appveyor
