@@ -914,6 +914,31 @@ class OpenStack(PackerBuilder):
         validator.exactly_one(self.__class__.__name__, self.properties, conds)
 
 
+class OracleOCI(PackerBuilder):
+    """
+    OracleOCI Builder
+    https://www.packer.io/docs/builders/oracle-oci.html
+    """
+    resource_type = "orcale_oci"
+
+    props = {
+        'availability_domain': (str, True),
+        'base_image_ocid': (str, True),
+        'compartment_ocid': (str, True),
+        'fingerprint': (str, True),
+        'shape': (str, True),
+        'subnet_ocid': (str, True),
+        'access_cfg_file': (str, False),
+        'access_cfg_file_account': (str, False),
+        'image_name': (str, False),
+        'key_file': (str, False),
+        'pass_phrase': (str, False),
+        'region': (str, False),
+        'tenancy_ocid': (str, False),
+        'user_ocid': (str, False),
+    }
+
+
 class ProfitBricks(PackerBuilder):
     """
     ProfitBricks Builder
