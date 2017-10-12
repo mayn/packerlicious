@@ -377,3 +377,20 @@ class VSphere(PackerPostProcessor):
         'options': ([str], False),
     }
 
+class VSphereTemplate(PackerPostProcessor):
+    """
+    vSphere Template Post-Processor
+    https://www.packer.io/docs/post-processors/vsphere-template.html
+    """
+
+    resource_type = "vsphere-template"
+
+    props = {
+        'host': (str, True),
+        'password': (str, True),
+        'username': (str, True),
+        'datacenter': (str, False),
+        'folder': (str, False),
+        'insecure': (validator.boolean, False),
+    }
+
