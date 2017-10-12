@@ -1,6 +1,8 @@
 environment:
+  requirementsFile: "requirements-travis.txt"
   matrix:
     - PYTHON: "C:\\Python26"
+      requirementsFile: "requirements-travis-26.txt"
     - PYTHON: "C:\\Python27"
     - PYTHON: "C:\\Python33"
     - PYTHON: "C:\\Python34"
@@ -10,7 +12,7 @@ environment:
 install:
   - SET "PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - python --version
-  - pip install -r requirements-travis.txt
+  - pip install -r %requirementsFile%
 
 build: off
 

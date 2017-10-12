@@ -13,7 +13,9 @@ python:
 before_install:
   - pip install --upgrade pip setuptools wheel
 install:
-  - pip install -r requirements-travis.txt
+  - requirementsFile="requirements-travis.txt"
+  - if [ "$TRAVIS_PYTHON_VERSION" == "2.6" ]; then requirementsFile="requirements-travis-26.txt"; fi
+  - pip install -r $requirementsFile
 script:
   - tox
 after_success:
