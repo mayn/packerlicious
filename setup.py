@@ -16,9 +16,13 @@ limitations under the License.
 from distutils.core import setup
 from setuptools import find_packages
 
+# opening and reading the file version.py
+vop = open("src/packerlicious/version.py","r")
+
+
 setup(
     name='packerlicious',
-    version='0.4.0',
+    version=vop,
     author='Matthew Aynalem',
     author_email='maynalem@gmail.com',
     packages=find_packages('src'),
