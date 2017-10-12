@@ -1,2 +1,3 @@
+cryptography<2.1
 coveralls
 tox-travis
