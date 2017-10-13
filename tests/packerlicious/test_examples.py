@@ -22,7 +22,10 @@ class TestFileExamples(object):
     def load_example_file(self, example_output_filename):
         original_example = example_output_filename.split('.')[0]
         example_module = import_module('examples.' + original_example)
-        assert self.output_files[original_example + '.template'].rstrip() == example_module.t.to_json()
+        assert (
+            self.output_files[original_example + '.template'].rstrip() == example_module.t.to_json(),
+            "The file {0}.template doesn't have the same result as {0}.py".format(original_example)
+        )
 
     def test_examples(self):
         self.load_output_files()
