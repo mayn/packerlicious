@@ -134,6 +134,7 @@ Post Processors:
 - vagrant
 - vagrant-cloud
 - vsphere
+- vsphere-template
 
 Provisioners:
 
