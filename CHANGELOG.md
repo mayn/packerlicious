@@ -3,6 +3,37 @@
 
 
 
+## 0.5.0 (October 10, 2017)
+Thanks to all the hacktoberfest participants that made this release possible.
+
+
+### FEATURES:
+* builder/AmazonChroot: add support for packer's amazon chroot builder [GH-19]
+* builder/AmazonEbsSurrogate: add support for packer's amazon ebs surrogate builder [GH-19]
+* builder/AmazonEbsVolume: add support for packer's amazon ebs volume builder [GH-19]
+* builder/LXC: add support for packer's lxc builder [GH-37]
+* builder/LXD: add support for packer's lxd builder [GH-33]
+* builder/OracleOCI: add support for packer's oracle oci builder [GH-50]
+* post_processor/VSphereTemplate: add support for packer's vsphere template builder [GH-60]
+
+### IMPROVEMENTS:
+* add python3 compatibility [GH-35]
+
+### MISC:
+* remove duplicated keys from HyperV and VirtualboxIso builders [GH-61]
+* add licence and classifiers to setup.py [GH-59]
+* add github pull request template [GH-47]
+* appveyor support for testing on windows [GH-36]
+* appveyor add python3 testing[GH-39]
+* appveyor tox testenv, default PYTHON to empty string[ GH-51]
+* appveyor fix python 2.6 build environment [GH-53]
+* remove leading ellipsis from README.rst [GH-29]
+* add amazon builders to supported list [GH-32]
+* add lxc builder to supported list [GH-41]
+* improve test coverage for list of builders [GH-34]
+
+
+
 ## 0.4.0 (Augutst 20, 2017)
 
 ### FEATURES:
