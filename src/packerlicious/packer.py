@@ -1,8 +1,9 @@
-import subprocess
-import shlex
 import os
-import tempfile
+import shlex
+import subprocess
+
 from packerlicious.template import Template
+
 
 class PackerOutput(object):
     """
