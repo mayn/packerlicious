@@ -918,7 +918,7 @@ class OracleOCI(PackerBuilder):
     OracleOCI Builder
     https://www.packer.io/docs/builders/oracle-oci.html
     """
-    resource_type = "orcale_oci"
+    resource_type = "oracle-oci"
 
     props = {
         'availability_domain': (str, True),
