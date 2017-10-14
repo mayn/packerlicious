@@ -1,12 +1,10 @@
-## Issue Addressed
-Link to the issue being addressed or any other mentions
-
-## Description
-A few sentences describing the overall goals of the pull request's commits.
-
-## List of Changes Proposed
+### Issue
+<!-- Link to the issue being addressed -->
 
 
+### List of Changes Proposed
+<!-- what is being changed and why? -->
 
-## Testing
-Specify the steps to test or reproduce the PR
+
+### Testing Evidence
+<!-- surely this change was tested, show the evidence -->
