@@ -18,8 +18,9 @@ from thirdparty.troposphere import AWSProperty as PackerProperty
 from thirdparty.troposphere import BaseAWSObject as BasePackerObject
 
 from .template import Template
+from .version import __version__ as version
 
-__version__ = "0.5.0"
+__version__ = version
 
 
 class Ref(AWSHelperFn):
