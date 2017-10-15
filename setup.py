@@ -16,9 +16,19 @@ limitations under the License.
 from distutils.core import setup
 from setuptools import find_packages
 
+
+def get_version():
+    with open('src/packerlicious/version.py') as f:
+        for line in f.readlines():
+            if line.startswith("__version__"):
+                version = line.split()[-1].strip('"')
+                return version
+        raise AttributeError("{0} __version__ not found".format(f.name))
+
+
 setup(
     name='packerlicious',
-    version='0.5.0',
+    version=get_version(),
     author='Matthew Aynalem',
     author_email='maynalem@gmail.com',
     packages=find_packages('src'),
