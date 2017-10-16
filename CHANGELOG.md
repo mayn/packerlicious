@@ -3,7 +3,7 @@
 
 
 
-## 0.5.0 (October 10, 2017)
+## 0.5.0 (October 13, 2017)
 Thanks to all the hacktoberfest participants that made this release possible.
 
 
