@@ -667,6 +667,7 @@ class Docker(PackerBuilder):
         'aws_token': (str, False),
         'changes': ([str], False),
         'ecr_login': (validator.boolean, False),
+        'fix_upload_owner': (validator.boolean, False),
         'login': (validator.boolean, False),
         'login_email': (str, False),
         'login_username': (str, False),
