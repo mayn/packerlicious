@@ -677,6 +677,7 @@ class Docker(PackerBuilder):
         'pull': (validator.boolean, False),
         'run_command': (str, False),
         'volumes': (dict, False),
+        'fix_upload_owner': (validator.boolean, False),
     }
 
     def validate(self):
