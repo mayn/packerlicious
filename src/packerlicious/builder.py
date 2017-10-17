@@ -1152,6 +1152,7 @@ class VirtualboxOvf(PackerBuilder):
         'http_port_max': (int, False),
         'import_flags': ([str], False),
         'import_opts': (str, False),
+        'keep_registered': (validator.boolean, False),
         'output_directory': (str, False),
         'post_shutdown_delay': (str, False),
         'shutdown_command': (str, False),
