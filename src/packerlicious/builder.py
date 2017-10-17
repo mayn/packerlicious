@@ -790,6 +790,7 @@ class HyperV(PackerBuilder):
         'skip_compaction': (validator.boolean, False),
         'switch_name': (str, False),
         'switch_vlan_id': (str, False),
+        'vhd_temp_path': (str, False),
         'vlan_id': (str, False),
         'vm_name': (str, False),
         'temp_path': (str, False),
