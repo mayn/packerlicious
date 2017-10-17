@@ -1195,6 +1195,7 @@ class VMwareIso(PackerBuilder):
         'disk_additional_size': ([int], False),
         'disk_size': (int, False),
         'disk_type_id': (str, False),
+        'disable_vnc': (validator.boolean, False),
         'floppy_files': ([str], False),
         'floppy_dirs': ([str], False),
         'fusion_app_path': (str, False),
