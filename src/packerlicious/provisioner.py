@@ -18,6 +18,9 @@ import warnings
 
 from . import BasePackerObject, PackerProperty, EnvVar, TemplateVar, validator
 
+# guest_os_type options for Chef and Puppet
+UNIX = "unix"
+WINDOWS = "windows"
 
 class PackerProvisioner(BasePackerObject):
 
@@ -81,10 +84,6 @@ class ChefClient(PackerProvisioner):
     """
     resource_type = "chef-client"
 
-    # guest_os_type options
-    UNIX = "unix"
-    WINDOWS = "windows"
-
     props = {
         'chef_environment': (str, False),
         'config_template': (str, False),
@@ -114,10 +113,6 @@ class ChefSolo(PackerProvisioner):
     https://www.packer.io/docs/provisioners/chef-solo.html
     """
     resource_type = "chef-solo"
-
-    # guest_os_type options
-    UNIX = "unix"
-    WINDOWS = "windows"
 
     props = {
         'chef_environment': (str, False),
@@ -246,8 +241,9 @@ class PuppetMasterless(PackerProvisioner):
 
     props = {
         'manifest_file': (str, True),
-        'extra_arguments': ([str], False),
         'execute_command': (str, False),
+        'extra_arguments': ([str], False),
+        'guest_os_type': (validator.string_list_item([UNIX, WINDOWS]), False),
         'facter': (dict, False),
         'hiera_config_path': (str, False),
         'ignore_exit_codes': (validator.boolean, False),
@@ -272,9 +268,11 @@ class PuppetServer(PackerProvisioner):
         'client_private_key_path': (str, False),
         'execute_command': (str, False),
         'facter': (dict, False),
+        'guest_os_type': (validator.string_list_item([UNIX, WINDOWS]), False),
         'ignore_exit_codes': (validator.boolean, False),
         'options': (str, False),
         'prevent_sudo': (validator.boolean, False),
+        'puppet_bin_dir': (str, False),
         'puppet_node': (str, False),
         'puppet_server': (str, False),
         'staging_dir': (str, False),

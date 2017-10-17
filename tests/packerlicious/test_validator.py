@@ -122,6 +122,9 @@ class TestValidator(unittest.TestCase):
         for s in ['/%s/' % ('a'*511), '/%s/' % ('a'*1025)]:
             with pytest.raises(ValueError):
                 iam_path(s)
+        for s in ['%s' % ('a'*5)]:
+            with pytest.raises(ValueError):
+                iam_path(s)
 
     def test_iam_role_name(self):
         for s in ['a'*30, 'a'*64]:
