@@ -18,6 +18,8 @@ limitations under the License.
 """
 from re import compile
 
+import sys
+
 
 def boolean(x):
     if x in [True, 1, '1', 'true', 'True']:
@@ -58,6 +60,17 @@ def network_port(x):
     if int(i) < -1 or int(i) > 65535:
         raise ValueError("network port %r must been between 0 and 65535" % i)
     return x
+
+
+def network_cidr(cidr):
+    import ipaddress
+
+    # for py2.x support ensure we use unicode
+    if sys.version_info[0] < 3 and not isinstance(cidr, unicode):
+            cidr = unicode(cidr)
+
+    if ipaddress.ip_network(cidr):
+        return cidr
 
 
 def tg_healthcheck_port(x):

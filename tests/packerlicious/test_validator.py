@@ -6,7 +6,7 @@ import pytest
 
 from thirdparty.troposphere import Parameter, Ref
 from packerlicious.validator import boolean, integer, integer_range
-from packerlicious.validator import network_port
+from packerlicious.validator import network_cidr, network_port
 from packerlicious.validator import tg_healthcheck_port
 from packerlicious.validator import s3_bucket_name, encoding, status
 from packerlicious.validator import iam_path, iam_names, iam_role_name
@@ -59,6 +59,17 @@ class TestValidator(unittest.TestCase):
     def test_network_port_ref(self):
         p = Parameter('myport')
         network_port(Ref(p))
+
+    def test_network_cidr(self):
+        for x in ['12.14.0.0/18', u'192.168.2.0/24', '10.0.0.0/9',
+                  '0.0.0.0/0', '172.16.0.0/14', '8.7.0.0/29',
+                  '2001:db8::/48', u'2001::/56', '127.0.0.0/32']:
+            network_cidr(x)
+        for x in ['127.0.0.0/33', '127.0.0.0/-1', u'127.0.0.300/28',
+                  '2001:db8::2:1/256', '2001:db8:::9999/56',
+                  '2001:db8::2:1/56', u'::ffff:192.0.2.100/48']:
+            with pytest.raises(ValueError):
+                network_cidr(x)
 
     def test_tg_healthcheck_port(self):
         for x in ["traffic-port"]:
