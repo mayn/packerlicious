@@ -1,70 +1,38 @@
 # Copyright (c) 2012-2013, Mark Peek <mark@peek.org>
 # All rights reserved.
-#
-from __future__ import unicode_literals
 
 import os
 import re
-import sys
-import unittest
-import pytest
-from io import StringIO
-
-try:
-    u = unicode
-except NameError:
-    u = str
-
-@pytest.mark.skip
-class TestExamples(unittest.TestCase):
-
-    maxDiff = None
-
-    # those are set by create_test_class
-    filename = None
-    expected_output = None
-
-    def test_example(self):
-        saved = sys.stdout
-        stdout = StringIO()
-        try:
-            sys.stdout = stdout
-
-            with open(self.filename) as f:
-                code = compile(f.read(), self.filename, "exec")
-                exec(code, {'__name__': '__main__'})
-        finally:
-            sys.stdout = saved
-        # rewind fake stdout so we can read it
-        stdout.seek(0)
-        actual_output = stdout.read()
-        self.assertEqual(u(self.expected_output), u(actual_output))
+from importlib import import_module
 
 
-def create_test_class(testname, **kwargs):
-    klass = type(testname, (TestExamples,), kwargs)
-    return klass
+class TestFileExamples(object):
+
+    output_files = None
+
+    def load_output_files(self):
+        self.output_files = {}
+        regex = re.compile(r'.template', re.I)
+        current_directory = os.path.dirname(os.path.realpath(__file__)) + '/../' + 'examples_output'
+        example_filenames = filter(regex.search, os.listdir(current_directory))
+        for example_filename in example_filenames:
+            with open(current_directory + '/' + example_filename) as f:
+                self.output_files[example_filename] = f.read()
+
+    def load_example_file(self, example_output_filename):
+        original_example = example_output_filename.split('.')[0]
+        example_module = import_module('examples.' + original_example)
+        assert (
+            self.output_files[original_example + '.template'].rstrip() == example_module.t.to_json(),
+            "The file {0}.template doesn't have the same result as {0}.py".format(original_example)
+        )
+
+    def test_examples(self):
+        self.load_output_files()
+        for file_name in self.output_files.keys():
+            self.load_example_file(file_name)
 
 
-def load_tests(loader, tests, pattern):
-    # Filter out all *.py files from the examples directory
-    examples = 'examples'
-    regex = re.compile(r'.py$', re.I)
-    example_filesnames = filter(regex.search, os.listdir(examples))
-
-    suite = unittest.TestSuite()
-
-    for f in example_filesnames:
-        testname = 'test_' + f[:-3]
-        expected_output = open('tests/examples_output/%s.template' %
-                               f[:-3]).read()
-        test_class = create_test_class(testname, filename=examples + '/' + f,
-                                       expected_output=expected_output)
-        tests = loader.loadTestsFromTestCase(test_class)
-        suite.addTests(tests)
-
-    return suite
 
 
-if __name__ == '__main__':
-    unittest.main()
+
