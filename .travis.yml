@@ -17,6 +17,7 @@ install:
   - if [ "$TRAVIS_PYTHON_VERSION" == "2.6" ]; then requirementsFile="requirements-travis-26.txt"; fi
   - pip install -r $requirementsFile
 script:
+  - ./tools/get-packer.sh
   - tox
 after_success:
   - if [ "$TRAVIS_PYTHON_VERSION" == "2.7" ]; then coveralls; fi
