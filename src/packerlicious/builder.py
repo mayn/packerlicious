@@ -944,6 +944,75 @@ class OracleOCI(PackerBuilder):
     }
 
 
+class ParallelsISO(PackerBuilder):
+    """
+    ParallelsISO Builder
+    https://www.packer.io/docs/builders/parallels-iso.html
+    """
+    resource_type = "parallels-iso"
+
+    props = {
+        'iso_checksum': (str, True),
+        'iso_checksum_type': (str, True),
+        'iso_checksum_url': (str, True),
+        'iso_url': (str, True),
+        'parallels_tools_flavour': (str, True),
+        'boot_command': ([str], False),
+        'boot_wait': (str, False),
+        'disk_size': (int, False),
+        'disk_type': (str, False),
+        'floppy_files': ([str], False),
+        'floppy_dirs': ([str], False),
+        'guest_os_type': (str, False),
+        'hard_drive_interface': (str, False),
+        'host_interface': ([str], False),
+        'http_directory': (str, False),
+        'http_port_min': (int, False),
+        'http_port_max': (int, False),
+        'iso_target_extension': (str, False),
+        'iso_target_path': (str, False),
+        'iso_urls': ([str], False),
+        'output_directory': (str, False),
+        'parallels_tools_guest_path': (str, False),
+        'parallels_tools_mode': (str, False),
+        'prlctl': ([[str]], False),
+        'prlctl_post': ([[str]], False),
+        'prlctl_version_file': (str, False),
+        'shutdown_command': (str, False),
+        'shutdown_timeout': (str, False),
+        'skip_compaction': (bool, False),
+        'vm_name': (str, False),
+    }
+
+
+class ParallelsPVM(PackerBuilder):
+    """
+    ParallelsPVM Builder
+    https://www.packer.io/docs/builders/parallels-pvm.html
+    """
+    resource_type = "parallels-pvm"
+
+    props = {
+        'parallels_tools_flavour': (str, True),
+        'source_path': (str, True),
+        'boot_command': ([str], False),
+        'boot_wait': (str, False),
+        'floppy_files': ([str], False),
+        'floppy_dirs': ([str], False),
+        'output_directory': (str, False),
+        'parallels_tools_guest_path': (str, False),
+        'parallels_tools_mode': (str, False),
+        'prlctl': ([[str]], False),
+        'prlctl_post': ([[str]], False),
+        'prlctl_version_file': (str, False),
+        'reassign_mac': (bool, False),
+        'shutdown_command': (str, False),
+        'shutdown_timeout': (str, False),
+        'skip_compaction': (bool, False),
+        'vm_name': (str, False),
+    }
+
+
 class ProfitBricks(PackerBuilder):
     """
     ProfitBricks Builder
