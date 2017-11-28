@@ -340,6 +340,7 @@ class Shell(PackerProvisioner):
         'execute_command': (str, False),
         'expect_disconnect': (validator.boolean, False),
         'inline_shebang': (str, False),
+        'pause_before': (str, False),
         'remote_folder': (str, False),
         'remote_file': (str, False),
         'remote_path': (str, False),
