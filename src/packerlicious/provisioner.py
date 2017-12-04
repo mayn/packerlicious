@@ -23,8 +23,19 @@ UNIX = "unix"
 WINDOWS = "windows"
 
 class PackerProvisioner(BasePackerObject):
+    """
+    packer provisioner
+    https://www.packer.io/docs/templates/provisioners.html
+    TODO attribute validation
+    """
+    provisioner_props = {
+        'pause_before': (str, False),
+    }
 
     def __init__(self, title=None, **kwargs):
+
+        for k, v in list(self.provisioner_props.items()):
+            self.props[k] = v
         super(PackerProvisioner, self).__init__(title, **kwargs)
 
 
