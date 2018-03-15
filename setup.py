@@ -23,7 +23,7 @@ def get_version():
             if line.startswith("__version__"):
                 version = line.split()[-1].strip('"')
                 return version
-        raise AttributeError("{0} __version__ not found".format(f.name))
+        raise AttributeError("{} __version__ not found".format(f.name))
 
 
 setup(
