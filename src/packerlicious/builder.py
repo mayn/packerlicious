@@ -1003,19 +1003,19 @@ class OracleOCI(PackerBuilder):
     }
 
 
-class ParallelsISO(PackerBuilder):
+class ParallelsIso(PackerBuilder):
     """
-    ParallelsISO Builder
+    Parallels Builder (from an ISO)
     https://www.packer.io/docs/builders/parallels-iso.html
     """
     resource_type = "parallels-iso"
 
     props = {
-        'iso_checksum': (str, True),
+        'iso_checksum': (str, False),
         'iso_checksum_type': (str, True),
-        'iso_checksum_url': (str, True),
+        'iso_checksum_url': (str, False),
         'iso_url': (str, True),
-        'parallels_tools_flavour': (str, True),
+        'parallels_tools_flavor': (str, True),
         'boot_command': ([str], False),
         'boot_wait': (str, False),
         'disk_size': (int, False),
@@ -1043,16 +1043,23 @@ class ParallelsISO(PackerBuilder):
         'vm_name': (str, False),
     }
 
+    def validate(self):
+        conds = [
+            'iso_checksum',
+            'iso_checksum_url',
+        ]
+        validator.exactly_one(self.__class__.__name__, self.properties, conds)
 
-class ParallelsPVM(PackerBuilder):
+
+class ParallelsPvm(PackerBuilder):
     """
-    ParallelsPVM Builder
+    Parallels Builder (from a PVM)
     https://www.packer.io/docs/builders/parallels-pvm.html
     """
     resource_type = "parallels-pvm"
 
     props = {
-        'parallels_tools_flavour': (str, True),
+        'parallels_tools_flavor': (str, True),
         'source_path': (str, True),
         'boot_command': ([str], False),
         'boot_wait': (str, False),
