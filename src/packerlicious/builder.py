@@ -120,6 +120,7 @@ class Alicloud(PackerBuilder):
     }
 
 
+
 class AmazonSourceAmiFilter(PackerProperty):
     """
     https://www.packer.io/docs/builders/amazon-ebs.html#source_ami_filter
@@ -800,64 +801,6 @@ class HyperV(PackerBuilder):
     }
 
 
-class HyperVvmcx(PackerBuilder):
-    """
-    Hyper-V Builder (from a vmcx)
-    https://www.packer.io/docs/builders/hyperv-vmcx.html
-    """
-    resource_type = "hyperv-vmcx"
-
-    props = {
-        'clone_from_vmxc_path': (str, False),
-        'clone_from_vm_name': (str, False),
-        'clone_from_snapshot_name': (str, False),
-        'clone_all_snapshots': (validator.boolean, False),
-        'boot_command': ([str], False),
-        'boot_wait': (str, False),
-        'cpu': (int, False),
-        'enable_dynamic_memory': (validator.boolean, False),
-        'enable_mac_spoofing': (validator.boolean, False),
-        'enable_secure_boot': (validator.boolean, False),
-        'enable_virtualization_extensions': (validator.boolean, False),
-        'floppy_files': ([str], False),
-        'floppy_dirs': ([str], False),
-        'guest_additions_mode': (str, False),
-        'guest_additions_path': (str, False),
-        'http_directory': (str, False),
-        'http_port_min': (int, False),
-        'http_port_max': (int, False),
-        'iso_checksum': (str, False),
-        'iso_checksum_type': (str, False),
-        'iso_url': (str, False),
-        'iso_urls': ([str], False),
-        'iso_target_extension': (str, False),
-        'iso_target_path': (str, False),
-        'output_directory': (str, False),
-        'ram_size': (int, False),
-        'secondary_iso_images': ([str], False),
-        'shutdown_command': (str, False),
-        'shutdown_timeout': (str, False),
-        'skip_compaction': (validator.boolean, False),
-        'switch_name': (str, False),
-        'switch_vlan_id': (str, False),
-        'vlan_id': (str, False),
-        'vm_name': (str, False),
-    }
-
-    def validate(self):
-        conds = [
-            'clone_from_vmxc_path',
-            'clone_from_vm_name'
-        ]
-        validator.exactly_one(self.__class__.__name__, self.properties, conds)
-
-        iso_url_conds = [
-            'iso_url',
-            'iso_urls'
-        ]
-        validator.mutually_exclusive(self.__class__.__name__, self.properties, iso_url_conds)
-
-
 class LXD(PackerBuilder):
     """
     LXD Builder
@@ -871,7 +814,6 @@ class LXD(PackerBuilder):
         'output_image': (str, False),
         'command_wrapper': (str, False),
     }
-
 
 class LXC(PackerBuilder):
     """
@@ -891,7 +833,6 @@ class LXC(PackerBuilder):
         'init_timeout': (str, False),
         'template_parameters': ([str], False),
     }
-
 
 class Null(PackerBuilder):
     """
