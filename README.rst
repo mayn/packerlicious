@@ -103,6 +103,7 @@ Builders:
 - file
 - googlecompute
 - hyperv-iso
+- hyperv-vmcx
 - lxc
 - lxd
 - null
