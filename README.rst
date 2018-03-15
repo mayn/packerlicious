@@ -109,6 +109,8 @@ Builders:
 - null
 - oneandone
 - openstack
+- parallels-iso
+- parallels-pvm
 - profitbricks
 - qemu
 - triton

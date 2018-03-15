@@ -3,7 +3,7 @@ import pytest
 import packerlicious.builder as builder
 
 
-class TestProfitBricksBuilder(object):
+class TestOracleOCIBuilder(object):
 
     def test_required_fields_missing(self):
         b = builder.OracleOCI()
