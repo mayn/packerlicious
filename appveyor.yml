@@ -1,10 +1,6 @@
 environment:
-  requirementsFile: "requirements-travis.txt"
   matrix:
-    - PYTHON: "C:\\Python26"
-      requirementsFile: "requirements-travis-26.txt"
     - PYTHON: "C:\\Python27"
-    - PYTHON: "C:\\Python33"
     - PYTHON: "C:\\Python34"
     - PYTHON: "C:\\Python35"
     - PYTHON: "C:\\Python36"
@@ -12,7 +8,7 @@ environment:
 install:
   - SET "PATH=%PYTHON%;%PYTHON%\\Scripts;%PATH%"
   - python --version
-  - pip install -r %requirementsFile%
+  - pip install -r requirements-travis.txt
   - powershell tools\get-packer.ps1
 
 build: off
