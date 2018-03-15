@@ -3,7 +3,6 @@ cache:
   directories:
     - .tox
 python:
-  - 2.6
   - 2.7
   - 3.3
   - 3.4
@@ -13,9 +12,7 @@ python:
 before_install:
   - pip install --upgrade pip setuptools wheel
 install:
-  - requirementsFile="requirements-travis.txt"
-  - if [ "$TRAVIS_PYTHON_VERSION" == "2.6" ]; then requirementsFile="requirements-travis-26.txt"; fi
-  - pip install -r $requirementsFile
+  - pip install -r requirements-travis.txt
 script:
   - ./tools/get-packer.sh
   - tox
