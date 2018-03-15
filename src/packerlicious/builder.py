@@ -120,7 +120,6 @@ class Alicloud(PackerBuilder):
     }
 
 
-
 class AmazonSourceAmiFilter(PackerProperty):
     """
     https://www.packer.io/docs/builders/amazon-ebs.html#source_ami_filter
@@ -800,6 +799,7 @@ class HyperV(PackerBuilder):
         'temp_path': (str, False),
     }
 
+
 class HyperVvmcx(PackerBuilder):
     """
     Hyper-V Builder (from a vmcx)
@@ -808,8 +808,8 @@ class HyperVvmcx(PackerBuilder):
     resource_type = "hyperv-vmcx"
 
     props = {
-        'clone_from_vmxc_path': (str, True),
-        'clone_from_vm_name': (str, True),
+        'clone_from_vmxc_path': (str, False),
+        'clone_from_vm_name': (str, False),
         'clone_from_snapshot_name': (str, False),
         'clone_all_snapshots': (validator.boolean, False),
         'boot_command': ([str], False),
@@ -826,6 +826,8 @@ class HyperVvmcx(PackerBuilder):
         'http_directory': (str, False),
         'http_port_min': (int, False),
         'http_port_max': (int, False),
+        'iso_checksum': (str, False),
+        'iso_checksum_type': (str, False),
         'iso_url': (str, False),
         'iso_urls': ([str], False),
         'iso_target_extension': (str, False),
@@ -849,6 +851,13 @@ class HyperVvmcx(PackerBuilder):
         ]
         validator.exactly_one(self.__class__.__name__, self.properties, conds)
 
+        iso_url_conds = [
+            'iso_url',
+            'iso_urls'
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, iso_url_conds)
+
+
 class LXD(PackerBuilder):
     """
     LXD Builder
@@ -862,6 +871,7 @@ class LXD(PackerBuilder):
         'output_image': (str, False),
         'command_wrapper': (str, False),
     }
+
 
 class LXC(PackerBuilder):
     """
@@ -881,6 +891,7 @@ class LXC(PackerBuilder):
         'init_timeout': (str, False),
         'template_parameters': ([str], False),
     }
+
 
 class Null(PackerBuilder):
     """
