@@ -160,7 +160,17 @@ class BaseAWSObject(object):
                 # type checks (as above accept AWSHelperFn because
                 # we can't do the validation ourselves)
                 for v in value:
-                    if not isinstance(v, tuple(expected_type)) \
+                    # If we're expecting a list of list with the same type
+                    if isinstance(v, list):
+                        # Double check that it's a list of list
+                        if not all(isinstance(elem, list) for elem in value):
+                            self._raise_type(name, v, expected_type)
+                        # Make sure all elements in list are of the expected_type[0][0]
+                        else:
+                            for elem in v:
+                                if not isinstance(elem, expected_type[0][0]):
+                                    self._raise_type(name, elem, expected_type[0][0])
+                    elif not isinstance(v, tuple(expected_type)) \
                        and not isinstance(v, AWSHelperFn):
                         self._raise_type(name, v, expected_type)
                 # Validated so assign it

@@ -1,5 +1,6 @@
 import json
 import pytest
+import sys
 
 from packerlicious import UserVar, Template
 from packerlicious import builder, post_processor, provisioner
@@ -139,3 +140,145 @@ class TestPackerTemplate(object):
         assert to_json == json.dumps(json.loads(expected_json), sort_keys=True, indent=2,
                                      separators=(',', ': '))
 
+
+    expected_json_1 = """
+    {
+      "builders": [
+        {
+          "boot_wait": "10s",
+          "floppy_files": [
+            ""
+          ],
+          "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+          "guest_os_type": "Ubuntu_64",
+          "http_directory": "",
+          "iso_checksum": "sha512",
+          "iso_checksum_type": "sha512",
+          "iso_url": "",
+          "ssh_port": 22,
+          "type": "virtualbox-iso",
+          "vboxmanage": [
+            [
+              "modifyvm {{.Name}} --memory 1024"
+            ],
+            [
+              "modifyvm {{.Name}} --cpus 1"
+            ]
+          ],
+          "virtualbox_version_file": ".vbox_version",
+          "vm_name": ""
+        }
+      ]
+    }
+    """
+    expected_json_2 = """
+    {
+      "builders": [
+        {
+          "boot_wait": "10s",
+          "floppy_files": [
+            ""
+          ],
+          "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+          "guest_os_type": "Ubuntu_64",
+          "http_directory": "",
+          "iso_checksum": "sha512",
+          "iso_checksum_type": "sha512",
+          "iso_url": "",
+          "ssh_port": 22,
+          "type": "virtualbox-iso",
+          "vboxmanage": [
+            [
+              "modifyvm {{.Name}} --memory 1024"
+            ],
+            [
+              "modifyvm",
+              "{{.Name}}",
+              "--cpus 1"
+            ]
+          ],
+          "virtualbox_version_file": ".vbox_version",
+          "vm_name": ""
+        }
+      ]
+    }
+    """
+    assertion = 'type' if sys.version_info[0] < 3 else 'class'
+    exception_1 = "<class 'packerlicious.builder.VirtualboxIso'>: None.vboxmanage is <" + assertion \
+                  + " 'list'>, expected [[<" + assertion +  " 'str'>]]"
+    exception_2 = "<class 'packerlicious.builder.VirtualboxIso'>: None.vboxmanage is <" + assertion\
+                  + " 'int'>, expected <" + assertion + " 'str'>"
+    @pytest.mark.parametrize('test_input,exception,expected', [
+        pytest.param(
+            [['modifyvm {{.Name}} --memory 1024'], ['modifyvm {{.Name}} --cpus 1']],
+            False,
+            expected_json_1,
+            marks=pytest.mark.basic
+        ),
+        pytest.param(
+            [['modifyvm {{.Name}} --memory 1024'], ['modifyvm', '{{.Name}}', '--cpus 1']],
+            False,
+            expected_json_2,
+            marks=pytest.mark.basic
+        ),
+        pytest.param(
+            [['modifyvm {{.Name}} --memory 1024'], 1],
+            True,
+            exception_1,
+            marks=pytest.mark.basic
+        ),
+        pytest.param(
+            [['modifyvm {{.Name}} --memory 1024'], [1]],
+            True,
+            exception_2,
+            marks=pytest.mark.basic
+        )
+    ])
+    def test_list_of_list_type_check(self, test_input, exception, expected):
+
+        t = Template()
+        HTTP_DIR = ""
+        ISO_URL = ""
+        ISO_CHECKSUM_TYPE = "sha512"
+        ISO_CHECKSUM = "sha512"
+        VM_NAME = ""
+        VBOX_MANAGE=test_input
+        if exception:
+            with pytest.raises(TypeError) as excinfo:
+                t.add_builder(
+                    builder.VirtualboxIso(
+                        boot_wait="10s",
+                        guest_os_type="Ubuntu_64",
+                        http_directory=HTTP_DIR,
+                        iso_url=ISO_URL,
+                        iso_checksum_type=ISO_CHECKSUM_TYPE,
+                        iso_checksum=ISO_CHECKSUM,
+                        ssh_port=22,
+                        guest_additions_path="VBoxGuestAdditions_{{.Version}}.iso",
+                        virtualbox_version_file=".vbox_version",
+                        vm_name=VM_NAME,
+                        floppy_files=[""],
+                        vboxmanage=VBOX_MANAGE
+                    )
+                )
+            assert expected == str(excinfo.value)
+        else:
+            t.add_builder(
+                builder.VirtualboxIso(
+                    boot_wait="10s",
+                    guest_os_type="Ubuntu_64",
+                    http_directory=HTTP_DIR,
+                    iso_url=ISO_URL,
+                    iso_checksum_type=ISO_CHECKSUM_TYPE,
+                    iso_checksum=ISO_CHECKSUM,
+                    ssh_port=22,
+                    guest_additions_path="VBoxGuestAdditions_{{.Version}}.iso",
+                    virtualbox_version_file=".vbox_version",
+                    vm_name=VM_NAME,
+                    floppy_files=[""],
+                    vboxmanage=VBOX_MANAGE
+                )
+            )
+            to_json = t.to_json()
+            assert to_json == json.dumps(json.loads(expected), sort_keys=True, indent=2,
+                                     separators=(',', ': '))
