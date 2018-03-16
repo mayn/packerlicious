@@ -1,5 +1,6 @@
 import json
 import pytest
+import sys
 
 from packerlicious import UserVar, Template
 from packerlicious import builder, post_processor, provisioner
@@ -202,8 +203,11 @@ class TestPackerTemplate(object):
       ]
     }
     """
-    exception_1 = "<class 'packerlicious.builder.VirtualboxIso'>: None.vboxmanage is <type 'list'>, expected [[<type 'str'>]]"
-    exception_2 = "<class 'packerlicious.builder.VirtualboxIso'>: None.vboxmanage is <type 'int'>, expected <type 'str'>"
+    assertion = 'type' if sys.version_info[0] < 3 else 'class'
+    exception_1 = "<class 'packerlicious.builder.VirtualboxIso'>: None.vboxmanage is <" + assertion \
+                  + " 'list'>, expected [[<" + assertion +  " 'str'>]]"
+    exception_2 = "<class 'packerlicious.builder.VirtualboxIso'>: None.vboxmanage is <" + assertion\
+                  + " 'int'>, expected <" + assertion + " 'str'>"
     @pytest.mark.parametrize('test_input,exception,expected', [
         pytest.param(
             [['modifyvm {{.Name}} --memory 1024'], ['modifyvm {{.Name}} --cpus 1']],
