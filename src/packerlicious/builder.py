@@ -755,9 +755,9 @@ class GoogleCompute(PackerBuilder):
     }
 
 
-class HyperV(PackerBuilder):
+class HypervIso(PackerBuilder):
     """
-    Hyper-V Builder
+    Hyper-V Builder (from an ISO)
     https://www.packer.io/docs/builders/hyperv-iso.html
     """
     resource_type = "hyperv-iso"
@@ -800,7 +800,7 @@ class HyperV(PackerBuilder):
     }
 
 
-class HyperVvmcx(PackerBuilder):
+class HypervVmcx(PackerBuilder):
     """
     Hyper-V Builder (from a vmcx)
     https://www.packer.io/docs/builders/hyperv-vmcx.html
