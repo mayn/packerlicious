@@ -3,6 +3,34 @@
 
 
 
+## 0.6.0 (March 18, 2018)
+
+### NOTEWORTHY
+* Drop support for EOL python versions (2.6, 3.3) [GH-98]
+* builder/HyperV: rename to builder/HypervIso [GH-100]
+
+### FEATURES:
+* builder/HypervVmcx: add support for packer's Hyper-V (from a vmcx) builder [GH-97]
+* builder/ParallelsIso: add support for packer's parallels ISO builder [GH-99]
+* builder/ParallelsPvm: add support for packer's parallels PVM builder [GH-99]
+* provisioner: add support for packer pause_before [GH-90]
+
+### IMPROVEMENTS:
+
+* fix list of list(aka jagged array) attributes causing exception during rendering [GH-101]
+* builder/Amazon: add attribute temporary_security_group_source_cidr [GH-79]
+* builder/Docker: add attribute fix_upload_owner [GH-73]
+* builder/HypervIso: add attribute vhd_temp_path [GH-78]
+* builder/VirtualboxOvf: add attribute keep_registered [GH-76]
+* builder/VMwareIso: add attribute disable_vnc [GH-75]
+* provisioner/puppet: add attribute guest_os_type [GH-74]
+
+### MISC:
+
+* ci: install packer binary for ci testing [GH-77]
+
+
+
 ## 0.5.0 (October 13, 2017)
 Thanks to all the hacktoberfest participants that made this release possible.
 
