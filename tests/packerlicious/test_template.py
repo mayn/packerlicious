@@ -139,3 +139,64 @@ class TestPackerTemplate(object):
         assert to_json == json.dumps(json.loads(expected_json), sort_keys=True, indent=2,
                                      separators=(',', ': '))
 
+    def test_jagged_array_render(self):
+        expected_json = """
+        {
+          "builders": [
+            {
+              "boot_wait": "10s",
+              "floppy_files": [
+                ""
+              ],
+              "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+              "guest_os_type": "Ubuntu_64",
+              "http_directory": "",
+              "iso_checksum": "sha512",
+              "iso_checksum_type": "sha512",
+              "iso_url": "",
+              "ssh_port": 22,
+              "type": "virtualbox-iso",
+              "vboxmanage": [
+                [
+                  "modifyvm", "{{.Name}}", "--memory", "1024"
+                ],
+                [ 
+                  "modifyvm", "{{.Name}}", "--vram", "36"
+                ],
+                [
+                  "modifyvm", "{{.Name}}", "--cpus", "1"
+                ]
+              ],
+              "virtualbox_version_file": ".vbox_version",
+              "vm_name": "my_name"
+            }
+          ]
+        }
+        """
+
+        t = Template()
+        t.add_builder(
+            builder.VirtualboxIso(
+                boot_wait="10s",
+                guest_os_type="Ubuntu_64",
+                http_directory="",
+                iso_url="",
+                iso_checksum_type="sha512",
+                iso_checksum="sha512",
+                ssh_port=22,
+                guest_additions_path="VBoxGuestAdditions_{{.Version}}.iso",
+                virtualbox_version_file=".vbox_version",
+                vm_name="my_name",
+                floppy_files=[""],
+                vboxmanage=[
+                    "modifyvm {{.Name}} --memory 1024".split(),
+                     "modifyvm {{.Name}} --vram 36".split(),
+                     "modifyvm {{.Name}} --cpus 1".split()
+                ]
+                # vboxmanage=[['modifyvm {{.Name}} --memory 1024', "modifyvm {{.Name}} --cpus 1"]]
+            )
+        )
+
+        to_json = t.to_json()
+        assert to_json == json.dumps(json.loads(expected_json), sort_keys=True, indent=2,
+                                     separators=(',', ': '))
