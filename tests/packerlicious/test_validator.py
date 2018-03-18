@@ -1,7 +1,6 @@
 # Copyright (c) 2012-2013, Mark Peek <mark@peek.org>
 # All rights reserved.
 #
-import unittest
 import pytest
 
 from thirdparty.troposphere import Parameter, Ref
@@ -11,28 +10,29 @@ from packerlicious.validator import tg_healthcheck_port
 from packerlicious.validator import s3_bucket_name, encoding, status
 from packerlicious.validator import iam_path, iam_names, iam_role_name
 from packerlicious.validator import iam_group_name, iam_user_name, elb_name
+from packerlicious.validator import jagged_array
 from packerlicious.validator import mutually_exclusive
 
 
-class TestValidator(unittest.TestCase):
+class TestValidator(object):
 
     def test_boolean(self):
         for x in [True, "True", "true", 1, "1"]:
-            self.assertEqual(boolean(x), "true", repr(x))
+            assert boolean(x) == "true", repr(x)
         for x in [False, "False", "false", 0, "0"]:
-            self.assertEqual(boolean(x), "false", repr(x))
+            assert boolean(x) == "false", repr(x)
         for x in ["000", "111", "abc"]:
             with pytest.raises(ValueError):
                 boolean(x)
 
     def test_integer(self):
-        self.assertEqual(integer(-1), -1)
-        self.assertEqual(integer("-1"), "-1")
-        self.assertEqual(integer(0), 0)
-        self.assertEqual(integer("0"), "0")
-        self.assertEqual(integer(65535), 65535)
-        self.assertEqual(integer("65535"), "65535")
-        self.assertEqual(integer(1.0), 1.0)
+        assert integer(-1) == -1
+        assert integer("-1") == "-1"
+        assert integer(0) == 0
+        assert integer("0") == "0"
+        assert integer(65535) == 65535
+        assert integer("65535") == "65535"
+        assert integer(1.0) == 1.0
         with pytest.raises(ValueError):
             integer("string")
         with pytest.raises(ValueError):
@@ -42,9 +42,9 @@ class TestValidator(unittest.TestCase):
 
     def test_integer_range(self):
         between_ten_and_twenty = integer_range(10, 20)
-        self.assertEqual(between_ten_and_twenty(10), 10)
-        self.assertEqual(between_ten_and_twenty(15), 15)
-        self.assertEqual(between_ten_and_twenty(20), 20)
+        assert between_ten_and_twenty(10) == 10
+        assert between_ten_and_twenty(15) == 15
+        assert between_ten_and_twenty(20) == 20
         for i in (-1, 9, 21, 1111111):
             with pytest.raises(ValueError):
                 between_ten_and_twenty(i)
@@ -157,4 +157,25 @@ class TestValidator(unittest.TestCase):
         with pytest.raises(ValueError):
             mutually_exclusive('abc', ['a', 'b', 'c'], conds)
 
+    @pytest.mark.parametrize('test_value', [
+            'a_string_value',
+            1234,
+            ['a_list_0', 'a_list_1'],
+            [['jagged_array_0,0'], 1234],
+            [['jagged_array_0,0'], [1234]],
+    ])
+    def test_jagged_array_failure(self, test_value):
+        jagged_array_validator = jagged_array(str)
+        with pytest.raises(ValueError):
+            jagged_array_validator(test_value)
 
+    @pytest.mark.parametrize('test_value', [
+            [['jagged_array_0,0', 'jagged_array_0,1'], ['jagged_array_1,0']],
+    ])
+    def test_jagged_array_success(self, test_value):
+        jagged_array_validator = jagged_array(str)
+        validator_return_value = jagged_array_validator(test_value)
+
+        for i, sub_list in enumerate(test_value):
+            for j, value in enumerate(sub_list):
+                assert validator_return_value[i][j] == value

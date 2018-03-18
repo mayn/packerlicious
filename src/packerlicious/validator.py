@@ -196,3 +196,27 @@ def string_list_item(allowed_values):
                          ', '.join(str(j) for j in allowed_values))
 
     return string_list_item_checker
+
+
+def jagged_array(expected_type):
+    def jagged_array_checker(x):
+        # ensure outer list is present
+        if not isinstance(x, list):
+            raise ValueError("%r is not a valid array of array of %r" % (x, expected_type))
+
+        try:
+            l = list(x)
+            for sub_list in l:
+                # ensure inner sublist also exists
+                if not isinstance(sub_list, list):
+                    raise ValueError("%r is not a valid array of array of %r" % (x, expected_type))
+
+                for value in sub_list:
+                    if not isinstance(value, expected_type):
+                        raise TypeError
+
+            return l
+        except(ValueError, TypeError):
+            raise ValueError("%r is not a valid array of array of %r" % (x, expected_type))
+
+    return jagged_array_checker
