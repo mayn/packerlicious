@@ -35,7 +35,8 @@ setup(
     package_dir={'': 'src'},
     url='https://github.com/mayn/packerlicious',
     license='Apache License 2.0',
-    description='packerlicious - a python wrapper for packer templates.',
+    keywords="hashicorp packer",
+    description='packerlicious - a python wrapper for hashicorp packer templates.',
     long_description=open('README.rst').read(),
     install_requires=[
         "future",

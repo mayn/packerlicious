@@ -1,6 +1,11 @@
 
 ## (UNRELEASED)
 
+## 0.6.1 (April 20, 2018)
+
+### BUG FIX:
+* builder/VmwareIso: add missing format property [GH-103]
+
 
 
 ## 0.6.0 (March 18, 2018)
