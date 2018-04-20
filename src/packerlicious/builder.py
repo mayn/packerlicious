@@ -1339,6 +1339,7 @@ class VMwareIso(PackerBuilder):
         'disable_vnc': (validator.boolean, False),
         'floppy_files': ([str], False),
         'floppy_dirs': ([str], False),
+        'format': (validator.string_list_item(['ovf','ova','vmx']), False),
         'fusion_app_path': (str, False),
         'guest_os_type': (str, False),
         'headless': (validator.boolean, False),
