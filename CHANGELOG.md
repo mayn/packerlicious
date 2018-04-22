@@ -1,7 +1,10 @@
 
 ## (UNRELEASED)
 
-Feature sync with packer v1.2.2
+
+## 0.7.0 (April 22, 2018)
+
+packer v1.2.2 feature sync [GH-105]
 
 ### NOTEWORTHY
 * builder/Alicloud: rename to builder/AliCloud
@@ -11,6 +14,9 @@ Feature sync with packer v1.2.2
 * builder/NaverCloud: add support for packer's ncloud builder
 * builder/OracleClassic: add support for packer's oracle-classic builder
 * builder/Scaleway: add support for packer's scaleway builder
+
+### MISC:
+* (builder, post-processor, provisioner): additional properties
 
 
 
