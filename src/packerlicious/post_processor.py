@@ -30,9 +30,9 @@ class PackerPostProcessor(BasePackerObject):
         super(PackerPostProcessor, self).__init__(title, **kwargs)
 
 
-class AlicloudImport(PackerPostProcessor):
+class AliCloudImport(PackerPostProcessor):
     """
-    Alicloud Import Post-Processor
+    Alibaba Cloud Import Post-Processor
     https://www.packer.io/docs/post-processors/alicloud-import.html
     TODO add image_name, image_description, image_system_size format validation.
     """
@@ -76,9 +76,13 @@ class AmazonImport(PackerPostProcessor):
         'ami_groups': ([str], False),
         'ami_name': (str, False),
         'ami_users': ([str], False),
+        'custom_endpoint_ec2': (str, False),
         'license_type': (validator.string_list_item([LicenseAWS, LicenseBYOL]), False),
         'mfa_code': (str, False),
+        'profile': (str, False),
+        'role_name': (str, False),
         'skip_clean': (validator.boolean, False),
+        'skip_region_validation': (validator.boolean, False),
         'tags': (dict, False),
         'token': (str, False),
     }
@@ -192,10 +196,10 @@ class DockerPush(PackerPostProcessor):
     props = {
         'aws_access_key': (str, False),
         'aws_secret_key': (str, False),
+        'aws_profile': (str, False),
         'aws_token': (str, False),
         'ecr_login': (validator.boolean, False),
         'login': (validator.boolean, False),
-        'login_email': (str, False),
         'login_username': (str, False),
         'login_password': (str, False),
         'login_server': (str, False),
@@ -301,9 +305,14 @@ class VagrantOverrides(PackerProperty):
     props = {
         'aws': (VagrantProviderOverride, False),
         'digitalocean': (VagrantProviderOverride, False),
+        'google': (VagrantProviderOverride, False),
+        'hyperv': (VagrantProviderOverride, False),
+        'libvirt': (VagrantProviderOverride, False),
+        'lxc': (VagrantProviderOverride, False),
+        'parallels': (VagrantProviderOverride, False),
+        'scaleway': (VagrantProviderOverride, False),
         'virtualbox': (VagrantProviderOverride, False),
         'vmware': (VagrantProviderOverride, False),
-        'parallels': (VagrantProviderOverride, False),
     }
 
 
@@ -377,6 +386,7 @@ class VSphere(PackerPostProcessor):
         'options': ([str], False),
     }
 
+
 class VSphereTemplate(PackerPostProcessor):
     """
     vSphere Template Post-Processor
@@ -393,4 +403,3 @@ class VSphereTemplate(PackerPostProcessor):
         'folder': (str, False),
         'insecure': (validator.boolean, False),
     }
-

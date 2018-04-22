@@ -3,10 +3,10 @@ import pytest
 import packerlicious.builder as builder
 
 
-class TestAliCloudBuilder(object):
+class TestScalewayBuilder(object):
 
     def test_required_fields_missing(self):
-        b = builder.AliCloud()
+        b = builder.Scaleway()
 
         with pytest.raises(ValueError) as excinfo:
             b.to_dict()

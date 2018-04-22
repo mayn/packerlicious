@@ -28,6 +28,7 @@ class PackerCommunicator(BasePackerObject):
     communicator_props = {
         'communicator': (str, False),
         # ssh communicator props
+        'ssh_agent_auth': (validator.boolean, False),
         'ssh_bastion_agent_auth': (validator.boolean, False),
         'ssh_bastion_host': (str, False),
         'ssh_bastion_password': (str, False),
@@ -38,10 +39,16 @@ class PackerCommunicator(BasePackerObject):
         'ssh_file_transfer_method': (str, False),
         'ssh_handshake_attempts': (validator.integer, False),
         'ssh_host': (str, False),
+        'ssh_keep_alive_interval': (str, False),
         'ssh_password': (str, False),
         'ssh_port': (validator.integer, False),
         'ssh_private_key_file': (str, False),
+        'ssh_proxy_host': (str, False),
+        'ssh_proxy_port': (validator.integer, False),
+        'ssh_proxy_username': (str, False),
+        'ssh_proxy_password': (str, False),
         'ssh_pty': (validator.boolean, False),
+        'ssh_read_write_timeout': (str, False),
         'ssh_timeout': (str, False),
         'ssh_username': (str, False),
         # WinRM communicator props
@@ -73,13 +80,24 @@ class PackerBuilder(PackerCommunicator):
         super(PackerBuilder, self).__init__(title, **kwargs)
 
 
-class Alicloud(PackerBuilder):
+class AliCloudImageDiskMapping(PackerProperty):
+    """
+    https://www.packer.io/docs/builders/azure.html#plan_info
+    """
+    props = {
+        'plan_name': (str, True),
+        'plan_product': (str, True),
+        'plan_publisher': (str, True),
+        'plan_promotion_code': (str, False),
+    }
+
+
+class AliCloud(PackerBuilder):
     """
     Alicloud Image Builder
     https://www.packer.io/docs/builders/alicloud-ecs.html
     """
     resource_type = "alicloud-ecs"
-
     props = {
         'access_key': (str, True),
         'instance_type': (str, True),
@@ -87,14 +105,6 @@ class Alicloud(PackerBuilder):
         'region': (str, True),
         'secret_key': (str, True),
         'source_image': (str, True),
-        'skip_region_validation': (validator.boolean, False),
-        'image_description': (str, False),
-        'image_version': (str, False),
-        'image_share_account': ([str], False),
-        'image_copy_regions': ([str], False),
-        'image_copy_names': ([str], False),
-        'image_force_delete': (validator.boolean, False),
-        'image_force_delete_snapshots': (validator.boolean, False),
         'disk_name': (str, False),
         'disk_category': (str, False),
         'disk_size': (int, False),
@@ -102,21 +112,31 @@ class Alicloud(PackerBuilder):
         'disk_description': (str, False),
         'disk_delete_with_instance': (str, False),
         'disk_device': (str, False),
-        'zone_id': (str, False),
-        'io_optimized': (str, False),
         'force_stop_instance': (validator.boolean, False),
+        'image_description': (str, False),
+        'image_disk_mappings': ([AliCloudImageDiskMapping], False),
+        'image_version': (str, False),
+        'image_share_account': ([str], False),
+        'image_copy_names': ([str], False),
+        'image_copy_regions': ([str], False),
+        'image_force_delete': (validator.boolean, False),
+        'image_force_delete_snapshots': (validator.boolean, False),
+        'instance_name': (str, False),
+        'internet_charge_type': (str, False),
+        'internet_max_bandwidth_out': (str, False),
+        'io_optimized': (str, False),
         'security_group_id': (str, False),
         'security_group_name': (str, False),
+        'security_token': (str, False),
+        'skip_region_validation': (validator.boolean, False),
+        'temporary_key_pair_name': (str, False),
         'user_data': (str, False),
         'user_data_file': (str, False),
         'vpc_id': (str, False),
         'vpc_name': (str, False),
         'vpc_cidr_block': (str, False),
         'vswitch_id': (str, False),
-        'instance_name': (str, False),
-        'internet_charge_type': (str, False),
-        'internet_max_bandwidth_out': (str, False),
-        'temporary_key_pair_name': (str, False),
+        'zone_id': (str, False),
     }
 
 
@@ -139,13 +159,13 @@ class BlockDeviceMapping(PackerProperty):
         'delete_on_termination': (validator.boolean, False),
         'device_name': (str, False),
         'encrypted': (validator.boolean, False),
+        'kms_key_id': (str, False),
         'iops': (int, False),
         'no_device': (validator.boolean, False),
         'snapshot_id': (str, False),
         'virtual_name': (str, False),
         'volume_size': (int, False),
         'volume_type': (str, False),
-
     }
 
 
@@ -207,8 +227,8 @@ class AmazonEbs(PackerBuilder):
         'spot_price': (str, False),
         'spot_price_auto_product': (str, False),
         'ssh_keypair_name': (str, False),
-        'ssh_agent_auth': (validator.boolean, False),
         'ssh_private_ip': (validator.boolean, False),
+        'ssh_interface': (validator.string_list_item(['public_ip', 'private_ip', 'public_dns', 'private_dns']), False),
         'subnet_id': (str, False),
         'tags': (dict, False),
         'temporary_key_pair_name': (str, False),
@@ -348,8 +368,8 @@ class AmazonEbsSurrogate(PackerBuilder):
         'spot_price_auto_product': (str, False),
         'sriov_support': (validator.boolean, False),
         'ssh_keypair_name': (str, False),
-        'ssh_agent_auth': (validator.boolean, False),
         'ssh_private_ip': (validator.boolean, False),
+        'ssh_interface': (validator.string_list_item(['public_ip', 'private_ip', 'public_dns', 'private_dns']), False),
         'subnet_id': (str, False),
         'tags': (dict, False),
         'temporary_key_pair_name': (str, False),
@@ -400,7 +420,6 @@ class AmazonEbsVolume(PackerBuilder):
         'iam_instance_profile': (str, False),
         'mfa_code': (str, False),
         'profile': (str, False),
-        'region_kms_key_ids': (dict, False),
         'run_tags': (dict, False),
         'security_group_id': (str, False),
         'security_group_ids': ([str], False),
@@ -414,6 +433,7 @@ class AmazonEbsVolume(PackerBuilder):
         'sriov_support': (validator.boolean, False),
         'ssh_keypair_name': (str, False),
         'ssh_private_ip': (validator.boolean, False),
+        'ssh_interface': (validator.string_list_item(['public_ip', 'private_ip', 'public_dns', 'private_dns']), False),
         'subnet_id': (str, False),
         'temporary_key_pair_name': (str, False),
         'temporary_security_group_source_cidr': (str, False),
@@ -499,8 +519,8 @@ class AmazonInstance(PackerBuilder):
         'spot_price': (str, False),
         'spot_price_auto_product': (str, False),
         'ssh_keypair_name': (str, False),
-        'ssh_agent_auth': (validator.boolean, False),
         'ssh_private_ip': (validator.boolean, False),
+        'ssh_interface': (validator.string_list_item(['public_ip', 'private_ip', 'public_dns', 'private_dns']), False),
         'subnet_id': (str, False),
         'tags': (dict, False),
         'temporary_key_pair_name': (str, False),
@@ -526,6 +546,18 @@ class AmazonInstance(PackerBuilder):
         validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
 
 
+class AzurePlanInfo(PackerProperty):
+    """
+    https://www.packer.io/docs/builders/azure.html#plan_info
+    """
+    props = {
+        'plan_name': (str, True),
+        'plan_product': (str, True),
+        'plan_publisher': (str, True),
+        'plan_promotion_code': (str, False),
+    }
+
+
 class Azure(PackerBuilder):
     """
     Azure Builder
@@ -538,6 +570,7 @@ class Azure(PackerBuilder):
         'client_id': (str, True),
         'client_secret': (str, True),
         'subscription_id': (str, True),
+        'build_resource_group_name': (str, False),
         'capture_container_name': (str, False),
         'capture_name_prefix': (str, False),
         'image_publisher': (str, True),
@@ -549,6 +582,7 @@ class Azure(PackerBuilder):
         'custom_data_file': (str, False),
         'custom_managed_image_name': (str, False),
         'custom_managed_image_resource_group_name': (str, False),
+        'disk_additional_size': ([int], False),
         'image_version': (str, False),
         'image_url': (str, False),
         'managed_image_name': (str, False),
@@ -559,6 +593,7 @@ class Azure(PackerBuilder):
         'temp_compute_name': (str, False),
         'temp_resource_group_name': (str, False),
         'tenant_id': (str, False),
+        'plan_info': (AzurePlanInfo, False),
         'private_virtual_network_with_public_ip': (validator.boolean, False),
         'resource_group_name': (str, False),
         'storage_account': (str, False),
@@ -600,7 +635,6 @@ class CloudStack(PackerBuilder):
         'instance_name': (str, False),
         'project': (str, False),
         'public_ip_address': (str, False),
-        'ssh_agent_auth': (validator.boolean, False),
         'ssl_no_verify': (validator.boolean, False),
         'template_display_text': (str, False),
         'template_featured': (validator.boolean, False),
@@ -638,6 +672,7 @@ class DigitalOcean(PackerBuilder):
         'droplet_name': (str, False),
         'private_networking': (validator.boolean, False),
         'monitoring': (validator.boolean, False),
+        'ipv6': (validator.boolean, False),
         'snapshot_name': (str, False),
         'snapshot_regions': ([str], False),
         'state_timeout': (str, False),
@@ -668,11 +703,11 @@ class Docker(PackerBuilder):
         'aws_access_key': (str, False),
         'aws_secret_key': (str, False),
         'aws_token': (str, False),
+        'aws_profile': (str, False),
         'changes': ([str], False),
         'ecr_login': (validator.boolean, False),
         'fix_upload_owner': (validator.boolean, False),
         'login': (validator.boolean, False),
-        'login_email': (str, False),
         'login_username': (str, False),
         'login_password': (str, False),
         'login_server': (str, False),
@@ -730,11 +765,13 @@ class GoogleCompute(PackerBuilder):
         'zone': (str, True),
         'account_file': (str, False),
         'address': (str, False),
+        'disable_default_service_account': (validator.boolean, False),
         'disk_name': (str, False),
         'disk_size': (int, False),
         'disk_type': (str, False),
         'image_description': (str, False),
         'image_family': (str, False),
+        'image_licenses': ([str], False),
         'image_name': (str, False),
         'instance_name': (str, False),
         'machine_type': (str, False),
@@ -745,6 +782,7 @@ class GoogleCompute(PackerBuilder):
         'on_host_maintenance': (str, False),
         'preemptible': (validator.boolean, False),
         'region': (str, False),
+        'service_account_email': (str, False),
         'scopes': ([str], False),
         'source_image_project_id': (str, False),
         'startup_script_file': (str, False),
@@ -769,7 +807,9 @@ class HypervIso(PackerBuilder):
         'boot_command': ([str], False),
         'boot_wait': (str, False),
         'cpu': (int, False),
+        'disk_additional_size': ([int], False),
         'disk_size': (int, False),
+        'differencing_disk': (validator.boolean, False),
         'enable_dynamic_memory': (validator.boolean, False),
         'enable_mac_spoofing': (validator.boolean, False),
         'enable_secure_boot': (validator.boolean, False),
@@ -785,12 +825,14 @@ class HypervIso(PackerBuilder):
         'iso_urls': ([str], False),
         'iso_target_extension': (str, False),
         'iso_target_path': (str, False),
+        'mac_address': (str, False),
         'output_directory': (str, False),
         'ram_size': (int, False),
         'secondary_iso_images': ([str], False),
         'shutdown_command': (str, False),
         'shutdown_timeout': (str, False),
         'skip_compaction': (validator.boolean, False),
+        'skip_export': (validator.boolean, False),
         'switch_name': (str, False),
         'switch_vlan_id': (str, False),
         'vhd_temp_path': (str, False),
@@ -832,6 +874,7 @@ class HypervVmcx(PackerBuilder):
         'iso_urls': ([str], False),
         'iso_target_extension': (str, False),
         'iso_target_path': (str, False),
+        'mac_address': (str, False),
         'output_directory': (str, False),
         'ram_size': (int, False),
         'secondary_iso_images': ([str], False),
@@ -858,21 +901,6 @@ class HypervVmcx(PackerBuilder):
         validator.mutually_exclusive(self.__class__.__name__, self.properties, iso_url_conds)
 
 
-class LXD(PackerBuilder):
-    """
-    LXD Builder
-    https://www.packer.io/docs/builders/lxd.html
-    """
-    resource_type = "lxd"
-
-    props = {
-        'image': (str, True),
-        'name': (str, False),
-        'output_image': (str, False),
-        'command_wrapper': (str, False),
-    }
-
-
 class LXC(PackerBuilder):
     """
     LXC Builder
@@ -884,12 +912,55 @@ class LXC(PackerBuilder):
         'config_file': (str, True),
         'template_name': (str, True),
         'template_environment_vars': ([str], True),
-        'target_runlevel': (int, False),
-        'output_directory': (str, False),
-        'container_name': (str, False),
-        'command_wrapper': (str, False),
+        'attach_options': ([str], False),
         'init_timeout': (str, False),
+        'create_options': ([str], False),
+        'command_wrapper': (str, False),
+        'container_name': (str, False),
+        'output_directory': (str, False),
+        'start_options': ([str], False),
+        'target_runlevel': (int, False),
         'template_parameters': ([str], False),
+    }
+
+
+class LXD(PackerBuilder):
+    """
+    LXD Builder
+    https://www.packer.io/docs/builders/lxd.html
+    """
+    resource_type = "lxd"
+
+    props = {
+        'image': (str, True),
+        'init_sleep': (str, False),
+        'command_wrapper': (str, False),
+        'name': (str, False),
+        'output_image': (str, False),
+        'publish_properties': (dict, False),
+    }
+
+
+class NaverCloud(PackerBuilder):
+    """
+    NAVER CLOUD PLATFORM Builder
+    https://www.packer.io/docs/builders/ncloud.html
+    """
+    resource_type = "ncloud"
+
+    props = {
+        'ncloud_access_key': (str, True),
+        'ncloud_secret_key': (str, True),
+        'server_image_product_code': (str, True),
+        'server_product_code': (str, True),
+        'access_control_group_configuration_no': (str, False),
+        'block_storage_size': (int, False),
+        'member_server_image_no': (str, False),
+        'region': (str, False),
+        'server_image_name': (str, False),
+        'server_image_description': (str, False),
+        'user_data': (str, False),
+        'user_data_file': (str, False),
     }
 
 
@@ -960,7 +1031,6 @@ class OpenStack(PackerBuilder):
         'ssh_interface': (str, False),
         'ssh_ip_version': (str, False),
         'ssh_keypair_name': (str, False),
-        'ssh_agent_auth': (validator.boolean, False),
         'temporary_key_pair_name': (str, False),
         'tenant_id': (str, False),
         'tenant_name': (str, False),
@@ -976,6 +1046,30 @@ class OpenStack(PackerBuilder):
             'source_image_name',
         ]
         validator.exactly_one(self.__class__.__name__, self.properties, conds)
+
+
+class OracleClassic(PackerBuilder):
+    """
+    Oracle Cloud Infrastructure Classic Compute Builder
+    https://www.packer.io/docs/builders/oracle-classic.html
+    """
+    resource_type = "oracle-classic"
+
+    props = {
+        'api_endpoint': (str, True),
+        'dest_image_list': (str, True),
+        'identity_domain': (str, True),
+        'source_image_list': (str, True),
+        'password': (str, True),
+        'shape': (str, True),
+        'username': (str, True),
+        'attributes': (str, False),
+        'attributes_file': (str, False),
+        'image_description': (str, False),
+        'ssh_username': (str, False),
+        'image_name': (str, False),
+        'snapshot_timeout': (str, False),
+    }
 
 
 class OracleOCI(PackerBuilder):
@@ -1000,6 +1094,7 @@ class OracleOCI(PackerBuilder):
         'region': (str, False),
         'tenancy_ocid': (str, False),
         'user_ocid': (str, False),
+        'use_private_ip': (str, False),
     }
 
 
@@ -1156,6 +1251,41 @@ class Qemu(PackerBuilder):
         validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
 
 
+class Scaleway(PackerBuilder):
+    """
+    Scaleway Builder
+    https://www.packer.io/docs/builders/scaleway.html
+    """
+    resource_type = "scaleway"
+
+    props = {
+        'api_access_key': (str, True),
+        'api_token': (str, True),
+        'image': (str, True),
+        'region': (str, True),
+        'commercial_type': (str, True),
+        'server_name': (str, False),
+        'image_name': (str, False),
+        'snapshot_name': (str, False),
+    }
+
+
+class TritonSourceMachineImageFilter(PackerProperty):
+    """
+    https://www.packer.io/docs/builders/triton.html#source_machine_image_filter
+    """
+    props = {
+        'most_recent': (validator.boolean, False),
+        'name': (str, False),
+        'owner': (str, False),
+        'os': (str, False),
+        'public': (validator.boolean, False),
+        'state': (str, False),
+        'type': (str, False),
+        'version': (str, False),
+    }
+
+
 class Triton(PackerBuilder):
     """
     Triton Builder
@@ -1166,12 +1296,14 @@ class Triton(PackerBuilder):
     props = {
         'triton_account': (str, True),
         'triton_key_id': (str, True),
-        'source_machine_image': (str, True),
+        'source_machine_image': (str, False),
         'source_machine_package': (str, True),
         'image_name': (str, True),
         'image_version': (str, True),
         'triton_url': (str, False),
+        'triton_user': (str, False),
         'triton_key_material': (str, False),
+        'source_machine_image_filter': (TritonSourceMachineImageFilter, False),
         'source_machine_firewall_enabled': (validator.boolean, False),
         'source_machine_metadata': (dict, False),
         'source_machine_name': (str, False),
@@ -1183,6 +1315,13 @@ class Triton(PackerBuilder):
         'image_homepage': (str, False),
         'image_tags': (dict, False),
     }
+
+    def validate(self):
+        conds = [
+            'source_machine_image',
+            'source_machine_image_filter',
+        ]
+        validator.exactly_one(self.__class__.__name__, self.properties, conds)
 
 
 class VirtualboxIso(PackerBuilder):
@@ -1333,13 +1472,15 @@ class VMwareIso(PackerBuilder):
         'iso_url': (str, True),
         'boot_command': ([str], False),
         'boot_wait': (str, False),
+        'cdrom_adapter_type': (str, False),
+        'disk_adapter_type': (str, False),
         'disk_additional_size': ([int], False),
         'disk_size': (int, False),
         'disk_type_id': (str, False),
         'disable_vnc': (validator.boolean, False),
         'floppy_files': ([str], False),
         'floppy_dirs': ([str], False),
-        'format': (validator.string_list_item(['ovf','ova','vmx']), False),
+        'format': (validator.string_list_item(['ovf', 'ova', 'vmx']), False),
         'fusion_app_path': (str, False),
         'guest_os_type': (str, False),
         'headless': (validator.boolean, False),
@@ -1349,7 +1490,11 @@ class VMwareIso(PackerBuilder):
         'iso_target_extension': (str, False),
         'iso_target_path': (str, False),
         'iso_urls': ([str], False),
+        'keep_registered': (validator.boolean, False),
+        'network': (str, False),
+        'network_adapter_type': (str, False),
         'output_directory': (str, False),
+        'parallel': (str, False),
         'remote_cache_datastore': (str, False),
         'remote_cache_directory': (str, False),
         'remote_datastore': (str, False),
@@ -1358,14 +1503,16 @@ class VMwareIso(PackerBuilder):
         'remote_private_key_file': (str, False),
         'remote_type': (str, False),
         'remote_username': (str, False),
+        'serial': (str, False),
         'shutdown_command': (str, False),
         'shutdown_timeout': (str, False),
         'skip_compaction': (validator.boolean, False),
         'skip_export': (validator.boolean, False),
-        'keep_registered': (validator.boolean, False),
+        'sound': (validator.boolean, False),
         'ovftool_options': ([str], False),
         'tools_upload_flavor': (str, False),
         'tools_upload_path': (str, False),
+        'usb': (validator.boolean, False),
         'version': (str, False),
         'vm_name': (str, False),
         'vmdk_name': (str, False),

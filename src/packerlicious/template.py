@@ -104,4 +104,3 @@ class Template(object):
     def to_json(self, indent=2, sort_keys=True, separators=(',', ': ')):
         return json.dumps(self.to_dict(), indent=indent,
                           sort_keys=sort_keys, separators=separators)
-

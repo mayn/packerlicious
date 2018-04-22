@@ -1,6 +1,19 @@
 
 ## (UNRELEASED)
 
+Feature sync with packer v1.2.2
+
+### NOTEWORTHY
+* builder/Alicloud: rename to builder/AliCloud
+* post-processor/AlicloudImport: rename to post-processor/AliCloudImport
+
+### FEATURES:
+* builder/NaverCloud: add support for packer's ncloud builder
+* builder/OracleClassic: add support for packer's oracle-classic builder
+* builder/Scaleway: add support for packer's scaleway builder
+
+
+
 ## 0.6.1 (April 20, 2018)
 
 ### BUG FIX:
@@ -21,7 +34,6 @@
 * provisioner: add support for packer pause_before [GH-90]
 
 ### IMPROVEMENTS:
-
 * fix list of list(aka jagged array) attributes causing exception during rendering [GH-101]
 * builder/Amazon: add attribute temporary_security_group_source_cidr [GH-79]
 * builder/Docker: add attribute fix_upload_owner [GH-73]

@@ -22,6 +22,7 @@ from . import BasePackerObject, PackerProperty, EnvVar, TemplateVar, validator
 UNIX = "unix"
 WINDOWS = "windows"
 
+
 class PackerProvisioner(BasePackerObject):
     """
     packer provisioner
@@ -49,6 +50,7 @@ class AnsibleLocal(PackerProvisioner):
 
     props = {
         'playbook_file': (str, True),
+        'clean_staging_directory': (validator.boolean, False),
         'command': (str, False),
         'extra_arguments': ([str], False),
         'inventory_groups': (str, False),
@@ -105,6 +107,8 @@ class ChefClient(PackerProvisioner):
         'json': (str, False),
         'knife_command': (str, False),
         'node_name': (str, False),
+        'policy_group': (str, False),
+        'policy_name': (str, False),
         'prevent_sudo': (validator.boolean, False),
         'run_list': ([str], False),
         'server_url': (str, False),
@@ -112,6 +116,7 @@ class ChefClient(PackerProvisioner):
         'skip_clean_node': (validator.boolean, False),
         'skip_install': (validator.boolean, False),
         'staging_directory': (str, False),
+        'trusted_certs_dir': (str, False),
         'client_key': (str, False),
         'validation_client_name': (str, False),
         'validation_key_path': (str, False),
@@ -307,6 +312,7 @@ class SaltMasterless(PackerProvisioner):
         'custom_state': (str, False),
         'minion_config': (str, False),
         'grains_file': (str, False),
+        'guest_os_type': (validator.string_list_item([UNIX, WINDOWS]), False),
         'skip_bootstrap': (validator.boolean, False),
         'temp_config_dir': (str, False),
         'no_exit_on_failure': (validator.boolean, False),
