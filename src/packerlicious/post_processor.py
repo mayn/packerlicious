@@ -30,9 +30,9 @@ class PackerPostProcessor(BasePackerObject):
         super(PackerPostProcessor, self).__init__(title, **kwargs)
 
 
-class AlicloudImport(PackerPostProcessor):
+class AliCloudImport(PackerPostProcessor):
     """
-    Alicloud Import Post-Processor
+    Alibaba Cloud Import Post-Processor
     https://www.packer.io/docs/post-processors/alicloud-import.html
     TODO add image_name, image_description, image_system_size format validation.
     """

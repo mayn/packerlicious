@@ -106,13 +106,16 @@ Builders:
 - hyperv-vmcx
 - lxc
 - lxd
+- ncloud
 - null
 - oneandone
 - openstack
+- oracle-classic
 - parallels-iso
 - parallels-pvm
 - profitbricks
 - qemu
+- scaleway
 - triton
 - virtualbox-iso
 - virtualbox-ovf

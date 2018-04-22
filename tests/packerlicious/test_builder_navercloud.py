@@ -3,10 +3,10 @@ import pytest
 import packerlicious.builder as builder
 
 
-class TestOracleOCIBuilder(object):
+class TestNaverCloudBuilder(object):
 
     def test_required_fields_missing(self):
-        b = builder.OracleOCI()
+        b = builder.NaverCloud()
 
         with pytest.raises(ValueError) as excinfo:
             b.to_dict()
