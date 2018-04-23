@@ -1,6 +1,10 @@
 
 ## (UNRELEASED)
 
+### BUG FIX:
+* builder/AliCloud: correct image_disk_mappings definition, disk_delete_with_instance datatype
+
+
 
 ## 0.7.0 (April 22, 2018)
 

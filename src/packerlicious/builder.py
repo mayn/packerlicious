@@ -82,13 +82,16 @@ class PackerBuilder(PackerCommunicator):
 
 class AliCloudImageDiskMapping(PackerProperty):
     """
-    https://www.packer.io/docs/builders/azure.html#plan_info
+    https://www.packer.io/docs/builders/alicloud-ecs.html#image_disk_mappings
     """
     props = {
-        'plan_name': (str, True),
-        'plan_product': (str, True),
-        'plan_publisher': (str, True),
-        'plan_promotion_code': (str, False),
+        'disk_category': (str, False),
+        'disk_delete_with_instance': (validator.boolean, False),
+        'disk_description': (str, False),
+        'disk_device': (validator.string_list_item(['cloud', 'cloud_efficiency', 'cloud_ssd']), False),
+        'disk_name': (str, False),
+        'disk_size': (int, False),
+        'disk_snapshot_id': (str, False),
     }
 
 
@@ -105,13 +108,6 @@ class AliCloud(PackerBuilder):
         'region': (str, True),
         'secret_key': (str, True),
         'source_image': (str, True),
-        'disk_name': (str, False),
-        'disk_category': (str, False),
-        'disk_size': (int, False),
-        'disk_snapshot_id': (str, False),
-        'disk_description': (str, False),
-        'disk_delete_with_instance': (str, False),
-        'disk_device': (str, False),
         'force_stop_instance': (validator.boolean, False),
         'image_description': (str, False),
         'image_disk_mappings': ([AliCloudImageDiskMapping], False),
