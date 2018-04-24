@@ -33,4 +33,4 @@ t = Template()
 t.add_variable(user_variables)
 t.add_builder(builders)
 
-t.to_json()
+print(t.to_json())

@@ -3,36 +3,46 @@
 
 import os
 import re
-from importlib import import_module
+import sys
+
+try:
+    import StringIO as io
+except ImportError:
+    import io
+
+try:
+    u = unicode
+except NameError:
+    u = str
 
 
 class TestFileExamples(object):
 
-    output_files = None
+    def pytest_generate_tests(self, metafunc):
+        if self.__class__ == metafunc.cls:
+            # Filter out all *.py files from the examples directory
+            examples = os.path.dirname(os.path.realpath(__file__)) + '/../../' + 'examples'
+            regex = re.compile(r'.py$', re.I)
+            example_filenames = list(filter(regex.search, os.listdir(examples)))
+            assert len(example_filenames) > 0
 
-    def load_output_files(self):
-        self.output_files = {}
-        regex = re.compile(r'.template', re.I)
-        current_directory = os.path.dirname(os.path.realpath(__file__)) + '/../' + 'examples_output'
-        example_filenames = filter(regex.search, os.listdir(current_directory))
-        for example_filename in example_filenames:
-            with open(current_directory + '/' + example_filename) as f:
-                self.output_files[example_filename] = f.read()
+            metafunc.parametrize('example_file', [examples + '/' + f for f in example_filenames])
 
-    def load_example_file(self, example_output_filename):
-        original_example = example_output_filename.split('.')[0]
-        example_module = import_module('examples.' + original_example)
-        assert (
-            self.output_files[original_example + '.template'].rstrip() == example_module.t.to_json(),
-            "The file {0}.template doesn't have the same result as {0}.py".format(original_example)
-        )
+    def test_examples(self, example_file):
+        saved = sys.stdout
+        stdout = io.StringIO()
+        try:
+            sys.stdout = stdout
+            with open(example_file) as f:
+                code = compile(f.read(), example_file, 'exec')
+                exec (code, {'__name__': '__main__'})
+        finally:
+            sys.stdout = saved
+        # rewind fake stdout so we can read it
+        stdout.seek(0)
+        actual_output = stdout.read()
+        example_file_name = (os.path.basename(example_file))[:-3]
+        output_file_path = os.path.dirname(os.path.realpath(__file__)) + '/../' + 'examples_output/%s.template' % example_file_name
+        expected_output = open(output_file_path).read()
 
-    def test_examples(self):
-        self.load_output_files()
-        for file_name in self.output_files.keys():
-            self.load_example_file(file_name)
-
-
-
-
-
+        assert u(expected_output) == u(actual_output)
