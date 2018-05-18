@@ -1237,6 +1237,8 @@ class Qemu(PackerBuilder):
         'output_directory': (str, False),
         'qemu_binary': (str, False),
         'qemuargs': (validator.jagged_array(str), False),
+        'shutdown_command': (str, False),
+        'vm_name': (str, False)
     }
 
     def validate(self):
