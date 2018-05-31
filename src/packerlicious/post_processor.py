@@ -274,16 +274,19 @@ class ShellLocal(PackerPostProcessor):
     PackerBuildType = EnvVar("PACKER_BUILD_TYPE")
 
     props = {
+        'command': (str, False),
         'inline': ([str], False),
         'script': (str, False),
         'scripts': ([str], False),
         'environment_vars': ([str], False),
-        'execute_command': (str, False),
+        'execute_command': ([str], False),
         'inline_shebang': (str, False),
+        'use_linux_pathing': (validator.boolean, False),
     }
 
     def validate(self):
         conds = [
+            'command',
             'inline',
             'script',
             'scripts',

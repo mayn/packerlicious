@@ -80,6 +80,7 @@ class Ansible(PackerProvisioner):
         'extra_arguments': ([str], False),
         'groups': ([str], False),
         'host_alias': (str, False),
+        'inventory_file': (str, False),
         'inventory_directory': (str, False),
         'local_port': (str, False),
         'sftp_command': (str, False),
@@ -114,6 +115,7 @@ class ChefClient(PackerProvisioner):
         'server_url': (str, False),
         'skip_clean_client': (validator.boolean, False),
         'skip_clean_node': (validator.boolean, False),
+        'skip_clean_staging_directory': (validator.boolean, False),
         'skip_install': (validator.boolean, False),
         'staging_directory': (str, False),
         'trusted_certs_dir': (str, False),
@@ -205,6 +207,7 @@ class File(PackerProvisioner):
         'source': (str, True),
         'destination': (str, True),
         'direction': (validator.string_list_item([Upload, Download]), True),
+        'generated': (validator.boolean, False),
     }
 
 
@@ -234,6 +237,7 @@ class PowerShell(PackerProvisioner):
         'elevated_user': (str, False),
         'elevated_password': (str, False),
         'remote_path': (str, False),
+        'remote_env_var_path': (str, False),
         'skip_clean': (validator.boolean, False),
         'start_retry_timeout': (str, False),
         'valid_exit_codes': ([int], False),
@@ -292,6 +296,7 @@ class PuppetServer(PackerProvisioner):
         'puppet_node': (str, False),
         'puppet_server': (str, False),
         'staging_dir': (str, False),
+        'working_directory': (str, False),
     }
 
 
@@ -384,9 +389,24 @@ class ShellLocal(PackerProvisioner):
     Command = TemplateVar("Command")
 
     props = {
-        'command': (str, True),
+        'command': (str, False),
+        'inline': ([str], False),
+        'script': (str, False),
+        'scripts': ([str], False),
+        'environment_vars': ([str], False),
         'execute_command': ([str], False),
+        'inline_shebang': (str, False),
+        'use_linux_pathing': (validator.boolean, False),
     }
+
+    def validate(self):
+        conds = [
+            'command',
+            'inline',
+            'script',
+            'scripts'
+        ]
+        validator.exactly_one(self.__class__.__name__, self.properties, conds)
 
 
 class WindowsShell(PackerProvisioner):

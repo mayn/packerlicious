@@ -20,5 +20,5 @@ class TestShellLocalProvisioner(object):
 
         with pytest.raises(ValueError) as excinfo:
             b.to_dict()
-        assert 'required' in str(excinfo.value)
+            assert u'one of the following must be specified: inline, script, scripts' in str(excinfo.value)
 

@@ -1,8 +1,17 @@
 
 ## (UNRELEASED)
 
+
+## 0.8.0 (May 30, 2018)
+
+packer v1.2.4 feature sync [GH-107]
+
 ### BUG FIX:
 * builder/AliCloud: correct image_disk_mappings definition, disk_delete_with_instance datatype
+
+### MISC:
+* (builder, post-processor, provisioner): additional properties
+
 
 
 
