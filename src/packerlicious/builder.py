@@ -759,8 +759,8 @@ class GoogleCompute(PackerBuilder):
 
     props = {
         'project_id': (str, True),
-        'source_image': (str, True),
-        'source_image_family': (str, True),
+        'source_image': (str, False),
+        'source_image_family': (str, False),
         'zone': (str, True),
         'account_file': (str, False),
         'address': (str, False),
@@ -790,6 +790,14 @@ class GoogleCompute(PackerBuilder):
         'tags': ([str], False),
         'use_internal_ip': (validator.boolean, False),
     }
+
+    def validate(self):
+
+        iso_url_conds = [
+            'source_image',
+            'source_image_family'
+        ]
+        validator.exactly_one(self.__class__.__name__, self.properties, iso_url_conds)
 
 
 class HypervIso(PackerBuilder):
