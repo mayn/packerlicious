@@ -31,6 +31,8 @@ class PackerProvisioner(BasePackerObject):
     """
     provisioner_props = {
         'pause_before': (str, False),
+        'only': ([str], False),
+        'except': ([str], False),
     }
 
     def __init__(self, title=None, **kwargs):
