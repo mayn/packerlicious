@@ -2,11 +2,11 @@
 ## (UNRELEASED)
 
 
-## 0.8.1 (unreleased)
+## 0.8.1 (June 5, 2018)
 
 ### BUG FIX:
 # builder/GoogleCompute: source_image_family / source_image exactly one should be required [GH-111]
-# provisioner: only/except conditionals are missing[GH-110]
+# provisioner: only/except conditionals are missing [GH-110]
 
 
 ## 0.8.0 (May 30, 2018)
