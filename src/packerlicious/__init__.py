@@ -35,6 +35,22 @@ class Ref(AWSHelperFn):
             self.data = self.getdata(data)
 
 
+class Join(AWSHelperFn):
+    def __init__(self, delimiter, data):
+        checked_list = []
+        for item in data:
+            if isinstance(item, Ref):
+                checked_list.append(item.data)
+            elif isinstance(item, str):
+                checked_list.append(item)
+            elif isinstance(item, int):
+                checked_list.append(str(item))
+            else:
+                pass
+
+        self.data = delimiter.join(checked_list)
+
+
 class PackerVariable(AWSHelperFn):
     def __init__(self, data):
         self.data = self.getdata(data)
