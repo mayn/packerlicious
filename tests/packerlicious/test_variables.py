@@ -29,4 +29,4 @@ class TestPackerVariables(object):
     def test_join_variable(self):
         var = Join("-", ["test", "coverage"])
 
-        assert var.title == "test-coverage"
+        assert var == "test-coverage"
