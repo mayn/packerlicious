@@ -1,0 +1,66 @@
+{
+  "builders": [
+    {
+      "ami_name": "packer_baseline_ami_{{ isotime \"2006_01_02_03_04\" }}",
+      "ami_regions": [
+        "ap-southeast-2",
+        "eu-central-1"
+      ],
+      "associate_public_ip_address": "true",
+      "instance_type": "t2.medium",
+      "profile": "default",
+      "region": "ap-southeast-2",
+      "run_tags": {
+        "Name": "packer_baseline_ami_{{ isotime \"2006_01_02_03_04\" }}"
+      },
+      "source_ami_filter": {
+        "filters": {
+          "architecture": "x86_64",
+          "name": "CentOS Linux 7 x86_64 HVM EBS *",
+          "root-device-type": "ebs",
+          "virtualization-type": "hvm"
+        },
+        "most_recent": "true",
+        "owners": [
+          "679593333241"
+        ]
+      },
+      "ssh_username": "centos",
+      "subnet_id": "{{user `SubnetId`}}",
+      "tags": {
+        "Base_AMI_Name": "{{ .SourceAMIName }}",
+        "Environment": "{{user `Environment`}}",
+        "Name": "packer_baseline_ami_{{ isotime \"2006_01_02_03_04\" }}",
+        "OS_Version": "CentOS",
+        "Owner": "packer",
+        "Release": "Latest"
+      },
+      "type": "amazon-ebs",
+      "vpc_id": "{{user `VpcId`}}"
+    }
+  ],
+  "provisioners": [
+    {
+      "ansible_env_vars": [
+        "ANSIBLE_TIMEOUT=3000"
+      ],
+      "extra_arguments": [
+        "-b",
+        "-e env={{user `Environment`}}",
+        "-e vault={{user `Environment`}}",
+        "--vault-password-file={{user `AnsibleVaultPasswordFile`}}"
+      ],
+      "playbook_file": "{{user `AnsiblePlaybookPath`}}/playbook.yml",
+      "type": "ansible",
+      "user": "{{user `AnsibleUser`}}"
+    }
+  ],
+  "variables": {
+    "AnsiblePlaybookPath": "/home/test/ansible",
+    "AnsibleUser": "testuser",
+    "AnsibleVaultPasswordFile": "/home/test/staging",
+    "Environment": "staging",
+    "SubnetId": "subnet-abcd1234",
+    "VpcId": "vpc-abcd1234"
+  }
+}
