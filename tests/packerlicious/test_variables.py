@@ -27,6 +27,7 @@ class TestPackerVariables(object):
         assert Ref(var).data == "{{user `MY_TEST_USER`}}"
 
     def test_join_variable(self):
-        var = Join("-", ["test", "coverage"])
+        user = UserVar("MY_TEST_USER", "testValue")
+        var = Join("-", ["test", "coverage", Ref(user)])
 
-        assert var.data == "test-coverage"
+        assert var.data == "test-coverage-{{user `MY_TEST_USER`}}"
