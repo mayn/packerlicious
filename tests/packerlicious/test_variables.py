@@ -28,6 +28,6 @@ class TestPackerVariables(object):
 
     def test_join_variable(self):
         user = UserVar("MY_TEST_USER", "testValue")
-        var = Join("-", ["test", "coverage", Ref(user)])
+        var = Join("-", ["test", "coverage", Ref(user), 1])
 
-        assert var.data == "test-coverage-{{user `MY_TEST_USER`}}"
+        assert var.data == "test-coverage-{{user `MY_TEST_USER`}}-1"
