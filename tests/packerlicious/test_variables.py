@@ -1,6 +1,6 @@
 import pytest
 
-from packerlicious import Ref, EnvVar, TemplateVar, UserVar
+from packerlicious import Ref, Join, EnvVar, TemplateVar, UserVar
 
 
 class TestPackerVariables(object):
@@ -25,3 +25,8 @@ class TestPackerVariables(object):
         assert var.data == "testValue"
         assert var.ref().data == "{{user `MY_TEST_USER`}}"
         assert Ref(var).data == "{{user `MY_TEST_USER`}}"
+
+    def test_join_variable(self):
+        var = Join("-", ["test", "coverage"])
+
+        assert var.title == "test-coverage"
