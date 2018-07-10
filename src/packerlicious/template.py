@@ -83,6 +83,9 @@ class Template(object):
 
     def add_post_processor(self, post_processor):
         return self._update(self.post_processors, post_processor)
+    
+    def add_post_processor_chain(self, *args):
+        return self._update(self.post_processors, [args])
 
     def to_dict(self):
         t = {}
