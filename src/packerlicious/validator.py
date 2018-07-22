@@ -169,6 +169,15 @@ def count(properties, conditionals):
     return specified_count
 
 
+def all_or_nothing(class_name, properties, conditionals):
+    specified_count = count(properties, conditionals)
+    if specified_count != 0 and specified_count != len(conditionals):
+        raise ValueError(('%s: Either all or none of following'
+                          ' must be specified: %s') % (
+                          class_name, ', '.join(conditionals)))
+    return specified_count
+
+
 def mutually_exclusive(class_name, properties, conditionals):
     specified_count = count(properties, conditionals)
     if specified_count > 1:

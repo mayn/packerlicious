@@ -5,6 +5,7 @@ packer 1.2.5 feature sync [GH-117]
 
 ### FEATURES:
 
+* builder/Amazon: add support for alternate AWS authentication [GH-112]
 * builder/Qemu: add support shutdown_command, vm_name attributes [GH-109]
 
 

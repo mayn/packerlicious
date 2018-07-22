@@ -11,7 +11,7 @@ from packerlicious.validator import s3_bucket_name, encoding, status
 from packerlicious.validator import iam_path, iam_names, iam_role_name
 from packerlicious.validator import iam_group_name, iam_user_name, elb_name
 from packerlicious.validator import jagged_array
-from packerlicious.validator import mutually_exclusive
+from packerlicious.validator import all_or_nothing, mutually_exclusive
 
 
 class TestValidator(object):
@@ -146,6 +146,16 @@ class TestValidator(object):
         for s in ['', 'a'*65, 'a%', 'a#', 'A a']:
             with pytest.raises(ValueError):
                 iam_user_name(s)
+
+    def test_all_or_nothing(self):
+        conds = ['a', 'b', 'c']
+        all_or_nothing('z', ['z'], conds)
+        all_or_nothing('abc', ['a', 'b', 'c'], conds)
+        all_or_nothing('abcd', ['a', 'b', 'c', 'd'], conds)
+        with pytest.raises(ValueError):
+            all_or_nothing('ac', ['a', 'c'], conds)
+        with pytest.raises(ValueError):
+            all_or_nothing('b', ['b'], conds)
 
     def test_mutually_exclusive(self):
         conds = ['a', 'b', 'c']

@@ -181,11 +181,11 @@ class AmazonEbs(PackerBuilder):
     BuildRegion = TemplateVar("BuildRegion")
 
     props = {
-        'access_key': (str, True),
+        'access_key': (str, False),
         'ami_name': (str, True),
         'instance_type': (str, True),
         'region': (str, True),
-        'secret_key': (str, True),
+        'secret_key': (str, False),
         'source_ami': (str, False),
         'source_ami_filter': (AmazonSourceAmiFilter, False),
         'ami_block_device_mappings': ([BlockDeviceMapping], False),
@@ -239,6 +239,12 @@ class AmazonEbs(PackerBuilder):
 
     def validate(self):
         conds = [
+            'access_key',
+            'secret_key',
+        ]
+        validator.all_or_nothing(self.__class__.__name__, self.properties, conds)
+
+        conds = [
             'source_ami',
             'source_ami_filter',
         ]
@@ -262,9 +268,9 @@ class AmazonChroot(PackerBuilder):
     BuildRegion = TemplateVar("BuildRegion")
 
     props = {
-        'access_key': (str, True),
+        'access_key': (str, False),
         'ami_name': (str, True),
-        'secret_key': (str, True),
+        'secret_key': (str, False),
         'source_ami': (str, False),
         'ami_description': (str, False),
         'ami_groups': ([str], False),
@@ -306,6 +312,12 @@ class AmazonChroot(PackerBuilder):
 
     def validate(self):
         conds = [
+            'access_key',
+            'secret_key',
+        ]
+        validator.all_or_nothing(self.__class__.__name__, self.properties, conds)
+
+        conds = [
             'source_ami',
             'source_ami_filter',
         ]
@@ -323,10 +335,10 @@ class AmazonEbsSurrogate(PackerBuilder):
     BuildRegion = TemplateVar("BuildRegion")
 
     props = {
-        'access_key': (str, True),
+        'access_key': (str, False),
         'instance_type': (str, True),
         'region': (str, True),
-        'secret_key': (str, True),
+        'secret_key': (str, False),
         'ami_root_device': ([BlockDeviceMapping], True),
         'source_device_name': (str, True),
         'source_ami': (str, False),
@@ -383,6 +395,12 @@ class AmazonEbsSurrogate(PackerBuilder):
 
     def validate(self):
         conds = [
+            'access_key',
+            'secret_key',
+        ]
+        validator.all_or_nothing(self.__class__.__name__, self.properties, conds)
+
+        conds = [
             'source_ami',
             'source_ami_filter',
         ]
@@ -406,10 +424,10 @@ class AmazonEbsVolume(PackerBuilder):
     BuildRegion = TemplateVar("BuildRegion")
 
     props = {
-        'access_key': (str, True),
+        'access_key': (str, False),
         'instance_type': (str, True),
         'region': (str, True),
-        'secret_key': (str, True),
+        'secret_key': (str, False),
         'source_ami': (str, False),
         'ebs_volumes': ([BlockDeviceMapping], False),
         'associate_public_ip_address': (validator.boolean, False),
@@ -449,6 +467,12 @@ class AmazonEbsVolume(PackerBuilder):
 
     def validate(self):
         conds = [
+            'access_key',
+            'secret_key',
+        ]
+        validator.all_or_nothing(self.__class__.__name__, self.properties, conds)
+
+        conds = [
             'source_ami',
             'source_ami_filter',
         ]
@@ -478,13 +502,13 @@ class AmazonInstance(PackerBuilder):
     BuildRegion = TemplateVar("BuildRegion")
 
     props = {
-        'access_key': (str, True),
+        'access_key': (str, False),
         'account_id': (str, True),
         'ami_name': (str, True),
         'instance_type': (str, True),
         'region': (str, True),
         's3_bucket': (str, True),
-        'secret_key': (str, True),
+        'secret_key': (str, False),
         'source_ami': (str, False),
         'source_ami_filter': (AmazonSourceAmiFilter, False),
         'x509_cert_path': (str, True),
@@ -538,6 +562,12 @@ class AmazonInstance(PackerBuilder):
     }
 
     def validate(self):
+        conds = [
+            'access_key',
+            'secret_key',
+        ]
+        validator.all_or_nothing(self.__class__.__name__, self.properties, conds)
+
         conds = [
             'source_ami',
             'source_ami_filter',
