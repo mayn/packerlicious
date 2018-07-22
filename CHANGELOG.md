@@ -1,6 +1,9 @@
 
 ## (UNRELEASED)
 
+
+## 0.9.0 (July 22, 2018)
+
 packer 1.2.5 feature sync [GH-117]
 
 ### FEATURES:
