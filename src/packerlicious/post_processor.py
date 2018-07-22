@@ -232,6 +232,27 @@ class DockerTag(PackerPostProcessor):
     }
 
 
+class GoogleComputeImport(PackerPostProcessor):
+    """
+    Google Compute Image Import Post-Processor
+    https://www.packer.io/docs/post-processors/googlecompute-import.html
+    """
+    resource_type = "googlecompute-import"
+
+    props = {
+        'account_file': (str, True),
+        'bucket': (str, True),
+        'image_name': (str, True),
+        'project_id': (str, True),
+        'gcs_object_name': (str, False),
+        'image_description': (str, False),
+        'image_family': (str, False),
+        'image_labels': (dict, False),
+        'keep_input_artifact': (validator.boolean, False),
+        'skip_clean': (validator.boolean, False),
+    }
+
+
 class GoogleComputeExport(PackerPostProcessor):
     """
     Google Compute Image Exporter Post-Processor

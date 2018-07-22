@@ -10,7 +10,7 @@ class TestAnsibleLocalProvisioner(object):
 
         with pytest.raises(ValueError) as excinfo:
             b.to_dict()
-        assert 'required' in str(excinfo.value)
+        assert 'AnsibleLocal: one of the following must be specified: playbook_file, playbook_files' == str(excinfo.value)
 
 
 class TestAnsibleProvisioner(object):

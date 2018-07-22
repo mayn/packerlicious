@@ -51,7 +51,8 @@ class AnsibleLocal(PackerProvisioner):
     resource_type = "ansible-local"
 
     props = {
-        'playbook_file': (str, True),
+        'playbook_file': (str, False),
+        'playbook_files': ([str], False),
         'clean_staging_directory': (validator.boolean, False),
         'command': (str, False),
         'extra_arguments': ([str], False),
@@ -65,6 +66,13 @@ class AnsibleLocal(PackerProvisioner):
         'role_paths': ([str], False),
         'staging_directory': (str, False),
     }
+
+    def validate(self):
+        conds = [
+            'playbook_file',
+            'playbook_files',
+        ]
+        validator.exactly_one(self.__class__.__name__, self.properties, conds)
 
 
 class Ansible(PackerProvisioner):

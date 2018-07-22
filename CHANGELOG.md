@@ -1,12 +1,19 @@
 
 ## (UNRELEASED)
 
+packer 1.2.5 feature sync [GH-117]
+
+### FEATURES:
+
+* builder/Qemu: add support shutdown_command, vm_name attributes [GH-109]
+
 
 ## 0.8.1 (June 5, 2018)
 
 ### BUG FIX:
-# builder/GoogleCompute: source_image_family / source_image exactly one should be required [GH-111]
-# provisioner: only/except conditionals are missing [GH-110]
+
+* builder/GoogleCompute: source_image_family / source_image exactly one should be required [GH-111]
+* provisioner: only/except conditionals are missing [GH-110]
 
 
 ## 0.8.0 (May 30, 2018)

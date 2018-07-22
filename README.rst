@@ -134,6 +134,7 @@ Post Processors:
 - docker-push
 - docker-save
 - docker-tag
+- googlecompute-import
 - googlecompute-export
 - manifest
 - shell-local
