@@ -688,7 +688,7 @@ class CloudStack(PackerBuilder):
             'source_iso',
             'source_template',
         ]
-        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+        validator.exactly_one(self.__class__.__name__, self.properties, conds)
 
 
 class DigitalOcean(PackerBuilder):
@@ -828,12 +828,11 @@ class GoogleCompute(PackerBuilder):
     }
 
     def validate(self):
-
-        iso_url_conds = [
+        conds = [
             'source_image',
             'source_image_family'
         ]
-        validator.exactly_one(self.__class__.__name__, self.properties, iso_url_conds)
+        validator.exactly_one(self.__class__.__name__, self.properties, conds)
 
 
 class HypervIso(PackerBuilder):

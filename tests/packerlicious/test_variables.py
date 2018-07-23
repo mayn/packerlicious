@@ -1,6 +1,6 @@
 import pytest
 
-from packerlicious import Ref, EnvVar, TemplateVar, UserVar
+from packerlicious import Ref, EnvVar, TemplateVar, UserVar, PackerVariable
 
 
 class TestPackerVariables(object):
@@ -25,3 +25,10 @@ class TestPackerVariables(object):
         assert var.data == "testValue"
         assert var.ref().data == "{{user `MY_TEST_USER`}}"
         assert Ref(var).data == "{{user `MY_TEST_USER`}}"
+
+    def test_packer_variable(self):
+        var = PackerVariable("{{timestamp}}")
+
+        assert var.data == "{{timestamp}}"
+        assert var.ref().data.data == "{{timestamp}}"
+        assert Ref(var).data.data == "{{timestamp}}"

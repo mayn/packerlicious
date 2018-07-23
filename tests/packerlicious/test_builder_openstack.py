@@ -11,3 +11,13 @@ class TestOpenStackBuilder(object):
         with pytest.raises(ValueError) as excinfo:
             b.to_dict()
         assert 'required' in str(excinfo.value)
+
+    def test_validate(self):
+        b = builder.OpenStack(
+            image_name="test image",
+            flavor="2"
+        )
+
+        with pytest.raises(ValueError) as excinfo:
+            b.to_dict()
+        assert "OpenStack: one of the following must be specified: source_image, source_image_name" == str(excinfo.value)

@@ -60,7 +60,7 @@ class Template(object):
                 c.extend(values)
             else:
                 c.append(values)
-        elif isinstance(c, dict):
+        elif isinstance(c, dict): # pragma: no branch
             if isinstance(values, list):
                 for v in values:
                     if v.title in c:
