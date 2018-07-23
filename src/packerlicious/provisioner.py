@@ -221,6 +221,28 @@ class File(PackerProvisioner):
     }
 
 
+class Inspec(PackerProvisioner):
+    """
+    Inspec Provisioner
+    https://github.com/jrbeilke/packer-provisioner-inspec
+    """
+    resource_type = "inspec"
+
+    props = {
+        'test_path': (str, True),
+        'attrs': ([str], False),
+        'controls': ([str], False),
+        'extra_arguments': ([str], False),
+        'json_config': (str, False),
+        'local_port': (str, False),
+        'profiles_path': ([str], False),
+        'reporter': ([str], False),
+        'ssh_host_key_file': (str, False),
+        'ssh_authorized_key_file': (str, False),
+        'user': (str, False),
+    }
+
+
 class PowerShell(PackerProvisioner):
     """
     PowerShell Provisioner
