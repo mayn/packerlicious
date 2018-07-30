@@ -68,10 +68,10 @@ class AmazonImport(PackerPostProcessor):
     LicenseBYOL = "BYOL"
 
     props = {
-        'access_key': (str, True),
+        'access_key': (str, False),
         'region': (str, True),
         's3_bucket_name': (str, True),
-        'secret_key': (str, True),
+        'secret_key': (str, False),
         'ami_description': (str, False),
         'ami_groups': ([str], False),
         'ami_name': (str, False),
@@ -87,6 +87,13 @@ class AmazonImport(PackerPostProcessor):
         'tags': (dict, False),
         'token': (str, False),
     }
+
+    def validate(self):
+        conds = [
+            'access_key',
+            'secret_key',
+        ]
+        validator.all_or_nothing(self.__class__.__name__, self.properties, conds)
 
 
 class Artifice(PackerPostProcessor):
