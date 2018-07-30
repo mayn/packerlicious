@@ -81,6 +81,7 @@ class AmazonImport(PackerPostProcessor):
         'mfa_code': (str, False),
         'profile': (str, False),
         'role_name': (str, False),
+        's3_key_name': (str, False),
         'skip_clean': (validator.boolean, False),
         'skip_region_validation': (validator.boolean, False),
         'tags': (dict, False),
