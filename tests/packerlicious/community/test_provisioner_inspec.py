@@ -1,6 +1,6 @@
 import pytest
 
-import packerlicious.provisioner as provisioner
+import packerlicious.community.provisioner as provisioner
 
 
 class TestInspecProvisioner(object):
