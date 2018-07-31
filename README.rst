@@ -20,8 +20,6 @@ About
 
 packerlicious - a python library to create `packer`_ templates.
 
-Project follows `semantic versioning`_ , v0.x.x API should be considered unstable, API will change frequently, please plan accordingly.
-
 
 This project leverages the logic engine of `troposphere`_.
 
@@ -160,6 +158,9 @@ Provisioners:
 - windows-shell
 - windows-restart
 
+
+Community Plugins:
+- packer-provisioner-inspec
 
 Licensing
 =========

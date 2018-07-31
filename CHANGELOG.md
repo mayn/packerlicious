@@ -1,6 +1,19 @@
 
 ## (UNRELEASED)
 
+## 1.0.0 (July 30, 2018)
+
+stable release of packerlicious API.
+
+### IMPROVEMENTS:
+
+* post_processors/AmazonImport : add s3_key_name [GH-119]
+* community.provisioner/Inspec: add support for packer InSpec provisioner plugin [GH-118] 
+
+### MISC:
+
+* increase test coverage [GH-18]
+ 
 
 ## 0.9.0 (July 22, 2018)
 
