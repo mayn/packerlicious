@@ -31,7 +31,7 @@ class Inspec(PackerProvisioner):
         'extra_arguments': ([str], False),
         'json_config': (str, False),
         'local_port': (str, False),
-        'profiles_path': ([str], False),
+        'profiles_path': (str, False),
         'reporter': ([str], False),
         'ssh_host_key_file': (str, False),
         'ssh_authorized_key_file': (str, False),
