@@ -806,6 +806,7 @@ class GoogleCompute(PackerBuilder):
         'disk_type': (str, False),
         'image_description': (str, False),
         'image_family': (str, False),
+        'image_labels': (dict, False),
         'image_licenses': ([str], False),
         'image_name': (str, False),
         'instance_name': (str, False),
