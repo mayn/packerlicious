@@ -1,13 +1,22 @@
 
 ## (UNRELEASED)
 
+## 1.0.1 (August 21, 2018)
+
+### BUG FIX:
+
+* builder/GoogleCompute: add missing property image_labels [GH-121]
+* community.provisioner/Inspec: profiles_path should be a string [GH-120]
+
+
+
 ## 1.0.0 (July 30, 2018)
 
 stable release of packerlicious API.
 
 ### IMPROVEMENTS:
 
-* post_processors/AmazonImport : add s3_key_name [GH-119]
+* post_processors/AmazonImport: add s3_key_name [GH-119]
 * community.provisioner/Inspec: add support for packer InSpec provisioner plugin [GH-118] 
 
 ### MISC:
