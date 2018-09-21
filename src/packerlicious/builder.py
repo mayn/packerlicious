@@ -215,7 +215,7 @@ class AmazonEbs(PackerBuilder):
         'run_volume_tags': (dict, False),
         'security_group_id': (str, False),
         'security_group_ids': ([str], False),
-        'shutdown_behavior': (str`, False),
+        'shutdown_behavior': (str, False),
         'skip_region_validation': (validator.boolean, False),
         'snapshot_groups': ([str], False),
         'snapshot_users': ([str], False),
