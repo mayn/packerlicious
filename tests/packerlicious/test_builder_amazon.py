@@ -108,6 +108,33 @@ class TestAmazonChroot(object):
             b.to_dict()
         assert 'AmazonChroot: one of the following must be specified: source_ami, source_ami_filter' == str(excinfo.value)
 
+    def test_exactly_one_source_ami_when_from_scratch_is_false(self):
+        b = builder.AmazonChroot(
+            ami_name  ="some-ami",
+            access_key="dummy-access-key",
+            secret_key="dummy-secret-key",
+            from_scratch="false"
+        )
+
+        with pytest.raises(ValueError) as excinfo:
+            b.to_dict()
+        assert 'AmazonChroot: one of the following must be specified: source_ami, source_ami_filter' == str(excinfo.value)
+
+    def test_required_fields_when_from_scratch_is_true(self):
+        b = builder.AmazonChroot(
+            ami_name  ="some-ami",
+            access_key="dummy-access-key",
+            secret_key="dummy-secret-key",
+            from_scratch="true"
+        )
+
+        with pytest.raises(ValueError) as excinfo:
+            b.to_dict()
+        assert 'AmazonChroot: when from_config is True, source_ami is ' \
+               'ignored and ami_virtualization_type, pre_mount_commands, ' \
+               'root_volume_size options are required' == str(excinfo.value)
+
+
 class TestAmazonEbsSurrogate(object):
 
     def test_required_fields_missing(self):
