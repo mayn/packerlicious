@@ -301,6 +301,7 @@ class AmazonChroot(PackerBuilder):
         'profile': (str, False),
         'post_mount_commands': ([str], False),
         'root_volume_size': (int, False),
+        'root_volume_type': (str, False),
         'skip_region_validation': (validator.boolean, False),
         'snapshot_tags': ([str], False),
         'snapshot_groups': ([str], False),
