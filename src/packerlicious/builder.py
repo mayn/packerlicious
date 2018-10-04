@@ -317,11 +317,28 @@ class AmazonChroot(PackerBuilder):
         ]
         validator.all_or_nothing(self.__class__.__name__, self.properties, conds)
 
-        conds = [
-            'source_ami',
-            'source_ami_filter',
+        from_scratch_conds = [
+            'ami_virtualization_type',
+            'pre_mount_commands',
+            'root_volume_size'
         ]
-        validator.exactly_one(self.__class__.__name__, self.properties, conds)
+
+        if (
+            'from_scratch' in self.properties and
+            self.properties['from_scratch'] == 'true' and
+            validator.count(self.properties, from_scratch_conds) != 3
+        ):
+            raise ValueError(
+                "AmazonChroot: when from_config is True, source_ami "
+                "is ignored and {0} options are "
+                "required".format(', '.join(from_scratch_conds)))
+        else:
+            conds = [
+                'source_ami',
+                'source_ami_filter',
+            ]
+            validator.exactly_one(
+                self.__class__.__name__, self.properties, conds)
 
 
 class AmazonEbsSurrogate(PackerBuilder):
