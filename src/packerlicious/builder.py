@@ -390,7 +390,7 @@ class AmazonEbsSurrogate(PackerBuilder):
         'run_volume_tags': (dict, False),
         'security_group_id': (str, False),
         'security_group_ids': ([str], False),
-        'shutdown_behavior': ([str], False),
+        'shutdown_behavior': (str, False),
         'skip_region_validation': (validator.boolean, False),
         'snapshot_groups': ([str], False),
         'snapshot_users': ([str], False),
@@ -465,7 +465,7 @@ class AmazonEbsVolume(PackerBuilder):
         'run_tags': (dict, False),
         'security_group_id': (str, False),
         'security_group_ids': ([str], False),
-        'shutdown_behavior': ([str], False),
+        'shutdown_behavior': (str, False),
         'skip_region_validation': (validator.boolean, False),
         'snapshot_groups': ([str], False),
         'snapshot_users': ([str], False),
@@ -517,7 +517,7 @@ class AmazonInstance(PackerBuilder):
     """
     AWS Instance Template Variables
     https://www.packer.io/docs/builders/amazon-ebs.html#ami_description
-    TODO impl validation ami_virtualization_type region_kms_key_ids run_volume_tags shutdown_behavior
+    TODO impl validation ami_virtualization_type region_kms_key_ids run_volume_tags
             spot_price_auto_product ssh_keypair_name
     """
     SourceAMI = TemplateVar("SourceAMI")
