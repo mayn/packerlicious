@@ -749,7 +749,7 @@ class Docker(PackerBuilder):
         'message': (str, False),
         'privileged': (validator.boolean, False),
         'pull': (validator.boolean, False),
-        'run_command': (str, False),
+        'run_command': ([str], False),
         'volumes': (dict, False),
     }
 
