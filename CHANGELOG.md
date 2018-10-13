@@ -1,6 +1,14 @@
 
 ## (UNRELEASED)
 
+
+## 1.0.2 (October 13, 2018)
+
+### BUG FIX:
+* builder/Docker: run_command type should be list of strings[GH-133]
+* builder/Amazon*: shutdown_behavior type should be a string [GH-122]
+
+
 ## 1.0.1 (August 21, 2018)
 
 ### BUG FIX:
