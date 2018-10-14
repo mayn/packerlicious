@@ -160,6 +160,7 @@ Provisioners:
 
 
 Community Plugins:
+
 - packer-provisioner-inspec
 
 Licensing

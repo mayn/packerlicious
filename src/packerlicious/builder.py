@@ -198,6 +198,7 @@ class AmazonEbs(PackerBuilder):
         'associate_public_ip_address': (validator.boolean, False),
         'availability_zone': (str, False),
         'custom_endpoint_ec2': (str, False),
+        'decode_authorization_messages': (validator.boolean, False),
         'disable_stop_instance': (validator.boolean, False),
         'ebs_optimized': (validator.boolean, False),
         'enhanced_networking': (validator.boolean, False),
@@ -215,7 +216,7 @@ class AmazonEbs(PackerBuilder):
         'run_volume_tags': (dict, False),
         'security_group_id': (str, False),
         'security_group_ids': ([str], False),
-        'shutdown_behavior': ([str], False),
+        'shutdown_behavior': (str, False),
         'skip_region_validation': (validator.boolean, False),
         'snapshot_groups': ([str], False),
         'snapshot_users': ([str], False),
@@ -282,6 +283,7 @@ class AmazonChroot(PackerBuilder):
         'command_wrapper': (str, False),
         'copy_files': ([str], False),
         'custom_endpoint_ec2': (str, False),
+        'decode_authorization_messages': (validator.boolean, False),
         'device_path': (str, False),
         'ena_support': (validator.boolean, False),
         'force_deregister': (validator.boolean, False),
@@ -370,6 +372,7 @@ class AmazonEbsSurrogate(PackerBuilder):
         'associate_public_ip_address': (validator.boolean, False),
         'availability_zone': (str, False),
         'custom_endpoint_ec2': (str, False),
+        'decode_authorization_messages': (validator.boolean, False),
         'disable_stop_instance': (validator.boolean, False),
         'ebs_optimized': (validator.boolean, False),
         'ena_support': (validator.boolean, False),
@@ -387,7 +390,7 @@ class AmazonEbsSurrogate(PackerBuilder):
         'run_volume_tags': (dict, False),
         'security_group_id': (str, False),
         'security_group_ids': ([str], False),
-        'shutdown_behavior': ([str], False),
+        'shutdown_behavior': (str, False),
         'skip_region_validation': (validator.boolean, False),
         'snapshot_groups': ([str], False),
         'snapshot_users': ([str], False),
@@ -451,6 +454,7 @@ class AmazonEbsVolume(PackerBuilder):
         'associate_public_ip_address': (validator.boolean, False),
         'availability_zone': (str, False),
         'custom_endpoint_ec2': (str, False),
+        'decode_authorization_messages': (validator.boolean, False),
         'disable_stop_instance': (validator.boolean, False),
         'ebs_optimized': (validator.boolean, False),
         'ena_support': (validator.boolean, False),
@@ -461,7 +465,7 @@ class AmazonEbsVolume(PackerBuilder):
         'run_tags': (dict, False),
         'security_group_id': (str, False),
         'security_group_ids': ([str], False),
-        'shutdown_behavior': ([str], False),
+        'shutdown_behavior': (str, False),
         'skip_region_validation': (validator.boolean, False),
         'snapshot_groups': ([str], False),
         'snapshot_users': ([str], False),
@@ -513,7 +517,7 @@ class AmazonInstance(PackerBuilder):
     """
     AWS Instance Template Variables
     https://www.packer.io/docs/builders/amazon-ebs.html#ami_description
-    TODO impl validation ami_virtualization_type region_kms_key_ids run_volume_tags shutdown_behavior
+    TODO impl validation ami_virtualization_type region_kms_key_ids run_volume_tags
             spot_price_auto_product ssh_keypair_name
     """
     SourceAMI = TemplateVar("SourceAMI")
@@ -545,6 +549,7 @@ class AmazonInstance(PackerBuilder):
         'bundle_upload_command': (str, False),
         'bundle_vol_command': (str, False),
         'custom_endpoint_ec2': (str, False),
+        'decode_authorization_messages': (validator.boolean, False),
         'ebs_optimized': (validator.boolean, False),
         'enhanced_networking': (validator.boolean, False),
         'enable_t2_unlimited': (validator.boolean, False),
@@ -767,7 +772,7 @@ class Docker(PackerBuilder):
         'message': (str, False),
         'privileged': (validator.boolean, False),
         'pull': (validator.boolean, False),
-        'run_command': (str, False),
+        'run_command': ([str], False),
         'volumes': (dict, False),
     }
 
