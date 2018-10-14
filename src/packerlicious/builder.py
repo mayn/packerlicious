@@ -736,6 +736,7 @@ class DigitalOcean(PackerBuilder):
         'state_timeout': (str, False),
         'user_data': (str, False),
         'user_data_file': (str, False),
+        'tags': ([str], False),
     }
 
 
