@@ -693,6 +693,7 @@ class CloudStack(PackerBuilder):
         'prevent_firewall_changes': (validator.boolean, False),
         'project': (str, False),
         'public_ip_address': (str, False),
+        'public_port': (int, False),
         'ssl_no_verify': (validator.boolean, False),
         'template_display_text': (str, False),
         'template_featured': (validator.boolean, False),
