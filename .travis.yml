@@ -20,4 +20,4 @@ script:
   - ./tools/get-packer.sh
   - tox
 after_success:
-  - if [ "$TRAVIS_PYTHON_VERSION" == "2.7" ]; then coveralls; fi
+  - if [ "$TRAVIS_PYTHON_VERSION" == "3.6" ]; then coveralls; fi
