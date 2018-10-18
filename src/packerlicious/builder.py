@@ -198,6 +198,9 @@ class AmazonEbs(PackerBuilder):
         'ami_virtualization_type': (str, False),
         'associate_public_ip_address': (validator.boolean, False),
         'availability_zone': (str, False),
+        'block_duration_minutes': (
+            validator.integer_list_item(
+                'block_duration_minutes', [60, 120, 180, 240, 300, 360]), False),
         'custom_endpoint_ec2': (str, False),
         'decode_authorization_messages': (validator.boolean, False),
         'disable_stop_instance': (validator.boolean, False),
@@ -255,6 +258,12 @@ class AmazonEbs(PackerBuilder):
         conds = [
             'security_group_id',
             'security_group_ids',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+        conds = [
+            'availability_zone',
+            'block_duration_minutes',
         ]
         validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
 
@@ -372,6 +381,9 @@ class AmazonEbsSurrogate(PackerBuilder):
         'ami_virtualization_type': (str, False),
         'associate_public_ip_address': (validator.boolean, False),
         'availability_zone': (str, False),
+        'block_duration_minutes': (
+            validator.integer_list_item(
+                'block_duration_minutes', [60, 120, 180, 240, 300, 360]), False),
         'custom_endpoint_ec2': (str, False),
         'decode_authorization_messages': (validator.boolean, False),
         'disable_stop_instance': (validator.boolean, False),
@@ -434,6 +446,12 @@ class AmazonEbsSurrogate(PackerBuilder):
         ]
         validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
 
+        conds = [
+            'availability_zone',
+            'block_duration_minutes',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
 
 class AmazonEbsVolume(PackerBuilder):
     """
@@ -454,6 +472,7 @@ class AmazonEbsVolume(PackerBuilder):
         'ebs_volumes': ([BlockDeviceMapping], False),
         'associate_public_ip_address': (validator.boolean, False),
         'availability_zone': (str, False),
+        'block_duration_minutes': (validator.integer, False),
         'custom_endpoint_ec2': (str, False),
         'decode_authorization_messages': (validator.boolean, False),
         'disable_stop_instance': (validator.boolean, False),
@@ -507,6 +526,12 @@ class AmazonEbsVolume(PackerBuilder):
         ]
         validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
 
+        conds = [
+            'availability_zone',
+            'block_duration_minutes',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
 
 class AmazonInstance(PackerBuilder):
     """
@@ -545,6 +570,9 @@ class AmazonInstance(PackerBuilder):
         'ami_virtualization_type': (str, False),
         'associate_public_ip_address': (validator.boolean, False),
         'availability_zone': (str, False),
+        'block_duration_minutes': (
+            validator.integer_list_item(
+                'block_duration_minutes', [60, 120, 180, 240, 300, 360]), False),
         'bundle_destination': (str, False),
         'bundle_prefix': (str, False),
         'bundle_upload_command': (str, False),
@@ -601,6 +629,12 @@ class AmazonInstance(PackerBuilder):
         conds = [
             'security_group_id',
             'security_group_ids',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+        conds = [
+            'availability_zone',
+            'block_duration_minutes',
         ]
         validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
 

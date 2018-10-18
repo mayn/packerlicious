@@ -229,3 +229,14 @@ def jagged_array(expected_type):
             raise ValueError("%r is not a valid array of array of %r" % (x, expected_type))
 
     return jagged_array_checker
+
+
+def integer_list_item(prop_name, allowed_values):
+    def integer_list_item_checker(x):
+        s = integer(x)
+        if s in allowed_values:
+            return s
+        raise ValueError('{0} must be one of following: {1}'.format(
+                         prop_name, ', '.join(str(j) for j in allowed_values)))
+
+    return integer_list_item_checker

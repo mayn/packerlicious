@@ -12,6 +12,7 @@ from packerlicious.validator import iam_path, iam_names, iam_role_name
 from packerlicious.validator import iam_group_name, iam_user_name, elb_name
 from packerlicious.validator import jagged_array
 from packerlicious.validator import all_or_nothing, mutually_exclusive
+from packerlicious.validator import integer_list_item
 
 
 class TestValidator(object):
@@ -189,3 +190,20 @@ class TestValidator(object):
         for i, sub_list in enumerate(test_value):
             for j, value in enumerate(sub_list):
                 assert validator_return_value[i][j] == value
+
+    def test_integer_list_item(self):
+        allowed_values = [1, 3, 5]
+        int_list_item_validator = integer_list_item('prop_name', allowed_values)
+
+        int_list_item_validator(1)
+        int_list_item_validator(3)
+        int_list_item_validator(5)
+
+        with pytest.raises(ValueError):
+            int_list_item_validator('not_an_integer')
+        with pytest.raises(ValueError):
+            int_list_item_validator(0)
+        with pytest.raises(ValueError):
+            int_list_item_validator(2)
+        with pytest.raises(ValueError):
+            int_list_item_validator(6)

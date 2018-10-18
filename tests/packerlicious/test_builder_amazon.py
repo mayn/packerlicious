@@ -49,6 +49,28 @@ class TestAmazonInstanceBuilder(object):
             b.to_dict()
         assert 'AmazonInstance: only one of the following can be specified: security_group_id, security_group_ids' == str(excinfo.value)
 
+    def test_mutually_exclusive_availability_zone_block_duration_minutes(self):
+        b = builder.AmazonInstance(
+            account_id="...",
+            access_key="dummy-access-key",
+            secret_key="dummy-secret-key",
+            instance_type="t2.micro",
+            ami_name="ami-result",
+            region="us-east-1",
+            source_ami="dummy-source-ami",
+            s3_bucket="...",
+            x509_cert_path="...",
+            x509_key_path="...",
+            security_group_id="sg-123",
+            availability_zone='zone-1',
+            block_duration_minutes=60
+        )
+
+        with pytest.raises(ValueError) as excinfo:
+            b.to_dict()
+        assert 'AmazonInstance: only one of the following can be specified: availability_zone, block_duration_minutes' == str(
+            excinfo.value)
+
 
 class TestAmazonEbsBuilder(object):
 
@@ -87,6 +109,25 @@ class TestAmazonEbsBuilder(object):
         with pytest.raises(ValueError) as excinfo:
             b.to_dict()
         assert 'AmazonEbs: only one of the following can be specified: security_group_id, security_group_ids' == str(excinfo.value)
+
+    def test_mutually_exclusive_availability_zone_block_duration_minutes(self):
+        b = builder.AmazonEbs(
+            access_key="dummy-access-key",
+            secret_key="dummy-secret-key",
+            instance_type="t2.micro",
+            ami_name="ami-result",
+            region="us-east-1",
+            source_ami="dummy-source-ami",
+            security_group_id="sg-123",
+            availability_zone='zone-1',
+            block_duration_minutes=60
+        )
+
+        with pytest.raises(ValueError) as excinfo:
+            b.to_dict()
+        assert 'AmazonEbs: only one of the following can be specified: availability_zone, block_duration_minutes' == str(
+            excinfo.value)
+
 
 class TestAmazonChroot(object):
 
@@ -177,6 +218,26 @@ class TestAmazonEbsSurrogate(object):
             b.to_dict()
         assert 'AmazonEbsSurrogate: only one of the following can be specified: security_group_id, security_group_ids' == str(excinfo.value)
 
+    def test_mutually_exclusive_availability_zone_block_duration_minutes(self):
+        ami_root_dev = builder.BlockDeviceMapping()
+        b = builder.AmazonEbsSurrogate(
+            access_key="dummy-access-key",
+            secret_key="dummy-secret-key",
+            instance_type="t2.micro",
+            source_device_name="some_device",
+            region="us-east-1",
+            ami_root_device=[ami_root_dev],
+            source_ami="dummy-source-ami",
+            security_group_ids=["sg-123", "sg-456"],
+            availability_zone='zone-1',
+            block_duration_minutes=60
+        )
+
+        with pytest.raises(ValueError) as excinfo:
+            b.to_dict()
+        assert 'AmazonEbsSurrogate: only one of the following can be specified: availability_zone, block_duration_minutes' == str(excinfo.value)
+
+
 class TestAmazonEbsVolume(object):
 
     def test_required_fields_missing(self):
@@ -212,3 +273,19 @@ class TestAmazonEbsVolume(object):
         with pytest.raises(ValueError) as excinfo:
             b.to_dict()
         assert 'AmazonEbsVolume: only one of the following can be specified: security_group_id, security_group_ids' == str(excinfo.value)
+
+    def test_mutually_exclusive_availability_zone_block_duration_minutes(self):
+        b = builder.AmazonEbsVolume(
+            access_key="dummy-access-key",
+            secret_key="dummy-secret-key",
+            instance_type="t2.micro",
+            region="us-east-1",
+            source_ami="dummy-source-ami",
+            security_group_id="sg-123",
+            availability_zone='zone-1',
+            block_duration_minutes=60
+        )
+
+        with pytest.raises(ValueError) as excinfo:
+            b.to_dict()
+        assert 'AmazonEbsVolume: only one of the following can be specified: availability_zone, block_duration_minutes' == str(excinfo.value)
