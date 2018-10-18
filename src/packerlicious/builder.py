@@ -142,7 +142,7 @@ class AmazonSourceAmiFilter(PackerProperty):
     """
     props = {
         'filters': (dict, False),
-        'owners': ([str], False),
+        'owners': ([str], True),
         'most_recent': (validator.boolean, False),
     }
 
