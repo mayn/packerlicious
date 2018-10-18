@@ -24,7 +24,7 @@ class TestHypervVmcxBuilder(object):
 
     def test_exactly_one_clone_from_required(self):
         b = builder.HypervVmcx(
-            clone_from_vmxc_path="c:\\virtual machines\\ubuntu-12.04.5-server-amd64",
+            clone_from_vmcx_path="c:\\virtual machines\\ubuntu-12.04.5-server-amd64",
             clone_from_vm_name="ubuntu-12.04.5-server-amd64"
         )
 
@@ -35,7 +35,7 @@ class TestHypervVmcxBuilder(object):
 
     def test_exactly_one_clone_from_specified(self):
         b = builder.HypervVmcx(
-            clone_from_vmxc_path="c:\\virtual machines\\ubuntu-12.04.5-server-amd64",
+            clone_from_vmcx_path="c:\\virtual machines\\ubuntu-12.04.5-server-amd64",
         )
 
         b.to_dict()
