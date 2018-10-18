@@ -837,6 +837,7 @@ class GoogleCompute(PackerBuilder):
         'instance_name': (str, False),
         'machine_type': (str, False),
         'metadata': (dict, False),
+        'min_cpu_platform': (str, False),
         'network': (str, False),
         'network_project_id': (str, False),
         'omit_external_ip': (validator.boolean, False),
