@@ -923,7 +923,7 @@ class HypervVmcx(PackerBuilder):
     resource_type = "hyperv-vmcx"
 
     props = {
-        'clone_from_vmxc_path': (str, False),
+        'clone_from_vmcx_path': (str, False),
         'clone_from_vm_name': (str, False),
         'clone_from_snapshot_name': (str, False),
         'clone_all_snapshots': (validator.boolean, False),
@@ -959,13 +959,14 @@ class HypervVmcx(PackerBuilder):
         'skip_export': (validator.boolean, False),
         'switch_name': (str, False),
         'switch_vlan_id': (str, False),
+        'temp_path': (str, False),
         'vlan_id': (str, False),
         'vm_name': (str, False),
     }
 
     def validate(self):
         conds = [
-            'clone_from_vmxc_path',
+            'clone_from_vmcx_path',
             'clone_from_vm_name'
         ]
         validator.exactly_one(self.__class__.__name__, self.properties, conds)
