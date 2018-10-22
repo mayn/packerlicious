@@ -409,6 +409,7 @@ class VSphere(PackerPostProcessor):
         'username': (str, True),
         'vm_name': (str, True),
         'datastore': (str, False),
+        'esxi_host': (str, False),
         'disk_mode': (str, False),
         'insecure': (validator.boolean, False),
         'resource_pool': (str, False),
