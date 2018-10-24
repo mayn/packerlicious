@@ -35,6 +35,7 @@ class PackerCommunicator(BasePackerObject):
         'ssh_bastion_port': (validator.integer, False),
         'ssh_bastion_private_key_file': (str, False),
         'ssh_bastion_username': (str, False),
+        'ssh_clear_authorized_keys': (validator.boolean, False),
         'ssh_disable_agent': (validator.boolean, False),
         'ssh_file_transfer_method': (str, False),
         'ssh_handshake_attempts': (validator.integer, False),
