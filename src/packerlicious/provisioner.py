@@ -377,6 +377,7 @@ class Shell(PackerProvisioner):
         'remote_path': (str, False),
         'skip_clean': (validator.boolean, False),
         'start_retry_timeout': (str, False),
+        'use_env_var_file': (validator.boolean, False),
     }
 
     def validate(self):
