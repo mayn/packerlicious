@@ -1016,6 +1016,7 @@ class LXD(PackerBuilder):
         'name': (str, False),
         'output_image': (str, False),
         'publish_properties': (dict, False),
+        'launch_config': (dict, False)
     }
 
 
