@@ -26,7 +26,7 @@ class Inspec(PackerProvisioner):
 
     props = {
         'test_path': (str, True),
-        'attrs': ([str], False),
+        'attrs': (str, False),
         'controls': ([str], False),
         'extra_arguments': ([str], False),
         'json_config': (str, False),
