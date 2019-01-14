@@ -1,6 +1,6 @@
 """
 Copyright 2018 Matthew Aynalem
-Copyright 2018 Thor K. Høgås <thor at roht no>
+Copyright 2018 Thor K. Hoegaas <thor at roht no>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -40,17 +40,19 @@ class VsphereBase(PackerBuilder):
     https://github.com/jetbrains-infra/packer-builder-vsphere#parameter-reference
     """
 
+    network_adapter_types = ['vlance', 'vmxnet', 'flexible', 'e1000', 'e1000e', 'vmxnet2', 'vmxnet3']
+
     base_props = {
         # Connection
         'vcenter_server':           (str, True),
         'username':                 (str, True),
         'password':                 (str, True),
         'insecure_connection':      (validator.boolean, False),
-        'datacenter':               (str, True),
+        'datacenter':               (str, False),
 
         # VM location
         'vm_name':                  (str, True),
-        'notes':                    (str, True),
+        'notes':                    (str, False),
         'folder':                   (str, False),
         'host':                     (str, False),
         'cluster':                  (str, True),
@@ -58,20 +60,23 @@ class VsphereBase(PackerBuilder):
         'datastore':                (str, True),
 
         # hardware
-        'CPUs':                     (validator.integer, True),
+        'CPUs':                     (validator.integer, False),
+        'cpu_cores':                (validator.integer, False),
         'CPU_limit':                (validator.integer, False),
         'CPU_reservation':          (validator.integer, False),
         'CPU_hot_plug':             (validator.boolean, False),
-        'RAM':                      (validator.integer, True),
+        'RAM':                      (validator.integer, False),
         'RAM_reservation':          (validator.integer, False),
-        'RAM_reserve_all':          (validator.boolean, True),
+        'RAM_reserve_all':          (validator.boolean, False),
         'RAM_hot_plug':             (validator.boolean, False),
-        'disk_size':                (validator.integer, True),
         'NestedHV':                 (validator.boolean, False),
+        'video_ram':                (validator.integer, False),
+        'firmware':                 (str, False),
+        'network':                  (str, False),
+        'network_card':             (validator.string_list_item(network_adapter_types), False),
 
         # VM
-        'create_snapshot':          (validator.boolean, False),
-        'configuration_parameters': (map, False),
+        'configuration_parameters': (dict, False),
         'boot_order':               (str, False),
 
         # provisioning
@@ -82,20 +87,17 @@ class VsphereBase(PackerBuilder):
         'winrm_username':           (str, False),
         'winrm_password':           (str, False),
         'shutdown_command':         (str, False),
-        'shutdown_timeout':         (str, False)
-    }
+        'shutdown_timeout':         (str, False),
 
-    def validate(self):
-        conds = [
-                'ssh_password',
-                'ssh_private_key_file'
-        ]
-        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+        # post-processing
+        'create_snapshot':          (validator.boolean, False),
+        'convert_to_template':      (validator.boolean, False)
+    }
 
     def __init__(self, title=None, **kwargs):
         for k, v in list(self.base_props.items()):
             self.props[k] = v
-        super().__init__(title, **kwargs)
+        super(VsphereBase, self).__init__(title, **kwargs)
 
 
 class VsphereClone(VsphereBase):
@@ -105,7 +107,7 @@ class VsphereClone(VsphereBase):
     """
     resource_type = 'vsphere-clone'
 
-    _props = {
+    props = {
         # VM location
         'template':     (str, True),
         'linked_clone': (validator.boolean, False),
@@ -119,32 +121,43 @@ class VsphereIso(VsphereBase):
     """
     resource_type = "vsphere-iso"
 
-    props                        = {
+    disk_controller_types = ['lsilogic', 'lsilogic-sas', 'pvscsi', 'nvme']
+
+    props = {
         # Hardware
         'vm_version':            (int, False),
         # https://pubs.vmware.com/vsphere-6-5/index.jsp?topic=%2Fcom.vmware.wssdk.apiref.doc%2Fvim.vm.GuestOsDescriptor.GuestOsIdentifier.html
-        'guest_os_type':         (str, True),
-        'disk_controller_type':  (str, False),
+        'guest_os_type':         (str, False),
+        'disk_size':             (validator.integer, True),
+        'disk_controller_type':  (validator.string_list_item(disk_controller_types), False),
         'disk_thin_provisioned': (validator.boolean, False),
         'disk_controller_type':  (str, False),
-        'network':               (str, True),
-        'network_card':          (str, False),
         'usb_controller':        (validator.boolean, False),
         'cdrom_type':            (str, False),
-        'firmware':              (str, False),
 
         # Boot and media
-        'boot_wait':             (int, False),
+        'boot_wait':             (str, False),
         'boot_command':          ([str], False),
         'floppy_dirs':           ([str], False),
         'floppy_files':          ([str], False),
         'floppy_img_path':       (str, False),
         'iso_paths':             ([str], False),
+        'iso_url':               (str, False),
         'iso_urls':              ([str], False),
         'iso_checksum':          (str, False),
         'iso_checksum_type':     (str, False),
         'iso_checksum_url':      (str, False),
         'http_directory':        (str, False),
-        'http_ip':               (str, False)
+        'http_ip':               (str, False),
+        'http_port_min':         (validator.integer, False),
+        'http_port_max':         (validator.integer, False),
     }
+
+    def validate(self):
+        conds = [
+            'iso_url',
+            'iso_urls',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
 
