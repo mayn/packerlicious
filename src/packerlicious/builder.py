@@ -1175,6 +1175,7 @@ class OracleOCI(PackerBuilder):
         'pass_phrase': (str, False),
         'region': (str, False),
         'tenancy_ocid': (str, False),
+        'tags': (dict, False),
         'user_ocid': (str, False),
         'use_private_ip': (str, False),
         'user_data': (str, False),
