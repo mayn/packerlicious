@@ -1325,6 +1325,8 @@ class Qemu(PackerBuilder):
         'output_directory': (str, False),
         'qemu_binary': (str, False),
         'qemuargs': (validator.jagged_array(str), False),
+        'use_backing_file': (validator.boolean, False),
+        'use_default_display': (validator.boolean, False),
         'shutdown_command': (str, False),
         'vm_name': (str, False)
     }
