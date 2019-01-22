@@ -20,4 +20,4 @@ class TestOpenStackBuilder(object):
 
         with pytest.raises(ValueError) as excinfo:
             b.to_dict()
-        assert "OpenStack: one of the following must be specified: source_image, source_image_name" == str(excinfo.value)
+        assert "OpenStack: one of the following must be specified: source_image, source_image_name, source_image_filter" == str(excinfo.value)

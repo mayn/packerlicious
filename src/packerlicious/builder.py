@@ -1071,6 +1071,16 @@ class OneAndOne(PackerBuilder):
     }
 
 
+class OpenStackSourceImageFilter(PackerProperty):
+    """
+    https://www.packer.io/docs/builders/openstack.html#source_image_filter-1
+    """
+    props = {
+        'filters': (dict, False),
+        'most_recent': (validator.boolean, False),
+    }
+
+
 class OpenStack(PackerBuilder):
     """
     OpenStack Builder
@@ -1084,6 +1094,7 @@ class OpenStack(PackerBuilder):
         'identity_endpoint': (str, False),
         'source_image': (str, False),
         'source_image_name': (str, False),
+        'source_image_filter': (OpenStackSourceImageFilter, False),
         'username': (str, False),
         'user_id': (str, False),
         'password': (str, False),
@@ -1096,6 +1107,7 @@ class OpenStack(PackerBuilder):
         'domain_id': (str, False),
         'endpoint_type': (str, False),
         'floating_ip': (str, False),
+        'floating_ip_network': (str, False),
         'floating_ip_pool': (str, False),
         'image_members': ([str], False),
         'image_visibility': (str, False),
@@ -1105,6 +1117,7 @@ class OpenStack(PackerBuilder):
         'instance_name': (str, False),
         'instance_metadata': (dict, False),
         'networks': ([str], False),
+        'ports': ([str], False),
         'rackconnect_wait': (validator.boolean, False),
         'region': (str, False),
         'reuse_ips': (validator.boolean, False),
@@ -1115,9 +1128,13 @@ class OpenStack(PackerBuilder):
         'temporary_key_pair_name': (str, False),
         'tenant_id': (str, False),
         'tenant_name': (str, False),
+        'use_blockstorage_volume': (validator.boolean, False),
         'use_floating_ip': (validator.boolean, False),
         'user_data': (str, False),
         'user_data_file': (str, False),
+        'volume_name': (str, False),
+        'volume_type': (str, False),
+        'volume_availability_zone': (str, False),
 
     }
 
@@ -1125,6 +1142,7 @@ class OpenStack(PackerBuilder):
         conds = [
             'source_image',
             'source_image_name',
+            'source_image_filter',
         ]
         validator.exactly_one(self.__class__.__name__, self.properties, conds)
 
