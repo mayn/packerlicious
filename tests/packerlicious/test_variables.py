@@ -7,9 +7,18 @@ class TestPackerVariables(object):
     def test_environment_variable(self):
         var = EnvVar("MY_TEST_ENV")
 
-        assert var.data == "MY_TEST_ENV"
-        assert var.ref().data == "{{env `MY_TEST_ENV`}}"
-        assert Ref(var).data == "{{env `MY_TEST_ENV`}}"
+        assert var.title == "my_test_env"
+        assert var.data == "{{env `MY_TEST_ENV`}}"
+        assert var.ref().data == "{{user `my_test_env`}}"
+        assert Ref(var).data == "{{user `my_test_env`}}"
+
+    def test_environment_variable_name_specified(self):
+        var = EnvVar("my_other_name", "MY_TEST_ENV")
+
+        assert var.title == "my_other_name"
+        assert var.data == "{{env `MY_TEST_ENV`}}"
+        assert var.ref().data == "{{user `my_other_name`}}"
+        assert Ref(var).data == "{{user `my_other_name`}}"
 
     def test_template_variable(self):
         var = TemplateVar("MY_TEST_TEMPLATE")

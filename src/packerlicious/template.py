@@ -32,6 +32,7 @@ class Template(object):
         'description': (str, False),
         'min_packer_version': (str, False),
         'variables': (dict, False),
+        'sensitive-variables': (list, False),
         'builders': (list, True),
         'provisioners': (list, False),
         'post-processors': (list, False),
@@ -41,6 +42,7 @@ class Template(object):
         self.description = description
         self.min_packer_version = min_packer_version
         self.variables = dict()
+        self.sensitive_variables = list()
         self.builders = list()
         self.provisioners = list()
         self.post_processors = list()
@@ -75,6 +77,9 @@ class Template(object):
     def add_variable(self, variable):
         return self._update(self.variables, variable)
 
+    def add_sensitive_variable(self, variable):
+        return self._update(self.sensitive_variables, variable)
+
     def add_builder(self, builder):
         return self._update(self.builders, builder)
 
@@ -98,6 +103,8 @@ class Template(object):
             t['post-processors'] = self.post_processors
         if self.variables:
             t['variables'] = self.variables
+        if self.sensitive_variables:
+            t['sensitive-variables'] = self.sensitive_variables
 
         return encode_to_dict(t)
 

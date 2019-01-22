@@ -25,9 +25,7 @@ __version__ = version
 
 class Ref(AWSHelperFn):
     def __init__(self, data):
-        if isinstance(data, EnvVar):
-            self.data = "{{env `%s`}}" % data.data
-        elif isinstance(data, TemplateVar):
+        if isinstance(data, TemplateVar):
             self.data = "{{.%s}}" % data.data
         elif isinstance(data, UserVar):
             self.data = "{{user `%s`}}" % data.title
@@ -66,11 +64,15 @@ class UserVar(PackerVariable):
         self.data = self.getdata(default_value)
 
 
-class EnvVar(PackerVariable):
+class EnvVar(UserVar):
     """
     Environment Variables
     https://www.packer.io/docs/templates/user-variables.html#environment-variables
     """
 
-    def __init__(self, data):
-        self.data = self.getdata(data)
+    def __init__(self, name, env_var_name=None):
+        if env_var_name is not None:
+            UserVar.__init__(self, name, "{{env `%s`}}" % env_var_name)
+        else:
+            UserVar.__init__(self, name.lower(), "{{env `%s`}}" % name)
+

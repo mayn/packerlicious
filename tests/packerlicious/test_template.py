@@ -1,7 +1,7 @@
 import json
 import pytest
 
-from packerlicious import UserVar, Template
+from packerlicious import EnvVar, UserVar, Template
 from packerlicious import builder, post_processor, provisioner
 
 
@@ -134,6 +134,34 @@ class TestPackerTemplate(object):
             UserVar("my_var2"),
         ]
         t.add_variable(vars)
+
+        to_json = t.to_json()
+        assert to_json == json.dumps(json.loads(expected_json), sort_keys=True, indent=2,
+                                     separators=(',', ': '))
+    def test_sensitve_variables(self):
+        expected_json = """
+                {
+                  "variables": {
+                    "my_secret": "{{env `MY_SECRET`}}",
+                    "not_a_secret": "plaintext",
+                    "foo": "bar"
+                  },
+                  "sensitive-variables": [
+                    "my_secret",
+                    "foo"
+                  ]
+                }
+                """
+
+        t = Template()
+        vars = [
+            EnvVar("my_secret", "MY_SECRET"),
+            UserVar("not_a_secret", "plaintext"),
+            UserVar("foo", "bar"),
+        ]
+        t.add_variable(vars)
+        t.add_sensitive_variable("my_secret")
+        t.add_sensitive_variable("foo")
 
         to_json = t.to_json()
         assert to_json == json.dumps(json.loads(expected_json), sort_keys=True, indent=2,
