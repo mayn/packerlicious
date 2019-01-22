@@ -1,6 +1,28 @@
 
 ## (UNRELEASED)
 
+## 1.1.0 (January 21, 2019)
+
+packer 1.3.1 feature sync
+
+## FEATURES
+
+* builder/PackerCommunicator:  add ssh_clear_authorized_keys [GH-158]
+* builder/AmazonSourceAmiFilter:  make owners a required field [GH-142]
+* builder/AmazonChroot: property validation when from_scratch specified[GH-130]
+* builder/DigitalOcean: property updates[GH-140]
+* builder/CloudStack: property updates [GH-141]
+* builder/GoogleCompute: add property min_cpu_platform [GH-145]
+* builder/HypervVmcx: property updates [GH-150]
+* builder/LXD: add property launch_config [GH-160]
+* post_processors/VSphere: property updates [GH-157]
+* provisioner/Shell: add property use_env_var_file [GH-159]
+
+
+## IMPROVEMENTS
+
+* python 3.7 support [GH-138]
+
 
 ## 1.0.2 (October 13, 2018)
 
