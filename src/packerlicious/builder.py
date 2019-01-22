@@ -1498,6 +1498,9 @@ class VirtualboxIso(PackerBuilder):
         'vrdp_bind_address': (str, False),
         'vrdp_port_min': (int, False),
         'vrdp_port_max': (int, False),
+        'memory': (int, False),
+        'usb': (validator.boolean, False),
+        'cpus': (int, False),
     }
 
     def validate(self):
