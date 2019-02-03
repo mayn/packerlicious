@@ -77,6 +77,8 @@ class AmazonImport(PackerPostProcessor):
         'ami_name': (str, False),
         'ami_users': ([str], False),
         'custom_endpoint_ec2': (str, False),
+        'format': (str, False),
+        'insecure_skip_tls_verify': (validator.boolean, False),
         'license_type': (validator.string_list_item([LicenseAWS, LicenseBYOL]), False),
         'mfa_code': (str, False),
         'profile': (str, False),
@@ -310,6 +312,7 @@ class ShellLocal(PackerPostProcessor):
         'environment_vars': ([str], False),
         'execute_command': ([str], False),
         'inline_shebang': (str, False),
+        'only_on': ([str], False),
         'use_linux_pathing': (validator.boolean, False),
     }
 
@@ -435,4 +438,7 @@ class VSphereTemplate(PackerPostProcessor):
         'datacenter': (str, False),
         'folder': (str, False),
         'insecure': (validator.boolean, False),
+        'snapshot_enable': (validator.boolean, False),
+        'snapshot_name': (str, False),
+        'snapshot_description': (str, False),
     }

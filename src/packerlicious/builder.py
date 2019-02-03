@@ -86,13 +86,25 @@ class AliCloudImageDiskMapping(PackerProperty):
     https://www.packer.io/docs/builders/alicloud-ecs.html#image_disk_mappings
     """
     props = {
-        'disk_category': (str, False),
+        'disk_category': (validator.string_list_item(['cloud', 'cloud_efficiency', 'cloud_ssd']), False),
         'disk_delete_with_instance': (validator.boolean, False),
         'disk_description': (str, False),
-        'disk_device': (validator.string_list_item(['cloud', 'cloud_efficiency', 'cloud_ssd']), False),
+        'disk_device': (str, False),
         'disk_name': (str, False),
         'disk_size': (int, False),
         'disk_snapshot_id': (str, False),
+    }
+
+
+class AliCloudSystemDiskMapping(PackerProperty):
+    """
+    https://www.packer.io/docs/builders/alicloud-ecs.html#system_disk_mapping
+    """
+    props = {
+        'disk_category': (validator.string_list_item(['cloud', 'cloud_efficiency', 'cloud_ssd']), False),
+        'disk_description': (str, False),
+        'disk_name': (str, False),
+        'disk_size': (int, False),
     }
 
 
@@ -114,8 +126,10 @@ class AliCloud(PackerBuilder):
         'image_disk_mappings': ([AliCloudImageDiskMapping], False),
         'image_version': (str, False),
         'image_share_account': ([str], False),
+        'disable_stop_instance': (validator.boolean, False),
         'image_copy_names': ([str], False),
         'image_copy_regions': ([str], False),
+        'image_ignore_data_disks': (validator.boolean, False),
         'image_force_delete': (validator.boolean, False),
         'image_force_delete_snapshots': (validator.boolean, False),
         'instance_name': (str, False),
@@ -125,7 +139,10 @@ class AliCloud(PackerBuilder):
         'security_group_id': (str, False),
         'security_group_name': (str, False),
         'security_token': (str, False),
+        'ssh_private_ip': (validator.boolean, False),
         'skip_region_validation': (validator.boolean, False),
+        'system_disk_mapping': (AliCloudSystemDiskMapping, False),
+        'tags': (dict, False),
         'temporary_key_pair_name': (str, False),
         'user_data': (str, False),
         'user_data_file': (str, False),
@@ -133,6 +150,7 @@ class AliCloud(PackerBuilder):
         'vpc_name': (str, False),
         'vpc_cidr_block': (str, False),
         'vswitch_id': (str, False),
+        'wait_snapshot_ready_timeout': (int, False),
         'zone_id': (str, False),
     }
 
@@ -145,6 +163,35 @@ class AmazonSourceAmiFilter(PackerProperty):
         'filters': (dict, False),
         'owners': ([str], True),
         'most_recent': (validator.boolean, False),
+    }
+
+
+class AmazonSecurityGroupFilter(PackerProperty):
+    """
+    https://www.packer.io/docs/builders/amazon-ebs.html#security_group_filter
+    """
+    props = {
+        'filters': (dict, False),
+    }
+
+
+class AmazonSubnetFilter(PackerProperty):
+    """
+    https://www.packer.io/docs/builders/amazon-ebs.html#subnet_filter
+    """
+    props = {
+        'filters': (dict, False),
+        'most_free': (validator.boolean, False),
+        'random': (validator.boolean, False),
+    }
+
+
+class AmazonVpcFilter(PackerProperty):
+    """
+    https://www.packer.io/docs/builders/amazon-ebs.html#vpc_filter
+    """
+    props = {
+        'filters': (dict, False),
     }
 
 
@@ -163,101 +210,6 @@ class BlockDeviceMapping(PackerProperty):
         'volume_size': (int, False),
         'volume_type': (str, False),
     }
-
-
-class AmazonEbs(PackerBuilder):
-    """
-    Amazon EBS Builder
-    https://www.packer.io/docs/builders/amazon-ebs.html
-    """
-    resource_type = "amazon-ebs"
-
-    """
-    AWS EBS Template Variables
-    https://www.packer.io/docs/builders/amazon-ebs.html#ami_description
-    TODO impl validation ami_virtualization_type region_kms_key_ids run_volume_tags shutdown_behavior
-            spot_price_auto_product ssh_keypair_name
-    """
-    SourceAMI = TemplateVar("SourceAMI")
-    BuildRegion = TemplateVar("BuildRegion")
-
-    props = {
-        'access_key': (str, False),
-        'ami_name': (str, True),
-        'instance_type': (str, True),
-        'region': (str, True),
-        'secret_key': (str, False),
-        'source_ami': (str, False),
-        'source_ami_filter': (AmazonSourceAmiFilter, False),
-        'ami_block_device_mappings': ([BlockDeviceMapping], False),
-        'ami_description': (str, False),
-        'ami_groups': ([str], False),
-        'ami_product_codes': (str, False),
-        'ami_regions': ([str], False),
-        'ami_users': ([str], False),
-        'ami_virtualization_type': (str, False),
-        'associate_public_ip_address': (validator.boolean, False),
-        'availability_zone': (str, False),
-        'block_duration_minutes': (validator.integer, False),
-        'custom_endpoint_ec2': (str, False),
-        'decode_authorization_messages': (validator.boolean, False),
-        'disable_stop_instance': (validator.boolean, False),
-        'ebs_optimized': (validator.boolean, False),
-        'enhanced_networking': (validator.boolean, False),
-        'force_deregister': (validator.boolean, False),
-        'force_delete_snapshot': (validator.boolean, False),
-        'enable_t2_unlimited': (validator.boolean, False),
-        'encrypt_boot': (validator.boolean, False),
-        'kms_key_id': (str, False),
-        'iam_instance_profile': (str, False),
-        'launch_block_device_mappings': ([BlockDeviceMapping], False),
-        'mfa_code': (str, False),
-        'profile': (str, False),
-        'region_kms_key_ids': (dict, False),
-        'run_tags': (dict, False),
-        'run_volume_tags': (dict, False),
-        'security_group_id': (str, False),
-        'security_group_ids': ([str], False),
-        'shutdown_behavior': (str, False),
-        'skip_region_validation': (validator.boolean, False),
-        'snapshot_groups': ([str], False),
-        'snapshot_users': ([str], False),
-        'snapshot_tags': ([str], False),
-        'spot_price': (str, False),
-        'spot_price_auto_product': (str, False),
-        'spot_tags': (dict, False),
-        'ssh_keypair_name': (str, False),
-        'ssh_private_ip': (validator.boolean, False),
-        'ssh_interface': (validator.string_list_item(['public_ip', 'private_ip', 'public_dns', 'private_dns']), False),
-        'subnet_id': (str, False),
-        'tags': (dict, False),
-        'temporary_key_pair_name': (str, False),
-        'temporary_security_group_source_cidr': (str, False),
-        'token': (str, False),
-        'user_data': (str, False),
-        'user_data_file': (str, False),
-        'vpc_id': (str, False),
-        'windows_password_timeout': (str, False),
-    }
-
-    def validate(self):
-        conds = [
-            'access_key',
-            'secret_key',
-        ]
-        validator.all_or_nothing(self.__class__.__name__, self.properties, conds)
-
-        conds = [
-            'source_ami',
-            'source_ami_filter',
-        ]
-        validator.exactly_one(self.__class__.__name__, self.properties, conds)
-
-        conds = [
-            'security_group_id',
-            'security_group_ids',
-        ]
-        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
 
 
 class AmazonChroot(PackerBuilder):
@@ -288,11 +240,12 @@ class AmazonChroot(PackerBuilder):
         'decode_authorization_messages': (validator.boolean, False),
         'device_path': (str, False),
         'ena_support': (validator.boolean, False),
+        'encrypt_boot': (validator.boolean, False),
         'force_deregister': (validator.boolean, False),
         'force_delete_snapshot': (validator.boolean, False),
-        'encrypt_boot': (validator.boolean, False),
-        'kms_key_id': (str, False),
         'from_scratch': (validator.boolean, False),
+        'insecure_skip_tls_verify': (validator.boolean, False),
+        'kms_key_id': (str, False),
         'ami_block_device_mappings': ([BlockDeviceMapping], False),
         'region_kms_key_ids': (dict, False),
         'root_device_name': (str, False),
@@ -346,6 +299,118 @@ class AmazonChroot(PackerBuilder):
                 self.__class__.__name__, self.properties, conds)
 
 
+class AmazonEbs(PackerBuilder):
+    """
+    Amazon EBS Builder
+    https://www.packer.io/docs/builders/amazon-ebs.html
+    """
+    resource_type = "amazon-ebs"
+
+    """
+    AWS EBS Template Variables
+    https://www.packer.io/docs/builders/amazon-ebs.html#ami_description
+    TODO impl validation ami_virtualization_type region_kms_key_ids run_volume_tags shutdown_behavior
+            spot_price_auto_product ssh_keypair_name
+    """
+    SourceAMI = TemplateVar("SourceAMI")
+    BuildRegion = TemplateVar("BuildRegion")
+
+    props = {
+        'access_key': (str, False),
+        'ami_name': (str, True),
+        'instance_type': (str, True),
+        'region': (str, True),
+        'secret_key': (str, False),
+        'source_ami': (str, False),
+        'source_ami_filter': (AmazonSourceAmiFilter, False),
+        'ami_block_device_mappings': ([BlockDeviceMapping], False),
+        'ami_description': (str, False),
+        'ami_groups': ([str], False),
+        'ami_product_codes': (str, False),
+        'ami_regions': ([str], False),
+        'ami_users': ([str], False),
+        'ami_virtualization_type': (str, False),
+        'associate_public_ip_address': (validator.boolean, False),
+        'availability_zone': (str, False),
+        'block_duration_minutes': (validator.integer, False),
+        'custom_endpoint_ec2': (str, False),
+        'decode_authorization_messages': (validator.boolean, False),
+        'disable_stop_instance': (validator.boolean, False),
+        'ebs_optimized': (validator.boolean, False),
+        'enhanced_networking': (validator.boolean, False),
+        'enable_t2_unlimited': (validator.boolean, False),
+        'encrypt_boot': (validator.boolean, False),
+        'force_deregister': (validator.boolean, False),
+        'force_delete_snapshot': (validator.boolean, False),
+        'iam_instance_profile': (str, False),
+        'insecure_skip_tls_verify': (validator.boolean, False),
+        'kms_key_id': (str, False),
+        'launch_block_device_mappings': ([BlockDeviceMapping], False),
+        'mfa_code': (str, False),
+        'profile': (str, False),
+        'region_kms_key_ids': (dict, False),
+        'run_tags': (dict, False),
+        'run_volume_tags': (dict, False),
+        'security_group_filter': (AmazonSecurityGroupFilter, False),
+        'security_group_id': (str, False),
+        'security_group_ids': ([str], False),
+        'shutdown_behavior': (str, False),
+        'skip_region_validation': (validator.boolean, False),
+        'snapshot_groups': ([str], False),
+        'snapshot_users': ([str], False),
+        'snapshot_tags': ([str], False),
+        'spot_price': (str, False),
+        'spot_price_auto_product': (str, False),
+        'spot_tags': (dict, False),
+        'ssh_keypair_name': (str, False),
+        'ssh_private_ip': (validator.boolean, False),
+        'ssh_interface': (validator.string_list_item(['public_ip', 'private_ip', 'public_dns', 'private_dns']), False),
+        'subnet_filter': (AmazonSubnetFilter, False),
+        'subnet_id': (str, False),
+        'tags': (dict, False),
+        'temporary_key_pair_name': (str, False),
+        'temporary_security_group_source_cidr': (str, False),
+        'token': (str, False),
+        'user_data': (str, False),
+        'user_data_file': (str, False),
+        'vpc_filter': (AmazonVpcFilter, False),
+        'vpc_id': (str, False),
+        'windows_password_timeout': (str, False),
+    }
+
+    def validate(self):
+        conds = [
+            'access_key',
+            'secret_key',
+        ]
+        validator.all_or_nothing(self.__class__.__name__, self.properties, conds)
+
+        conds = [
+            'security_group_id',
+            'security_group_ids',
+            'security_group_filter',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+        conds = [
+            'source_ami',
+            'source_ami_filter',
+        ]
+        validator.exactly_one(self.__class__.__name__, self.properties, conds)
+
+        conds = [
+            'subnet_id',
+            'subnet_filter',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+        conds = [
+            'vpc_id',
+            'vpc_filter',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+
 class AmazonEbsSurrogate(PackerBuilder):
     """
     Amazon EBS Builder
@@ -380,17 +445,19 @@ class AmazonEbsSurrogate(PackerBuilder):
         'ebs_optimized': (validator.boolean, False),
         'ena_support': (validator.boolean, False),
         'enable_t2_unlimited': (validator.boolean, False),
+        'encrypt_boot': (validator.boolean, False),
         'force_deregister': (validator.boolean, False),
         'force_delete_snapshot': (validator.boolean, False),
-        'encrypt_boot': (validator.boolean, False),
-        'kms_key_id': (str, False),
         'iam_instance_profile': (str, False),
+        'insecure_skip_tls_verify': (validator.boolean, False),
+        'kms_key_id': (str, False),
         'launch_block_device_mappings': ([BlockDeviceMapping], False),
         'mfa_code': (str, False),
         'profile': (str, False),
         'region_kms_key_ids': (dict, False),
         'run_tags': (dict, False),
         'run_volume_tags': (dict, False),
+        'security_group_filter': (AmazonSecurityGroupFilter, False),
         'security_group_id': (str, False),
         'security_group_ids': ([str], False),
         'shutdown_behavior': (str, False),
@@ -406,6 +473,7 @@ class AmazonEbsSurrogate(PackerBuilder):
         'ssh_keypair_name': (str, False),
         'ssh_private_ip': (validator.boolean, False),
         'ssh_interface': (validator.string_list_item(['public_ip', 'private_ip', 'public_dns', 'private_dns']), False),
+        'subnet_filter': (AmazonSubnetFilter, False),
         'subnet_id': (str, False),
         'tags': (dict, False),
         'temporary_key_pair_name': (str, False),
@@ -414,6 +482,7 @@ class AmazonEbsSurrogate(PackerBuilder):
         'user_data': (str, False),
         'user_data_file': (str, False),
         'vpc_id': (str, False),
+        'vpc_filter': (AmazonVpcFilter, False),
         'windows_password_timeout': (str, False),
     }
 
@@ -425,14 +494,27 @@ class AmazonEbsSurrogate(PackerBuilder):
         validator.all_or_nothing(self.__class__.__name__, self.properties, conds)
 
         conds = [
+            'security_group_id',
+            'security_group_ids',
+            'security_group_filter',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+        conds = [
             'source_ami',
             'source_ami_filter',
         ]
         validator.exactly_one(self.__class__.__name__, self.properties, conds)
 
         conds = [
-            'security_group_id',
-            'security_group_ids',
+            'subnet_id',
+            'subnet_filter',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+        conds = [
+            'vpc_id',
+            'vpc_filter',
         ]
         validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
 
@@ -464,9 +546,11 @@ class AmazonEbsVolume(PackerBuilder):
         'ena_support': (validator.boolean, False),
         'enable_t2_unlimited': (validator.boolean, False),
         'iam_instance_profile': (str, False),
+        'insecure_skip_tls_verify': (validator.boolean, False),
         'mfa_code': (str, False),
         'profile': (str, False),
         'run_tags': (dict, False),
+        'security_group_filter': (AmazonSecurityGroupFilter, False),
         'security_group_id': (str, False),
         'security_group_ids': ([str], False),
         'shutdown_behavior': (str, False),
@@ -481,12 +565,14 @@ class AmazonEbsVolume(PackerBuilder):
         'ssh_keypair_name': (str, False),
         'ssh_private_ip': (validator.boolean, False),
         'ssh_interface': (validator.string_list_item(['public_ip', 'private_ip', 'public_dns', 'private_dns']), False),
+        'subnet_filter': (AmazonSubnetFilter, False),
         'subnet_id': (str, False),
         'temporary_key_pair_name': (str, False),
         'temporary_security_group_source_cidr': (str, False),
         'token': (str, False),
         'user_data': (str, False),
         'user_data_file': (str, False),
+        'vpc_filter': (AmazonVpcFilter, False),
         'vpc_id': (str, False),
         'windows_password_timeout': (str, False),
     }
@@ -499,14 +585,27 @@ class AmazonEbsVolume(PackerBuilder):
         validator.all_or_nothing(self.__class__.__name__, self.properties, conds)
 
         conds = [
+            'security_group_id',
+            'security_group_ids',
+            'security_group_filter',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+        conds = [
             'source_ami',
             'source_ami_filter',
         ]
         validator.exactly_one(self.__class__.__name__, self.properties, conds)
 
         conds = [
-            'security_group_id',
-            'security_group_ids',
+            'subnet_id',
+            'subnet_filter',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+        conds = [
+            'vpc_id',
+            'vpc_filter',
         ]
         validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
 
@@ -566,6 +665,7 @@ class AmazonInstance(PackerBuilder):
         'profile': (str, False),
         'region_kms_key_ids': (dict, False),
         'run_tags': (dict, False),
+        'security_group_filter': (AmazonSecurityGroupFilter, False),
         'security_group_id': (str, False),
         'security_group_ids': ([str], False),
         'skip_region_validation': (validator.boolean, False),
@@ -578,12 +678,14 @@ class AmazonInstance(PackerBuilder):
         'ssh_keypair_name': (str, False),
         'ssh_private_ip': (validator.boolean, False),
         'ssh_interface': (validator.string_list_item(['public_ip', 'private_ip', 'public_dns', 'private_dns']), False),
+        'subnet_filter': (AmazonSubnetFilter, False),
         'subnet_id': (str, False),
         'tags': (dict, False),
         'temporary_key_pair_name': (str, False),
         'temporary_security_group_source_cidr': (str, False),
         'user_data': (str, False),
         'user_data_file': (str, False),
+        'vpc_filter': (AmazonVpcFilter, False),
         'vpc_id': (str, False),
         'x509_upload_path': (str, False),
         'windows_password_timeout': (str, False),
@@ -597,14 +699,27 @@ class AmazonInstance(PackerBuilder):
         validator.all_or_nothing(self.__class__.__name__, self.properties, conds)
 
         conds = [
+            'security_group_id',
+            'security_group_ids',
+            'security_group_filter',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+        conds = [
             'source_ami',
             'source_ami_filter',
         ]
         validator.exactly_one(self.__class__.__name__, self.properties, conds)
 
         conds = [
-            'security_group_id',
-            'security_group_ids',
+            'subnet_id',
+            'subnet_filter',
+        ]
+        validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
+
+        conds = [
+            'vpc_id',
+            'vpc_filter',
         ]
         validator.mutually_exclusive(self.__class__.__name__, self.properties, conds)
 
@@ -618,6 +733,19 @@ class AzurePlanInfo(PackerProperty):
         'plan_product': (str, True),
         'plan_publisher': (str, True),
         'plan_promotion_code': (str, False),
+    }
+
+
+class AzureSharedImageGallery(PackerProperty):
+    """
+    https://www.packer.io/docs/builders/azure.html#shared_image_gallery
+    """
+    props = {
+        'gallery_name': (str, True),
+        'subscription': (str, True),
+        'resource_group': (str, True),
+        'image_name': (str, True),
+        'image_version': (str, False),
     }
 
 
@@ -648,10 +776,13 @@ class Azure(PackerBuilder):
         'disk_additional_size': ([int], False),
         'image_version': (str, False),
         'image_url': (str, False),
+        'managed_image_data_disk_snapshot_prefix': (str, False),
         'managed_image_name': (str, False),
+        'managed_image_os_disk_snapshot_name': (str, False),
         'managed_image_resource_group_name': (str, False),
         'os_disk_size_gb': (int, False),
         'os_type': (str, False),
+        'shared_image_gallery': (AzureSharedImageGallery, False),
         'temp_compute_name': (str, False),
         'temp_resource_group_name': (str, False),
         'tenant_id': (str, False),
@@ -920,6 +1051,30 @@ class HypervIso(PackerBuilder):
     }
 
 
+class HetznerCloud(PackerBuilder):
+    """
+    Hetzner Cloud Builder
+    https://www.packer.io/docs/builders/hetzner-cloud.html
+    """
+    resource_type = "hcloud"
+
+    props = {
+        'token': (str, True),
+        'image': (str, True),
+        'location': (str, True),
+        'server_type': (str, True),
+        'endpoint': (str, False),
+        'server_name': (str, False),
+        'snapshot_name': (str, False),
+        'snapshot_labels': (dict, False),
+        'poll_interval': (str, False),
+        'user_data': (str, False),
+        'user_data_file': (str, False),
+        'ssh_keys': ([str], False),
+        'rescue': (validator.string_list_item(["linux64", "linux32", "freebsd64"]), False),
+    }
+
+
 class HypervVmcx(PackerBuilder):
     """
     Hyper-V Builder (from a vmcx)
@@ -1118,6 +1273,7 @@ class OpenStack(PackerBuilder):
         'insecure': (validator.boolean, False),
         'key': (str, False),
         'metadata': (dict, False),
+        'image_disk_format': (str, False),
         'instance_name': (str, False),
         'instance_metadata': (dict, False),
         'networks': ([str], False),
@@ -1163,14 +1319,21 @@ class OracleClassic(PackerBuilder):
         'dest_image_list': (str, True),
         'identity_domain': (str, True),
         'source_image_list': (str, True),
+        'source_image_list_entry': (str, True),
         'password': (str, True),
         'shape': (str, True),
         'username': (str, True),
         'attributes': (str, False),
         'attributes_file': (str, False),
         'image_description': (str, False),
-        'ssh_username': (str, False),
         'image_name': (str, False),
+        'persistent_volume_size': (int, False),
+        'builder_communicator': (PackerCommunicator, False),
+        'builder_image_list': (str, False),
+        'builder_image_list_entry': (str, False),
+        'builder_shape': (str, False),
+        'builder_upload_image_command': (str, False),
+        'ssh_username': (str, False),
         'snapshot_timeout': (str, False),
     }
 
@@ -1220,6 +1383,7 @@ class ParallelsIso(PackerBuilder):
         'parallels_tools_flavor': (str, True),
         'boot_command': ([str], False),
         'boot_wait': (str, False),
+        'cpus': (int, False),
         'disk_size': (int, False),
         'disk_type': (str, False),
         'floppy_files': ([str], False),
@@ -1233,6 +1397,7 @@ class ParallelsIso(PackerBuilder):
         'iso_target_extension': (str, False),
         'iso_target_path': (str, False),
         'iso_urls': ([str], False),
+        'memory': (int, False),
         'output_directory': (str, False),
         'parallels_tools_guest_path': (str, False),
         'parallels_tools_mode': (str, False),
@@ -1242,6 +1407,8 @@ class ParallelsIso(PackerBuilder):
         'shutdown_command': (str, False),
         'shutdown_timeout': (str, False),
         'skip_compaction': (bool, False),
+        'sound': (validator.boolean, False),
+        'usb': (validator.boolean, False),
         'vm_name': (str, False),
     }
 
@@ -1330,6 +1497,7 @@ class Qemu(PackerBuilder):
         'disk_cache': (str, False),
         'disk_compression': (validator.boolean, False),
         'disk_discard': (str, False),
+        'disk_detect_zeroes': (str, False),
         'disk_image': (validator.boolean, False),
         'disk_interface': (str, False),
         'disk_size': (int, False),
@@ -1376,8 +1544,9 @@ class Scaleway(PackerBuilder):
         'region': (str, True),
         'commercial_type': (str, True),
         'bootscript': (str, False),
-        'server_name': (str, False),
+        'boottype': (str, False),
         'image_name': (str, False),
+        'server_name': (str, False),
         'snapshot_name': (str, False),
     }
 
@@ -1460,6 +1629,8 @@ class VirtualboxIso(PackerBuilder):
         'iso_url': (str, True),
         'boot_command': ([str], False),
         'boot_wait': (str, False),
+        'bundle_iso': (validator.boolean, False),
+        'cpus': (int, False),
         'disk_size': (int, False),
         'export_opts': ([str], False),
         'floppy_files': ([str], False),
@@ -1483,6 +1654,7 @@ class VirtualboxIso(PackerBuilder):
         'iso_target_path': (str, False),
         'iso_urls': ([str], False),
         'keep_registered': (validator.boolean, False),
+        'memory': (int, False),
         'output_directory': (str, False),
         'post_shutdown_delay': (str, False),
         'shutdown_command': (str, False),
@@ -1491,6 +1663,8 @@ class VirtualboxIso(PackerBuilder):
         'ssh_host_port_min': (int, False),
         'ssh_host_port_max': (int, False),
         'ssh_skip_nat_mapping': (validator.boolean, False),
+        'sound': (str, False),
+        'usb': (validator.boolean, False),
         'vboxmanage': (validator.jagged_array(str), False),
         'vboxmanage_post': (validator.jagged_array(str), False),
         'virtualbox_version_file': (str, False),
@@ -1498,9 +1672,6 @@ class VirtualboxIso(PackerBuilder):
         'vrdp_bind_address': (str, False),
         'vrdp_port_min': (int, False),
         'vrdp_port_max': (int, False),
-        'memory': (int, False),
-        'usb': (validator.boolean, False),
-        'cpus': (int, False),
     }
 
     def validate(self):
@@ -1588,12 +1759,14 @@ class VMwareIso(PackerBuilder):
         'iso_url': (str, True),
         'boot_command': ([str], False),
         'boot_wait': (str, False),
+        'cpus': (int, False),
         'cdrom_adapter_type': (str, False),
         'disk_adapter_type': (str, False),
         'disk_additional_size': ([int], False),
         'disk_size': (int, False),
         'disk_type_id': (str, False),
         'disable_vnc': (validator.boolean, False),
+        'display_name': (str, False),
         'floppy_files': ([str], False),
         'floppy_dirs': ([str], False),
         'format': (validator.string_list_item(['ovf', 'ova', 'vmx']), False),
@@ -1607,6 +1780,7 @@ class VMwareIso(PackerBuilder):
         'iso_target_path': (str, False),
         'iso_urls': ([str], False),
         'keep_registered': (validator.boolean, False),
+        'memory': (int, False),
         'network': (str, False),
         'network_adapter_type': (str, False),
         'output_directory': (str, False),
@@ -1624,6 +1798,7 @@ class VMwareIso(PackerBuilder):
         'shutdown_timeout': (str, False),
         'skip_compaction': (validator.boolean, False),
         'skip_export': (validator.boolean, False),
+        'skip_validate_credentials': (validator.boolean, False),
         'sound': (validator.boolean, False),
         'ovftool_options': ([str], False),
         'tools_upload_flavor': (str, False),
@@ -1661,18 +1836,32 @@ class VMwareVmx(PackerBuilder):
         'source_path': (str, True),
         'boot_command': ([str], False),
         'boot_wait': (str, False),
+        'display_name': (str, False),
         'floppy_files': ([str], False),
         'floppy_dirs': ([str], False),
+        'format': (str, False),
         'fusion_app_path': (str, False),
         'headless': (validator.boolean, False),
         'http_directory': (str, False),
         'http_port_min': (int, False),
         'http_port_max': (int, False),
+        'keep_registered': (validator.boolean, False),
         'linked': (validator.boolean, False),
         'output_directory': (str, False),
+        'ovftool_options': ([str], False),
+        'remote_cache_datastore': (str, False),
+        'remote_cache_directory': (str, False),
+        'remote_datastore': (str, False),
+        'remote_host': (str, False),
+        'remote_password': (str, False),
+        'remote_private_key_file': (str, False),
+        'remote_type': (str, False),
+        'remote_username': (str, False),
         'shutdown_command': (str, False),
         'shutdown_timeout': (str, False),
         'skip_compaction': (validator.boolean, False),
+        'skip_export': (validator.boolean, False),
+        'skip_validate_credentials': (validator.boolean, False),
         'tools_upload_flavor': (str, False),
         'tools_upload_path': (str, False),
         'vm_name': (str, False),

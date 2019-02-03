@@ -100,6 +100,8 @@ Builders:
 - docker
 - file
 - googlecompute
+- hcloud
+- hetznercloud
 - hyperv-iso
 - hyperv-vmcx
 - lxc
@@ -145,6 +147,7 @@ Provisioners:
 
 - ansible-local
 - ansible
+- breakpoint
 - chef-client
 - chef-solo
 - converge
@@ -161,7 +164,13 @@ Provisioners:
 
 Community Plugins:
 
-- packer-provisioner-inspec
+Builders:
+
+- solo-io/packer-builder-arm-image
+
+Provisioners:
+
+- jrbeilke/packer-provisioner-inspec
 
 Licensing
 =========

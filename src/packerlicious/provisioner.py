@@ -101,6 +101,19 @@ class Ansible(PackerProvisioner):
     }
 
 
+class Breakpoint(PackerProvisioner):
+    """
+    Breakpoint Provisioner
+    https://www.packer.io/docs/provisioners/breakpoint.html
+    """
+    resource_type = "breakpoint"
+
+    props = {
+        'disable': (validator.boolean, False),
+        'note': (str, False),
+    }
+
+
 class ChefClient(PackerProvisioner):
     """
     Chef Client Provisioner
@@ -377,6 +390,7 @@ class Shell(PackerProvisioner):
         'remote_path': (str, False),
         'skip_clean': (validator.boolean, False),
         'start_retry_timeout': (str, False),
+        'pause_after': (str, False),
         'use_env_var_file': (validator.boolean, False),
     }
 
@@ -407,6 +421,7 @@ class ShellLocal(PackerProvisioner):
         'environment_vars': ([str], False),
         'execute_command': ([str], False),
         'inline_shebang': (str, False),
+        'only_on': ([str], False),
         'use_linux_pathing': (validator.boolean, False),
     }
 

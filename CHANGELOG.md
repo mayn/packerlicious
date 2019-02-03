@@ -1,6 +1,23 @@
 
 ## (UNRELEASED)
 
+
+## 1.2.0 (UNRELEASED)
+
+packer 1.3.3 feature sync
+
+## FEATURES
+
+* builder/VirtualBoxIso: add memory, cpu, and usb attributes [GH-163]
+* builder/HetznerCloud: add support for packer Hetzner Cloud builder
+* provisioner/Breakpoint: add support for packer breakpoint provisioner
+
+
+### IMPROVEMENTS:
+
+* community.builder/ArmImage: add support for solo-io/packer-builder-arm-image [GH-164] 
+
+
 ## 1.1.0 (January 21, 2019)
 
 packer 1.3.1 feature sync
