@@ -124,6 +124,8 @@ class ChefClient(PackerProvisioner):
     props = {
         'chef_environment': (str, False),
         'config_template': (str, False),
+        'elevated_user': (str, False),
+        'elevated_password': (str, False),
         'encrypted_data_bag_secret_path': (str, False),
         'execute_command': (str, False),
         'guest_os_type': (validator.string_list_item([UNIX, WINDOWS]), False),
@@ -284,6 +286,8 @@ class PuppetMasterless(PackerProvisioner):
 
     props = {
         'manifest_file': (str, True),
+        'elevated_user': (str, False),
+        'elevated_password': (str, False),
         'execute_command': (str, False),
         'extra_arguments': ([str], False),
         'guest_os_type': (validator.string_list_item([UNIX, WINDOWS]), False),
@@ -309,6 +313,8 @@ class PuppetServer(PackerProvisioner):
     props = {
         'client_cert_path': (str, False),
         'client_private_key_path': (str, False),
+        'elevated_user': (str, False),
+        'elevated_password': (str, False),
         'execute_command': (str, False),
         'facter': (dict, False),
         'guest_os_type': (validator.string_list_item([UNIX, WINDOWS]), False),
@@ -418,6 +424,7 @@ class ShellLocal(PackerProvisioner):
         'inline': ([str], False),
         'script': (str, False),
         'scripts': ([str], False),
+        'env_var_format': (str, False),
         'environment_vars': ([str], False),
         'execute_command': ([str], False),
         'inline_shebang': (str, False),
@@ -477,4 +484,6 @@ class WindowsRestart(PackerProvisioner):
         'restart_command': (str, False),
         'restart_check_command': (str, False),
         'restart_timeout': (str, False),
+        'check_registry': (validator.boolean, False),
+        'registry_keys': ([str], False),
     }

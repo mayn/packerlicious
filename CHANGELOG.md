@@ -1,6 +1,9 @@
 
 ## (UNRELEASED)
+hashicorp/packer 1.3.4 feature sync
 
+* mirror attributes released in packer v1.3.4
+* builder/TencentCloudCvm: add support for packer tencentcloud-cvm
 
 ## 1.2.0 (February 2, 2019)
 

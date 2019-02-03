@@ -193,6 +193,7 @@ class DockerImport(PackerPostProcessor):
     props = {
         'repository': (str, True),
         'tag': (str, False),
+        'changes': ([str], False),
     }
 
 
@@ -256,6 +257,9 @@ class GoogleComputeImport(PackerPostProcessor):
         'project_id': (str, True),
         'gcs_object_name': (str, False),
         'image_description': (str, False),
+        'image_guest_os_features': (validator.string_list_item(["MULTI_IP_SUBNET", "SECURE_BOOT",
+                                                                "UEFI_COMPATIBLE", "VIRTIO_SCSI_MULTIQUEUE",
+                                                                "WINDOWS"]), False),
         'image_family': (str, False),
         'image_labels': (dict, False),
         'keep_input_artifact': (validator.boolean, False),
@@ -310,6 +314,7 @@ class ShellLocal(PackerPostProcessor):
         'script': (str, False),
         'scripts': ([str], False),
         'environment_vars': ([str], False),
+        'env_var_format': (str, False),
         'execute_command': ([str], False),
         'inline_shebang': (str, False),
         'only_on': ([str], False),

@@ -773,6 +773,7 @@ class Azure(PackerBuilder):
         'custom_data_file': (str, False),
         'custom_managed_image_name': (str, False),
         'custom_managed_image_resource_group_name': (str, False),
+        'disk_caching_type': (str, False),
         'disk_additional_size': ([int], False),
         'image_version': (str, False),
         'image_url': (str, False),
@@ -998,6 +999,30 @@ class GoogleCompute(PackerBuilder):
         validator.exactly_one(self.__class__.__name__, self.properties, conds)
 
 
+class HetznerCloud(PackerBuilder):
+    """
+    Hetzner Cloud Builder
+    https://www.packer.io/docs/builders/hetzner-cloud.html
+    """
+    resource_type = "hcloud"
+
+    props = {
+        'token': (str, True),
+        'image': (str, True),
+        'location': (str, True),
+        'server_type': (str, True),
+        'endpoint': (str, False),
+        'server_name': (str, False),
+        'snapshot_name': (str, False),
+        'snapshot_labels': (dict, False),
+        'poll_interval': (str, False),
+        'user_data': (str, False),
+        'user_data_file': (str, False),
+        'ssh_keys': ([str], False),
+        'rescue': (validator.string_list_item(["linux64", "linux32", "freebsd64"]), False),
+    }
+
+
 class HypervIso(PackerBuilder):
     """
     Hyper-V Builder (from an ISO)
@@ -1011,6 +1036,7 @@ class HypervIso(PackerBuilder):
         'iso_url': (str, True),
         'boot_command': ([str], False),
         'boot_wait': (str, False),
+        'configuration_version': (str, False),
         'cpu': (int, False),
         'differencing_disk': (validator.boolean, False),
         'disk_additional_size': ([int], False),
@@ -1045,33 +1071,10 @@ class HypervIso(PackerBuilder):
         'switch_vlan_id': (str, False),
         'temp_path': (str, False),
         'use_fixed_vhd_format': (validator.boolean, False),
+        'use_legacy_network_adapter': (validator.boolean, False),
         'vhd_temp_path': (str, False),
         'vlan_id': (str, False),
         'vm_name': (str, False),
-    }
-
-
-class HetznerCloud(PackerBuilder):
-    """
-    Hetzner Cloud Builder
-    https://www.packer.io/docs/builders/hetzner-cloud.html
-    """
-    resource_type = "hcloud"
-
-    props = {
-        'token': (str, True),
-        'image': (str, True),
-        'location': (str, True),
-        'server_type': (str, True),
-        'endpoint': (str, False),
-        'server_name': (str, False),
-        'snapshot_name': (str, False),
-        'snapshot_labels': (dict, False),
-        'poll_interval': (str, False),
-        'user_data': (str, False),
-        'user_data_file': (str, False),
-        'ssh_keys': ([str], False),
-        'rescue': (validator.string_list_item(["linux64", "linux32", "freebsd64"]), False),
     }
 
 
@@ -1089,6 +1092,8 @@ class HypervVmcx(PackerBuilder):
         'clone_all_snapshots': (validator.boolean, False),
         'boot_command': ([str], False),
         'boot_wait': (str, False),
+        'copy_in_compare': (validator.boolean, False),
+        'configuration_version': (str, False),
         'cpu': (int, False),
         'enable_dynamic_memory': (validator.boolean, False),
         'enable_mac_spoofing': (validator.boolean, False),
@@ -1268,14 +1273,15 @@ class OpenStack(PackerBuilder):
         'floating_ip': (str, False),
         'floating_ip_network': (str, False),
         'floating_ip_pool': (str, False),
+        'image_disk_format': (str, False),
         'image_members': ([str], False),
+        'image_tags': ([str], False),
         'image_visibility': (str, False),
         'insecure': (validator.boolean, False),
+        'instance_metadata': (dict, False),
+        'instance_name': (str, False),
         'key': (str, False),
         'metadata': (dict, False),
-        'image_disk_format': (str, False),
-        'instance_name': (str, False),
-        'instance_metadata': (dict, False),
         'networks': ([str], False),
         'ports': ([str], False),
         'rackconnect_wait': (validator.boolean, False),
@@ -1292,9 +1298,10 @@ class OpenStack(PackerBuilder):
         'use_floating_ip': (validator.boolean, False),
         'user_data': (str, False),
         'user_data_file': (str, False),
-        'volume_name': (str, False),
-        'volume_type': (str, False),
         'volume_availability_zone': (str, False),
+        'volume_name': (str, False),
+        'volume_size': (str, False),
+        'volume_type': (str, False),
 
     }
 
@@ -1494,6 +1501,7 @@ class Qemu(PackerBuilder):
         'accelerator': (str, False),
         'boot_command': ([str], False),
         'boot_wait': (str, False),
+        'cpus': (int, False),
         'disk_cache': (str, False),
         'disk_compression': (validator.boolean, False),
         'disk_discard': (str, False),
@@ -1512,6 +1520,7 @@ class Qemu(PackerBuilder):
         'iso_target_extension': (str, False),
         'iso_urls': ([str], False),
         'machine_type': (str, False),
+        'memory': (int, False),
         'net_device': (str, False),
         'output_directory': (str, False),
         'qemu_binary': (str, False),
@@ -1548,6 +1557,45 @@ class Scaleway(PackerBuilder):
         'image_name': (str, False),
         'server_name': (str, False),
         'snapshot_name': (str, False),
+    }
+
+
+class TencentCloudCvm(PackerBuilder):
+    """
+    Tencent Cloud Builder
+    https://www.packer.io/docs/builders/tencentcloud-cvm.html
+    """
+    resource_type = "tencentcloud-cvm"
+    props = {
+        'instance_type': (str, True),
+        'image_name': (str, True),
+        'secret_id': (str, False),
+        'secret_key': (str, False),
+        'region': (str, True),
+        'zone': (str, True),
+        'source_image_id': (str, True),
+        'force_poweroff': (validator.boolean, False),
+        'image_description': (str, False),
+        'reboot': (validator.boolean, False),
+        'image_copy_regions': ([str], False),
+        'image_share_accounts': ([str], False),
+        'skip_region_validation': (validator.boolean, False),
+        'associate_public_ip_address': (validator.boolean, False),
+        'instance_name': (str, False),
+        'disk_type': (str, False),
+        'disk_size': (int, False),
+        'vpc_id': (str, False),
+        'vpc_name': (str, False),
+        'cidr_block': (validator.boolean, False),
+        'subnet_id': (validator.boolean, False),
+        'subnet_name': (str, False),
+        'subnect_cidr_block': (validator.boolean, False),
+        'internet_max_bandwidth_out': (int, False),
+        'security_group_id': (str, False),
+        'security_group_name': (str, False),
+        'user_data': (str, False),
+        'user_data_file': (str, False),
+        'host_name': (str, False),
     }
 
 
