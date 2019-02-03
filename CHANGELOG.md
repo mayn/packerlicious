@@ -2,7 +2,7 @@
 ## (UNRELEASED)
 
 
-## 1.2.0 (UNRELEASED)
+## 1.2.0 (February 2, 2019)
 
 packer 1.3.3 feature sync
 
