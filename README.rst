@@ -116,6 +116,7 @@ Builders:
 - profitbricks
 - qemu
 - scaleway
+- tencentcloud-cvm
 - triton
 - virtualbox-iso
 - virtualbox-ovf
