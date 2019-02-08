@@ -972,6 +972,7 @@ class GoogleCompute(PackerBuilder):
         'image_licenses': ([str], False),
         'image_name': (str, False),
         'instance_name': (str, False),
+        'labels': (dict, False),
         'machine_type': (str, False),
         'metadata': (dict, False),
         'min_cpu_platform': (str, False),
