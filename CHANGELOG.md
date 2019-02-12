@@ -1,6 +1,14 @@
 
 ## (UNRELEASED)
 
+## 1.3.1 (February 12, 2019)
+
+### IMPROVEMENTS:
+
+* builder/GoogleCompute: add labels attribute [GH-166]
+
+
+
 ## 1.3.0 (February 7, 2019)
 
 hashicorp/packer 1.3.4 feature sync
