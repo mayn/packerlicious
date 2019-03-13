@@ -320,6 +320,7 @@ class Manifest(PackerPostProcessor):
 
     props = {
         'output': (str, False),
+        'custom_data': (dict, False),
         'strip_path': (validator.boolean, False),
     }
 
