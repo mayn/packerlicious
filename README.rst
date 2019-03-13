@@ -102,6 +102,7 @@ Builders:
 - googlecompute
 - hcloud
 - hetznercloud
+- hyperone
 - hyperv-iso
 - hyperv-vmcx
 - lxc
@@ -118,6 +119,7 @@ Builders:
 - scaleway
 - tencentcloud-cvm
 - triton
+- vagrant
 - virtualbox-iso
 - virtualbox-ovf
 - vmware-iso
@@ -131,6 +133,7 @@ Post Processors:
 - atlas
 - checksum
 - compress
+- digitalocean-import
 - docker-import
 - docker-push
 - docker-save
@@ -153,6 +156,7 @@ Provisioners:
 - chef-solo
 - converge
 - file
+- inspec
 - powershell
 - puppet-masterless
 - puppet-server

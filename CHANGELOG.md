@@ -1,6 +1,16 @@
 
 ## (UNRELEASED)
 
+## 1.4.0 (March 13, 2019)
+
+hashicorp/packer 1.3.5 feature sync [GH-168]
+
+### IMPROVEMENTS:
+* builder/AmazonEbs: add attribute ena_support [GH-167]
+* post-processor/Manifest: add attribute custom_data [GH-169]
+
+
+
 ## 1.3.1 (February 12, 2019)
 
 ### IMPROVEMENTS:
