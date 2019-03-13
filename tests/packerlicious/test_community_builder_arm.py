@@ -1,12 +1,12 @@
 import pytest
 
-import packerlicious.community.provisioner as provisioner
+import packerlicious.community.builder as builder
 
 
-class TestInspecProvisioner(object):
+class TestCommunityArmImageBuilder(object):
 
     def test_required_fields_missing(self):
-        b = provisioner.Inspec()
+        b = builder.ArmImage()
 
         with pytest.raises(ValueError) as excinfo:
             b.to_dict()

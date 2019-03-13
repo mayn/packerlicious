@@ -212,6 +212,18 @@ class BlockDeviceMapping(PackerProperty):
     }
 
 
+class VaultAwsEngine(PackerProperty):
+    """
+    https://packer.io/docs/builders/amazon-chroot.html#vault_aws_engine
+    """
+    props = {
+        'name': (str, True),
+        'engine_name': (str, False),
+        'role_arn': (str, False),
+        'ttl': (str, False),
+    }
+
+
 class AmazonChroot(PackerBuilder):
     """
     Amazon Chroot Builder
@@ -266,6 +278,7 @@ class AmazonChroot(PackerBuilder):
         'source_ami_filter': (AmazonSourceAmiFilter, False),
         'sriov_support': (validator.boolean, False),
         'tags': (dict, False),
+        'vault_aws_engine': (VaultAwsEngine, False),
     }
 
     def validate(self):
@@ -377,6 +390,7 @@ class AmazonEbs(PackerBuilder):
         'vpc_filter': (AmazonVpcFilter, False),
         'vpc_id': (str, False),
         'windows_password_timeout': (str, False),
+        'vault_aws_engine': (VaultAwsEngine, False),
     }
 
     def validate(self):
@@ -482,6 +496,7 @@ class AmazonEbsSurrogate(PackerBuilder):
         'token': (str, False),
         'user_data': (str, False),
         'user_data_file': (str, False),
+        'vault_aws_engine': (VaultAwsEngine, False),
         'vpc_id': (str, False),
         'vpc_filter': (AmazonVpcFilter, False),
         'windows_password_timeout': (str, False),
@@ -573,6 +588,7 @@ class AmazonEbsVolume(PackerBuilder):
         'token': (str, False),
         'user_data': (str, False),
         'user_data_file': (str, False),
+        'vault_aws_engine': (VaultAwsEngine, False),
         'vpc_filter': (AmazonVpcFilter, False),
         'vpc_id': (str, False),
         'windows_password_timeout': (str, False),
@@ -686,6 +702,7 @@ class AmazonInstance(PackerBuilder):
         'temporary_security_group_source_cidr': (str, False),
         'user_data': (str, False),
         'user_data_file': (str, False),
+        'vault_aws_engine': (VaultAwsEngine, False),
         'vpc_filter': (AmazonVpcFilter, False),
         'vpc_id': (str, False),
         'x509_upload_path': (str, False),
@@ -1022,6 +1039,49 @@ class HetznerCloud(PackerBuilder):
         'user_data_file': (str, False),
         'ssh_keys': ([str], False),
         'rescue': (validator.string_list_item(["linux64", "linux32", "freebsd64"]), False),
+    }
+
+
+class HyperOne(PackerBuilder):
+    """
+    HyperOne Builder
+    https://packer.io/docs/builders/hyperone.html
+    """
+    resource_type = "hyperone"
+
+    props = {
+        'disk_size': (int, False),
+        'project': (str, False),
+        'source_image': (str, False),
+        'token': (str, False),
+        'vm_type': (str, False),
+        'api_url': (str, False),
+        'disk_name': (str, False),
+        'disk_type': (str, False),
+        'image_description': (str, False),
+        'image_name': (str, False),
+        'image_service': (str, False),
+        'image_tags': (dict, False),
+        'network': (str, False),
+        'private_ip': (str, False),
+        'public_ip': (str, False),
+        'public_netadp_service': (str, False),
+        'state_timeout': (str, False),
+        'token_login': (str, False),
+        'user_data': (str, False),
+        'vm_name': (str, False),
+        'vm_tags': (dict, False),
+        'chroot_disk': (validator.boolean, False),
+        'pre_mount_commands': ([str], False),
+        'chroot_command_wrapper': (str, False),
+        'chroot_copy_files': ([str], False),
+        'chroot_disk_size': (int, False),
+        'chroot_disk_type': (str, False),
+        'chroot_mount_path': (str, False),
+        'chroot_mounts': ([str], False),
+        'mount_options': ([(str, str)], False),
+        'mount_partition': ([str], False),
+        'post_mount_commands': ([str], False),
     }
 
 
@@ -1656,6 +1716,41 @@ class Triton(PackerBuilder):
         validator.exactly_one(self.__class__.__name__, self.properties, conds)
 
 
+class Vagrant(PackerBuilder):
+    """
+    Vagrant Builder
+    https://packer.io/docs/builders/vagrant.html
+    """
+    resource_type = "vagrant"
+
+    props = {
+        'source_path': (str, False),
+        'global_id': (str, False),
+        'output_dir': (str, False),
+        'box_name': (str, False),
+        'checksum': (str, False),
+        'checksum_type': (str, False),
+        'vagrantfile_template': (str, False),
+        'skip_add': (str, False),
+        'teardown_method': (str, False),
+        'box_version': (str, False),
+        'add_cacert': (str, False),
+        'add_capath': (str, False),
+        'add_cert': (str, False),
+        'add_clean': (validator.boolean, False),
+        'add_force': (validator.boolean, False),
+        'add_insecure': (validator.boolean, False),
+        'skip_package': (validator.boolean, False),
+    }
+
+    def validate(self):
+        conds = [
+            'source_path',
+            'global_id',
+        ]
+        validator.exactly_one(self.__class__.__name__, self.properties, conds)
+
+
 class VirtualboxIso(PackerBuilder):
     """
     VirtualBox ISO Builder
@@ -1686,6 +1781,7 @@ class VirtualboxIso(PackerBuilder):
         'floppy_files': ([str], False),
         'floppy_dirs': ([str], False),
         'format': (validator.string_list_item([OVF, OVA]), False),
+        'guest_additions_interface': (str, False),
         'guest_additions_mode': (validator.string_list_item(["upload", "attach", "disable"]), False),
         'guest_additions_path': (str, False),
         'guest_additions_sha256': (str, False),
@@ -1758,6 +1854,7 @@ class VirtualboxOvf(PackerBuilder):
         'floppy_files': ([str], False),
         'floppy_dirs': ([str], False),
         'format': (validator.string_list_item([OVF, OVA]), False),
+        'guest_additions_interface': (str, False),
         'guest_additions_mode': (validator.string_list_item(["upload", "attach", "disable"]), False),
         'guest_additions_path': (str, False),
         'guest_additions_sha256': (str, False),
@@ -1809,6 +1906,7 @@ class VMwareIso(PackerBuilder):
         'iso_url': (str, True),
         'boot_command': ([str], False),
         'boot_wait': (str, False),
+        'cores': (int, False),
         'cpus': (int, False),
         'cdrom_adapter_type': (str, False),
         'disk_adapter_type': (str, False),

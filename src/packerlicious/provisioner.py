@@ -92,7 +92,7 @@ class Ansible(PackerProvisioner):
         'host_alias': (str, False),
         'inventory_file': (str, False),
         'inventory_directory': (str, False),
-        'local_port': (str, False),
+        'local_port': (int, False),
         'sftp_command': (str, False),
         'skip_version_check': (validator.boolean, False),
         'ssh_host_key_file': (str, False),
@@ -175,6 +175,29 @@ class ChefSolo(PackerProvisioner):
         'skip_install': (validator.boolean, False),
         'staging_directory': (str, False),
         'version': (str, False),
+    }
+
+
+class Inspec(PackerProvisioner):
+    """
+    InSpec Provisioner
+    https://packer.io/docs/provisioners/inspec.html
+    """
+    resource_type = "inspec"
+
+    props = {
+        'profile': (str, True),
+        'inspec_env_vars': ([str], False),
+        'command': (str, False),
+        'extra_arguments': ([str], False),
+        'attributes': ([str], False),
+        'attributes_directory': (str, False),
+        'backend': (str, False),
+        'host': (str, False),
+        'local_port': (int, False),
+        'ssh_host_key_file': (str, False),
+        'ssh_authorized_key_file': (str, False),
+        'user': (str, False),
     }
 
 

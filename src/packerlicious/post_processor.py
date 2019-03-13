@@ -183,6 +183,30 @@ class Compress(PackerPostProcessor):
     }
 
 
+class DigitalOceanImporter(PackerPostProcessor):
+    """
+    Digital Ocean Import Post-Processor
+    https://packer.io/docs/post-processors/digitalocean-import.html
+    """
+    resource_type = "digitalocean-import"
+
+    props = {
+        'api_token': (str, True),
+        'spaces_key': (str, True),
+        'spaces_secret': (str, True),
+        'spaces_region': (str, True),
+        'space_name': (str, True),
+        'image_name': (str, True),
+        'image_regions': ([str], True),
+        'image_description': (str, False),
+        'image_distribution': (str, False),
+        'image_tags': ([str], False),
+        'skip_clean': (validator.boolean, False),
+        'space_object_name': (str, False),
+        'timeout': (int, False),
+    }
+
+
 class DockerImport(PackerPostProcessor):
     """
     Docker Import Post-Processor
@@ -243,6 +267,26 @@ class DockerTag(PackerPostProcessor):
     }
 
 
+class GoogleComputeExport(PackerPostProcessor):
+    """
+    Google Compute Image Exporter Post-Processor
+    https://www.packer.io/docs/post-processors/googlecompute-export.html
+    """
+    resource_type = "googlecompute-export"
+
+    props = {
+        'paths': ([str], True),
+        'account_file': (str, False),
+        'disk_size': (int, False),
+        'disk_type': (str, False),
+        'keep_input_artifact': (validator.boolean, False),
+        'machine_type': (str, False),
+        'network': (str, False),
+        'subnetwork': (str, False),
+        'zone': (str, False),
+    }
+
+
 class GoogleComputeImport(PackerPostProcessor):
     """
     Google Compute Image Import Post-Processor
@@ -264,19 +308,6 @@ class GoogleComputeImport(PackerPostProcessor):
         'image_labels': (dict, False),
         'keep_input_artifact': (validator.boolean, False),
         'skip_clean': (validator.boolean, False),
-    }
-
-
-class GoogleComputeExport(PackerPostProcessor):
-    """
-    Google Compute Image Exporter Post-Processor
-    https://www.packer.io/docs/post-processors/googlecompute-export.html
-    """
-    resource_type = "googlecompute-export"
-
-    props = {
-        'paths': ([str], True),
-        'keep_input_artifact': (validator.boolean, False),
     }
 
 
