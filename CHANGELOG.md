@@ -1,6 +1,13 @@
 
 ## (UNRELEASED)
 
+## 1.4.1 (UNRELEASED)
+
+### IMPROVEMENTS:
+* builders: add support for named builds [GH-171]
+
+
+
 ## 1.4.0 (March 13, 2019)
 
 hashicorp/packer 1.3.5 feature sync [GH-168]

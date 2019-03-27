@@ -68,16 +68,19 @@ class PackerCommunicator(BasePackerObject):
 
         for k, v in list(self.communicator_props.items()):
             self.props[k] = v
-        # for k, (_, required) in self.communicator_props.items():
-        #     v = getattr(type(self), k, None)
-        #     if v is not None:
-        #         pass
+
         super(PackerCommunicator, self).__init__(title, **kwargs)
 
 
 class PackerBuilder(PackerCommunicator):
+    builder_props = {
+        'name': (str, False)
+    }
 
     def __init__(self, title=None, **kwargs):
+        for k, v in list(self.builder_props.items()):
+            self.props[k] = v
+
         super(PackerBuilder, self).__init__(title, **kwargs)
 
 
