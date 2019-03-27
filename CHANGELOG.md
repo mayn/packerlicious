@@ -5,7 +5,7 @@
 
 ### IMPROVEMENTS:
 * builders: add support for named builds [GH-171]
-
+* CHANGELOG: retroactive update [GH-170]
 
 
 ## 1.4.0 (March 13, 2019)
@@ -53,6 +53,10 @@ packer 1.3.3 feature sync
 ## 1.1.0 (January 21, 2019)
 
 packer 1.3.1 feature sync
+
+### BACKWARDS INCOMPATIBILITY
+* EnvVars output rendering has changed. see [GH-170]
+
 
 ## FEATURES
 
