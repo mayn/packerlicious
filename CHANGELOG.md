@@ -1,7 +1,8 @@
 
 ## (UNRELEASED)
 
-## 1.4.1 (UNRELEASED)
+
+## 1.4.1 (March 27, 2019)
 
 ### IMPROVEMENTS:
 * builders: add support for named builds [GH-171]
