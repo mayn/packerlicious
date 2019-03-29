@@ -65,7 +65,7 @@ class BaseAWSObject(object):
         self.template = template
         # Cache the keys for validity checks
         self.propnames = list(self.props.keys())
-        self.attributes = ['DependsOn', 'DeletionPolicy',
+        self.attributes_ = ['DependsOn', 'DeletionPolicy',
                            'Metadata', 'UpdatePolicy',
                            'Condition', 'CreationPolicy']
 
@@ -102,7 +102,7 @@ class BaseAWSObject(object):
 
     def __getattr__(self, name):
         try:
-            if name in self.attributes:
+            if name in self.attributes_:
                 return self.resource[name]
             else:
                 return self.properties.__getitem__(name)
@@ -118,7 +118,7 @@ class BaseAWSObject(object):
         if name in list(self.__dict__.keys()) \
                 or '_BaseAWSObject__initialized' not in self.__dict__:
             return dict.__setattr__(self, name, value)
-        elif name in self.attributes:
+        elif name in self.attributes_:
             self.resource[name] = value
             return None
         elif name in self.propnames:
