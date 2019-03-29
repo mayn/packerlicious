@@ -2,6 +2,12 @@
 ## (UNRELEASED)
 
 
+## 1.4.2 (March 28, 2019)
+
+### BUG FIX:
+* property 'attributes' not rendering in user templates due to internal usage [GH-172]
+
+
 ## 1.4.1 (March 27, 2019)
 
 ### IMPROVEMENTS:
@@ -39,7 +45,7 @@ hashicorp/packer 1.3.4 feature sync
 
 packer 1.3.3 feature sync
 
-## FEATURES
+### FEATURES
 
 * builder/VirtualBoxIso: add memory, cpu, and usb attributes [GH-163]
 * builder/HetznerCloud: add support for packer Hetzner Cloud builder
@@ -59,7 +65,7 @@ packer 1.3.1 feature sync
 * EnvVars output rendering has changed. see [GH-170]
 
 
-## FEATURES
+### FEATURES
 
 * builder/PackerCommunicator:  add ssh_clear_authorized_keys [GH-158]
 * builder/AmazonSourceAmiFilter:  make owners a required field [GH-142]
@@ -73,7 +79,7 @@ packer 1.3.1 feature sync
 * provisioner/Shell: add property use_env_var_file [GH-159]
 
 
-## IMPROVEMENTS
+### IMPROVEMENTS
 
 * python 3.7 support [GH-138]
 
