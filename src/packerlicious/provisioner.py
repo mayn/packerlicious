@@ -33,6 +33,7 @@ class PackerProvisioner(BasePackerObject):
         'pause_before': (str, False),
         'only': ([str], False),
         'except': ([str], False),
+        'timeout': (str, False),
     }
 
     def __init__(self, title=None, **kwargs):
@@ -61,6 +62,7 @@ class AnsibleLocal(PackerProvisioner):
         'playbook_dir': (str, False),
         'playbook_paths': ([str], False),
         'galaxy_file': (str, False),
+        'galaxycommand': (str, False),
         'group_vars': (str, False),
         'host_vars': (str, False),
         'role_paths': ([str], False),

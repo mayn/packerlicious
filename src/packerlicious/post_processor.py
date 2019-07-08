@@ -48,6 +48,7 @@ class AliCloudImport(PackerPostProcessor):
         'image_platform': (str, True),
         'image_architecture': ([str], True),
         'format': (str, True),
+        'keep_input_artifact': (validator.boolean, False),
         'oss_key_name': (str, False),
         'skip_clean': (validator.boolean, False),
         'image_description': (str, False),
@@ -73,16 +74,21 @@ class AmazonImport(PackerPostProcessor):
         's3_bucket_name': (str, True),
         'secret_key': (str, False),
         'ami_description': (str, False),
+        'ami_encrypt': (validator.boolean, False),
         'ami_groups': ([str], False),
+        'ami_kms_key': (str, False),
         'ami_name': (str, False),
         'ami_users': ([str], False),
         'custom_endpoint_ec2': (str, False),
         'format': (str, False),
         'insecure_skip_tls_verify': (validator.boolean, False),
+        'keep_input_artifact': (validator.boolean, False),
         'license_type': (validator.string_list_item([LicenseAWS, LicenseBYOL]), False),
         'mfa_code': (str, False),
         'profile': (str, False),
         'role_name': (str, False),
+        's3_encryption': (validator.string_list_item(['aws:kms', 'AES256']), False),
+        's3_encryption_key': (str, False),
         's3_key_name': (str, False),
         'skip_clean': (validator.boolean, False),
         'skip_region_validation': (validator.boolean, False),
@@ -107,6 +113,7 @@ class Artifice(PackerPostProcessor):
 
     props = {
         'files': ([str], True),
+        'keep_input_artifact': (validator.boolean, False),
     }
 
 
@@ -152,6 +159,7 @@ class Checksum(PackerPostProcessor):
 
     props = {
         'checksum_types': ([str], False),
+        'keep_input_artifact': (validator.boolean, False),
         'output': (str, False),
     }
 
@@ -201,6 +209,7 @@ class DigitalOceanImporter(PackerPostProcessor):
         'image_description': (str, False),
         'image_distribution': (str, False),
         'image_tags': ([str], False),
+        'keep_input_artifact': (validator.boolean, False),
         'skip_clean': (validator.boolean, False),
         'space_object_name': (str, False),
         'timeout': (int, False),
@@ -218,6 +227,7 @@ class DockerImport(PackerPostProcessor):
         'repository': (str, True),
         'tag': (str, False),
         'changes': ([str], False),
+        'keep_input_artifact': (validator.boolean, False),
     }
 
 
@@ -234,6 +244,7 @@ class DockerPush(PackerPostProcessor):
         'aws_profile': (str, False),
         'aws_token': (str, False),
         'ecr_login': (validator.boolean, False),
+        'keep_input_artifact': (validator.boolean, False),
         'login': (validator.boolean, False),
         'login_username': (str, False),
         'login_password': (str, False),
@@ -250,6 +261,7 @@ class DockerSave(PackerPostProcessor):
 
     props = {
         'path': (str, True),
+        'keep_input_artifact': (validator.boolean, False),
     }
 
 
@@ -264,6 +276,7 @@ class DockerTag(PackerPostProcessor):
         'repository': (str, True),
         'tag': (str, False),
         'force': (str, False),
+        'keep_input_artifact': (validator.boolean, False),
     }
 
 
@@ -321,6 +334,7 @@ class Manifest(PackerPostProcessor):
     props = {
         'output': (str, False),
         'custom_data': (dict, False),
+        'keep_input_artifact': (validator.boolean, False),
         'strip_path': (validator.boolean, False),
     }
 
@@ -349,6 +363,7 @@ class ShellLocal(PackerPostProcessor):
         'env_var_format': (str, False),
         'execute_command': ([str], False),
         'inline_shebang': (str, False),
+        'keep_input_artifact': (validator.boolean, False),
         'only_on': ([str], False),
         'use_linux_pathing': (validator.boolean, False),
     }
@@ -430,6 +445,8 @@ class VagrantCloud(PackerPostProcessor):
         'vagrant_cloud_url': (str, False),
         'version_description': (str, False),
         'box_download_url': (str, False),
+        'insecure_skip_tls_verify': (validator.boolean, False),
+        'keep_input_artifact': (validator.boolean, False),
     }
 
 
@@ -452,6 +469,7 @@ class VSphere(PackerPostProcessor):
         'esxi_host': (str, False),
         'disk_mode': (str, False),
         'insecure': (validator.boolean, False),
+        'keep_input_artifact': (validator.boolean, False),
         'resource_pool': (str, False),
         'vm_folder': (str, False),
         'vm_network': (str, False),
@@ -475,6 +493,7 @@ class VSphereTemplate(PackerPostProcessor):
         'datacenter': (str, False),
         'folder': (str, False),
         'insecure': (validator.boolean, False),
+        'keep_input_artifact': (validator.boolean, False),
         'snapshot_enable': (validator.boolean, False),
         'snapshot_name': (str, False),
         'snapshot_description': (str, False),
