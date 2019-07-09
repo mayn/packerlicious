@@ -93,6 +93,7 @@ class AliCloudImageDiskMapping(PackerProperty):
         'disk_delete_with_instance': (validator.boolean, False),
         'disk_description': (str, False),
         'disk_device': (str, False),
+        'disk_encrypted': (validator.boolean, False),
         'disk_name': (str, False),
         'disk_size': (int, False),
         'disk_snapshot_id': (str, False),
@@ -125,6 +126,7 @@ class AliCloud(PackerBuilder):
         'secret_key': (str, True),
         'source_image': (str, True),
         'force_stop_instance': (validator.boolean, False),
+        'image_encrypted': (validator.boolean, False),
         'image_description': (str, False),
         'image_disk_mappings': ([AliCloudImageDiskMapping], False),
         'image_version': (str, False),
@@ -243,6 +245,7 @@ class AmazonChroot(PackerBuilder):
         'secret_key': (str, False),
         'source_ami': (str, False),
         'ami_description': (str, False),
+        'ami_architecture': (str, False),
         'ami_groups': ([str], False),
         'ami_product_codes': ([str], False),
         'ami_regions': ([str], False),
@@ -448,6 +451,7 @@ class AmazonEbsSurrogate(PackerBuilder):
         'source_device_name': (str, True),
         'source_ami': (str, False),
         'ami_block_device_mappings': ([BlockDeviceMapping], False),
+        'ami_architecture': (str, False),
         'ami_description': (str, False),
         'ami_groups': ([str], False),
         'ami_product_codes': ([str], False),
@@ -994,6 +998,7 @@ class GoogleCompute(PackerBuilder):
         'image_labels': (dict, False),
         'image_licenses': ([str], False),
         'image_name': (str, False),
+        'image_encryption_key': (str, False),
         'instance_name': (str, False),
         'labels': (dict, False),
         'machine_type': (str, False),
@@ -1180,6 +1185,7 @@ class HypervVmcx(PackerBuilder):
         'iso_urls': ([str], False),
         'iso_target_extension': (str, False),
         'iso_target_path': (str, False),
+        'keep_registered': (validator.boolean, False),
         'mac_address': (str, False),
         'output_directory': (str, False),
         'memory': (int, False),
@@ -1208,6 +1214,27 @@ class HypervVmcx(PackerBuilder):
             'iso_urls'
         ]
         validator.mutually_exclusive(self.__class__.__name__, self.properties, iso_url_conds)
+
+
+class Linode(PackerBuilder):
+    """
+    Linode Builder
+    https://www.packer.io/docs/builders/linode.html
+    """
+    resource_type = "linode"
+
+    props = {
+        'linode_token': (str, True),
+        'image': (str, True),
+        'region': (str, True),
+        'instance_type': (str, True),
+        'instance_label': (str, False),
+        'instance_tags': ([str], False),
+        'swap_size': (int, False),
+        'image_label': (str, False),
+        'image_description': (str, False),
+        'state_timeout': (str, False),
+    }
 
 
 class LXC(PackerBuilder):
@@ -1549,6 +1576,61 @@ class ProfitBricks(PackerBuilder):
     }
 
 
+class ProxmoxNetworkAdapter(PackerProperty):
+    """
+    https://www.packer.io/docs/builders/proxmox.html#network_adapters
+    """
+    props = {
+        'bridge': (str, True),
+        'model': (str, False),
+        'mac_address': (str, False),
+        'vlan_tag': (str, False),
+    }
+
+
+class ProxmoxDisks(PackerProperty):
+    """
+    https://www.packer.io/docs/builders/proxmox.html#disks
+    """
+    props = {
+        'storage_pool': (str, True),
+        'storage_pool_type': (str, True),
+        'type': (str, False),
+        'disk_size': (str, False),
+        'cache_mode': (str, False),
+        'format': (str, False),
+    }
+
+
+class Proxmox(PackerBuilder):
+    """
+    proxmox Builder
+    https://www.packer.io/docs/builders/proxmox.html
+    """
+    resource_type = "proxmox"
+
+    props = {
+        'proxmox_url': (str, True),
+        'username': (str, True),
+        'password': (str, True),
+        'node': (str, True),
+        'iso_file': (str, True),
+        'insecure_skip_tls_verify': (validator.boolean, False),
+        'vm_name': (str, False),
+        'vm_id': (int, False),
+        'memory': (int, False),
+        'cores': (int, False),
+        'sockets': (int, False),
+        'os': (str, False),
+        'network_adapters': ([ProxmoxNetworkAdapter], False),
+        'disks': ([ProxmoxDisks], False),
+        'template_name': (str, False),
+        'template_description': (str, False),
+        'unmount_iso': (validator.boolean, False),
+        'qemu_agent': (validator.boolean, False),
+    }
+
+
 class Qemu(PackerBuilder):
     """
     QEMU Builder
@@ -1856,9 +1938,9 @@ class VirtualboxOvf(PackerBuilder):
 
     props = {
         'source_path': (str, True),
+        'checksum': (str, True),
         'boot_command': ([str], False),
         'boot_wait': (str, False),
-        'checksum': (str, False),
         'checksum_type': (validator.string_list_item([NONE, MD5, SHA1, SHA256, SHA512]), False),
         'export_opts': ([str], False),
         'floppy_files': ([str], False),
@@ -2030,4 +2112,44 @@ class VMwareVmx(PackerBuilder):
         'vnc_disable_password': (validator.boolean, False),
         'vnc_port_min': (int, False),
         'vnc_port_max': (int, False),
+    }
+
+
+class Yandex(PackerBuilder):
+    """
+    Yandex Compute Cloud Builder
+    https://www.packer.io/docs/builders/yandex.html
+    """
+    resource_type = "yandex"
+
+    props = {
+        'folder_id ': (str, False),
+        'token': (str, False),
+        'source_image_family': (str, False),
+        'display_name': (str, False),
+        'endpoint': (str, False),
+        'instance_cores': (int, False),
+        'instance_mem_gb': (int, False),
+        'disk_name': (str, False),
+        'disk_size_gb': (int, False),
+        'disk_type': (str, False),
+        'image_description': (str, False),
+        'image_family': (str, False),
+        'image_labels': (dict, False),
+        'image_name': (str, False),
+        'image_product_ids': (list, False),
+        'instance_name': (str, False),
+        'labels': (dict, False),
+        'platform_id': (str, False),
+        'metadata': (dict, False),
+        'serial_log_file': (str, False),
+        'service_account_key_file': (str, False),
+        'source_image_folder_id': (str, False),
+        'source_image_id': (str, False),
+        'source_image_family': (str, False),
+        'use_internal_ip': (validator.boolean, False),
+        'use_ipv4_nat': (validator.boolean, False),
+        'use_ipv6': (validator.boolean, False),
+        'state_timeout': (str, False),
+        'zone': (str, False),
     }

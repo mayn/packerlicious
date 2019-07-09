@@ -105,6 +105,7 @@ Builders:
 - hyperone
 - hyperv-iso
 - hyperv-vmcx
+- linode
 - lxc
 - lxd
 - ncloud
@@ -115,6 +116,7 @@ Builders:
 - parallels-iso
 - parallels-pvm
 - profitbricks
+- proxmox
 - qemu
 - scaleway
 - tencentcloud-cvm
@@ -124,6 +126,7 @@ Builders:
 - virtualbox-ovf
 - vmware-iso
 - vmware-vmx
+- yandex
 
 Post Processors:
 
