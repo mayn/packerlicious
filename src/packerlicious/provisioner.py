@@ -125,6 +125,7 @@ class ChefClient(PackerProvisioner):
 
     props = {
         'chef_environment': (str, False),
+        'chef_license': (str, False),
         'config_template': (str, False),
         'elevated_user': (str, False),
         'elevated_password': (str, False),
@@ -161,6 +162,7 @@ class ChefSolo(PackerProvisioner):
 
     props = {
         'chef_environment': (str, False),
+        'chef_license': (str, False),
         'config_template': (str, False),
         'cookbook_paths': (str, False),
         'data_bags_path': (str, False),
@@ -286,6 +288,7 @@ class PowerShell(PackerProvisioner):
         'execute_command': (str, False),
         'elevated_user': (str, False),
         'elevated_password': (str, False),
+        'execution_policy': (str, False),
         'remote_path': (str, False),
         'remote_env_var_path': (str, False),
         'skip_clean': (validator.boolean, False),
