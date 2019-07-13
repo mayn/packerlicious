@@ -174,6 +174,7 @@ Community Plugins:
 
 Builders:
 
+- jetbrains-infra/packer-builder-vsphere (vsphere-iso, vsphere-clone)
 - solo-io/packer-builder-arm-image
 
 Provisioners:

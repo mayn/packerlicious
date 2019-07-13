@@ -2,6 +2,20 @@
 ## (UNRELEASED)
 
 
+## 1.5.0 (July 12, 2019)
+
+hashicorp/packer 1.4.2 feature sync [GH-174]
+
+### BACKWARDS INCOMPATIBILITY
+hashicorp introduced backwards incompatibilities in v1.4.0 see [hashicorp packer release notes]( https://github.com/hashicorp/packer/blob/v1.4.2/CHANGELOG.md#backwards-incompatibilities ) for more info.
+
+### IMPROVEMENTS:
+add support for jetbrains vsphere plugins (https://github.com/jetbrains-infra/packer-builder-vsphere)
+* community.builder/VsphereClone
+* community.builder/VsphereIso
+
+
+
 ## 1.4.2 (March 28, 2019)
 
 ### BUG FIX:

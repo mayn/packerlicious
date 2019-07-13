@@ -1168,7 +1168,7 @@ class HypervVmcx(PackerBuilder):
         'boot_wait': (str, False),
         'copy_in_compare': (validator.boolean, False),
         'configuration_version': (str, False),
-        'cpu': (int, False),
+        'cpus': (int, False),
         'enable_dynamic_memory': (validator.boolean, False),
         'enable_mac_spoofing': (validator.boolean, False),
         'enable_secure_boot': (validator.boolean, False),
