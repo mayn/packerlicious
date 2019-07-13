@@ -60,9 +60,9 @@ def encode_to_dict(obj):
 
 
 class BaseAWSObject(object):
-    def __init__(self, title, _template=None, **kwargs):
+    def __init__(self, title, template=None, **kwargs):
         self.title = title
-        self._template = _template
+        self.template_ = template
         # Cache the keys for validity checks
         self.propnames = list(self.props.keys())
         self.attributes_ = ['DependsOn', 'DeletionPolicy',
@@ -97,8 +97,8 @@ class BaseAWSObject(object):
             self.__setattr__(k, v)
 
         # Bound it to template if we know it
-        if self._template is not None:
-            self._template.add_resource(self)
+        if self.template_ is not None:
+            self.template_.add_resource(self)
 
     def __getattr__(self, name):
         try:
