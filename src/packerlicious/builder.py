@@ -1754,6 +1754,33 @@ class TencentCloudCvm(PackerBuilder):
         'host_name': (str, False),
     }
 
+class JDCloud(PackerBuilder):
+    """
+    JDCloud Image Builder
+    https://www.packer.io/docs/builders/jdcloud.html
+    """
+    resource_type = "jdcloud"
+
+    # Region IDs
+    CNNORTH1 = "cn-north-1"
+    CNSOUTH1 = "cn-south-1"
+    CNEAST1 = "cn-east-1"
+    CNEAST2 = "cn-east-2"
+
+    props = {
+        'type': (str, True),
+        'image_id': (str, True),
+        'access_key': (str, True),
+        'secret_key': (str, True),
+        'region_id': (validator.string_list_item([CNEAST1, CNEAST2, CNNORTH1, CNSOUTH1]), True),
+        'az': (str, True),
+        'instance_name': (str, True),
+        'instance_type': (str, True),
+        'image_name': (str, True),
+        'communicator': (str, True),
+        'subnet_id': (str, False),
+    }
+
 
 class TritonSourceMachineImageFilter(PackerProperty):
     """

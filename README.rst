@@ -105,6 +105,7 @@ Builders:
 - hyperone
 - hyperv-iso
 - hyperv-vmcx
+- jdcloud
 - linode
 - lxc
 - lxd
