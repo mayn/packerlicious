@@ -940,7 +940,6 @@ class Docker(PackerBuilder):
         'privileged': (validator.boolean, False),
         'pull': (validator.boolean, False),
         'run_command': ([str], False),
-        'volumes': (dict, False),
         'volumes': (validator.boolean, False),
     }
 
