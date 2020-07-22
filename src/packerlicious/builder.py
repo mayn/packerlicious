@@ -41,6 +41,7 @@ class PackerCommunicator(BasePackerObject):
         'ssh_handshake_attempts': (validator.integer, False),
         'ssh_host': (str, False),
         'ssh_keep_alive_interval': (str, False),
+        'ssh_keypair_name': (str, False),
         'ssh_password': (str, False),
         'ssh_port': (validator.integer, False),
         'ssh_private_key_file': (str, False),
