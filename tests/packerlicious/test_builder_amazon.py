@@ -200,9 +200,8 @@ class TestAmazonEbsSurrogate(object):
             access_key="dummy-access-key",
             secret_key="dummy-secret-key",
             instance_type="t2.micro",
-            source_device_name="some_device",
             region="us-east-1",
-            ami_root_device=[ami_root_dev],
+            ami_root_device=ami_root_dev,
         )
 
         with pytest.raises(ValueError) as excinfo:
@@ -215,9 +214,8 @@ class TestAmazonEbsSurrogate(object):
             access_key="dummy-access-key",
             secret_key="dummy-secret-key",
             instance_type="t2.micro",
-            source_device_name="some_device",
             region="us-east-1",
-            ami_root_device=[ami_root_dev],
+            ami_root_device=ami_root_dev,
             source_ami="dummy-source-ami",
             security_group_id="sg-123",
             security_group_ids=["sg-123", "sg-456"],
@@ -233,9 +231,8 @@ class TestAmazonEbsSurrogate(object):
             access_key="dummy-access-key",
             secret_key="dummy-secret-key",
             instance_type="t2.micro",
-            source_device_name="some_device",
             region="us-east-1",
-            ami_root_device=[ami_root_dev],
+            ami_root_device=ami_root_dev,
             source_ami="dummy-source-ami",
             subnet_id="subnet-12345def",
             subnet_filter=builder.AmazonSubnetFilter(
@@ -258,9 +255,8 @@ class TestAmazonEbsSurrogate(object):
             access_key="dummy-access-key",
             secret_key="dummy-secret-key",
             instance_type="t2.micro",
-            source_device_name="some_device",
             region="us-east-1",
-            ami_root_device=[ami_root_dev],
+            ami_root_device=ami_root_dev,
             source_ami="dummy-source-ami",
             vpc_id="subnet-12345def",
             vpc_filter=builder.AmazonVpcFilter(
