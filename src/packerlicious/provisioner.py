@@ -62,7 +62,7 @@ class AnsibleLocal(PackerProvisioner):
         'playbook_dir': (str, False),
         'playbook_paths': ([str], False),
         'galaxy_file': (str, False),
-        'galaxycommand': (str, False),
+        'galaxy_command': (str, False),
         'group_vars': (str, False),
         'host_vars': (str, False),
         'role_paths': ([str], False),
@@ -100,6 +100,11 @@ class Ansible(PackerProvisioner):
         'ssh_host_key_file': (str, False),
         'ssh_authorized_key_file': (str, False),
         'user': (str, False),
+        'galaxy_file': (str, False),
+        'galaxy_command': (str, False),
+        'galaxy_force_install': (validator.boolean, False),
+        'roles_path': (str, False),
+        'collections_path': (str, False),
     }
 
 
