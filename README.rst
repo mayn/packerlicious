@@ -82,6 +82,10 @@ Below is the packerlicious equivalent of `packer's example template`_
       ]
     }
 
+An example for creating AWS AMIs
+================================
+
+A working example for creating AWS AMIs: `packer-aws-ami-builder <https://github.com/thefossgeek/packer-aws-ami-builder>`_
 
 Currently supported Packer resources
 ======================================
