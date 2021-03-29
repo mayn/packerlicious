@@ -1,18 +1,9 @@
 ==============
 packerlicious
 ==============
-.. image:: https://img.shields.io/pypi/v/packerlicious.svg
-    :target: https://pypi.python.org/pypi/packerlicious
 
-.. image:: https://travis-ci.org/mayn/packerlicious.svg?branch=master
-    :target: https://travis-ci.org/mayn/packerlicious
-
-.. image:: https://ci.appveyor.com/api/projects/status/9av1rr1li2ah25gs/branch/master?svg=true
-    :target: https://ci.appveyor.com/project/mayn/packerlicious
-
-.. image:: https://coveralls.io/repos/github/mayn/packerlicious/badge.svg?branch=master
-    :target: https://coveralls.io/github/mayn/packerlicious
-
+.. image:: https://ci.appveyor.com/api/projects/status/734n8y5s0wtqspj7/branch/master?svg=true
+    :target: https://ci.appveyor.com/project/dkasyanov/packerlicious
 
 
 About
@@ -194,7 +185,7 @@ packerlicious contains source code from `troposphere`_ which is licensed under t
 
 .. _`packer`: https://www.packer.io/
 .. _`troposphere`: https://github.com/cloudtools/troposphere
-.. _`LICENSE`: https://github.com/mayn/packerlicious/blob/master/LICENSE
+.. _`LICENSE`: https://github.com/dkasyanov/packerlicious/blob/master/LICENSE
 .. _`Apache license 2.0`: https://opensource.org/licenses/Apache-2.0
 .. _`BSD 2-Clause license`: http://opensource.org/licenses/BSD-2-Clause
 .. _`semantic versioning`: http://semver.org/
