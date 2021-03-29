@@ -34,6 +34,7 @@ class PackerProvisioner(BasePackerObject):
         'only': ([str], False),
         'except': ([str], False),
         'timeout': (str, False),
+        'max_retries': (int, False)
     }
 
     def __init__(self, title=None, **kwargs):
@@ -62,7 +63,7 @@ class AnsibleLocal(PackerProvisioner):
         'playbook_dir': (str, False),
         'playbook_paths': ([str], False),
         'galaxy_file': (str, False),
-        'galaxycommand': (str, False),
+        'galaxy_command': (str, False),
         'group_vars': (str, False),
         'host_vars': (str, False),
         'role_paths': ([str], False),
@@ -87,18 +88,27 @@ class Ansible(PackerProvisioner):
     props = {
         'playbook_file': (str, True),
         'ansible_env_vars': ([str], False),
+        'ansible_ssh_extra_args': ([str], False),
+        'collections_path': (str, False),
         'command': (str, False),
         'empty_groups': ([str], False),
         'extra_arguments': ([str], False),
+        'galaxy_command': (str, False),
+        'galaxy_file': (str, False),
+        'galaxy_force_install': (validator.boolean, False),
         'groups': ([str], False),
         'host_alias': (str, False),
         'inventory_file': (str, False),
+        'inventory_file_template': (str, False),
         'inventory_directory': (str, False),
+        'keep_inventory_file': (validator.boolean, False),
         'local_port': (int, False),
+        'roles_path': (str, False),
         'sftp_command': (str, False),
         'skip_version_check': (validator.boolean, False),
         'ssh_host_key_file': (str, False),
         'ssh_authorized_key_file': (str, False),
+        'use_proxy': (validator.boolean, False),
         'user': (str, False),
     }
 
